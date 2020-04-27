@@ -3,6 +3,9 @@ uuid = "12fec403-b259-46d8-9e74-75aa213074e9"
 authors = ["Hassan Afrouzi", "Choongryul Yang", "Miguel Acosta"]
 version = "0.1.0"
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
 [compat]
 julia = "1.3"
 
