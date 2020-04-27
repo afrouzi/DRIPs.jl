@@ -1,9 +1,9 @@
 ## A Software Package for LQG Dynamic Rational Inattention Problems (DRIPs)
 
-[![Build Status](https://travis-ci.com/afrouzi/DRIP.jl.svg?branch=master)](https://travis-ci.com/afrouzi/DRIP.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/afrouzi/DRIP.jl?svg=true)](https://ci.appveyor.com/project/afrouzi/DRIP-jl)
-[![Codecov](https://codecov.io/gh/afrouzi/DRIP.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/afrouzi/DRIP.jl)
-[![Coveralls](https://coveralls.io/repos/github/afrouzi/DRIP.jl/badge.svg?branch=master)](https://coveralls.io/github/afrouzi/DRIP.jl?branch=master)
+[![Build Status](https://travis-ci.com/afrouzi/DRIPs.jl.svg?branch=master)](https://travis-ci.com/afrouzi/DRIPs.jl)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/afrouzi/DRIPs.jl?svg=true)](https://ci.appveyor.com/project/afrouzi/DRIPs-jl)
+[![Codecov](https://codecov.io/gh/afrouzi/DRIPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/afrouzi/DRIPs.jl)
+[![Coveralls](https://coveralls.io/repos/github/afrouzi/DRIPs.jl/badge.svg?branch=master)](https://coveralls.io/github/afrouzi/DRIPs.jl?branch=master)
 
 This package provides a fast and robust method for solving LQG Dynamic Ratinoal Inattnetion Problems based on methods developed in [Afrouzi and Yang (2019): Dynamic Rational Inattention and the Phillips Curve](http://www.afrouzi.com/dynamic_inattention.pdf). It contains:
   1.  `solve_drip`: a function for solving the **steady state distribution** of actions and shocks.
