@@ -1,27 +1,33 @@
 using DRIPs, Printf, Plots, LaTeXStrings, BenchmarkTools; pyplot();
 Base.show(io::IO, f::Float64) = @printf io "%1.3f" f #rounds up floats for display
 
-## Primitives of D.R.I.P.
+## Initialize
+# Primitives of D.R.I.P.
 β = 0.9;
 ω = 1.0;
 A = [0.95 0.0; 0.0 0.4];
 Q = [√0.0975 0.0; 0.0 √0.86];
 H = [1.0; 1.0];
 
+## Solve Sims (2011) under benchmark parameterization
 sol_bp = solve_drip(ω,β,A,Q,H);
 display(sol_bp.Σ_p)
 
+# Measure performance with random ω
 @benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 2*rand())
 
-@benchmark solve_drip(ω,β,A,Q,H) setup = (β = rand()) 
+# Measure performance with random β
+@benchmark solve_drip(ω,β,A,Q,H) setup = (β = rand())
 
+## Solve Sims (2011) under low ω parameterization
 sol_lω = solve_drip(0.1,β,A,Q,H);
 display(sol_lω.Σ_p)
 
+## Solve Sims (2011) under low and high β parameterization
 sol_lβ = solve_drip(ω,0,A,Q,H); display(sol_lβ.Σ_p);
-
 sol_hβ = solve_drip(ω,1,A,Q,H); display(sol_hβ.Σ_p);
 
+## IRFs for benchmark parameterization
 T = 25; #length of IRFs
 irfs_bp = dripirfs(sol_bp,T);
 
@@ -54,6 +60,7 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 
+## IRFs for low ω
 T = 25; #length of IRFs
 irfs_lω = dripirfs(sol_lω,T);
 
@@ -86,6 +93,7 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 
+## IRFs for different βs
 T = 25; #length of IRFs
 irfs_lβ = dripirfs(sol_lβ,T);
 irfs_hβ = dripirfs(sol_hβ,T);
@@ -119,10 +127,7 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 
-Σ_1     = sol_bp.Σ_1;                      # steady state prior
-Σ0      = Σ_1 - (Σ_1*H*H'*Σ_1)/(H'*Σ_1*H); # prior after treatment
-display(Σ_1); display(Σ0);                 # display prior before and after treatment
-
+## Transition dynamics
 s0 = Signal(H,0.0);
 
 Tss     = 15; # guess for time until convergence
@@ -147,6 +152,7 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,
     fontfamily        = "serif",
     framestyle        = :box)
 
+## IRFs with information treatment
 T = 30; #length of IRFs
 
 tirfs_bp = dripirfs(sol_bp,T,s0); # irfs with treatment
