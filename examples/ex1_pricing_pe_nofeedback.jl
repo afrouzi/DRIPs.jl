@@ -1,15 +1,17 @@
 using DRIPs, Plots, LaTeXStrings, BenchmarkTools; pyplot();
 
+### Example 1A: pricing with only aggregate shocks and no feedback
+## initialize
 ρ   = 0.6;        #persistence of money growth
 σ_u = 1;          #std. deviation of shocks to money growth
-
-## specifying the primitives of the drip
-ω   = 100;       
-β   = 0.96^0.25;  
-A   = [1 ρ; 0 ρ]; 
+# specifying the primitives of the drip
+ω   = 100;
+β   = 0.96^0.25;
+A   = [1 ρ; 0 ρ];
 Q   = σ_u*[1; 1];
 H   = [1; 0];
 
+## Solve
 ex1 = solve_drip(ω,β,A,Q,H);
 
 @benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 100*rand()) # solves and times the function for a random set of ω's
@@ -41,23 +43,28 @@ plot(p1,p2,
     tickfont   = font(12),
     framestyle = :box)
 
+### Example 1B: Pricing with aggregate and idiosyncratic shocks and no feedback
+## Initialize
+
 ρ   = 0.6;        #persistence of money growth
 σ_u = 1;          #std. deviation of shocks to money growth
 σ_z = √10;      #std. deviation of idiosyncratic shock
 
 ## specifying the primitives of the drip
-ω   = 100;       
-β   = 0.96^0.25;  
-A   = [1 ρ 0; 0 ρ 0; 0 0 0]; 
+ω   = 100;
+β   = 0.96^0.25;
+A   = [1 ρ 0; 0 ρ 0; 0 0 0];
 Q   = [σ_u 0; σ_u 0; 0 σ_z];
 H   = [1; 0; -1];
 
+## Solve
 ex2  = solve_drip(ω,β,A,Q,H);
 
 @benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 100*rand()) # solves and times the function for a random set of ω's
 
 ex2irfs = dripirfs(ex2,20);
 
+## Plot IRFs of price to both shocks
 p1 = plot(1:ex2irfs.T,[ex2irfs.x[1,1,:],ex2irfs.a[1,1,:]],
     title  = L"IRFs to $q$ shock");
 p2 = plot(1:ex1irfs.T,[ex2irfs.x[1,2,:],ex2irfs.a[1,2,:]],
@@ -73,6 +80,7 @@ plot(p1,p2, layout = (1,2),
     tickfont   = font(12),
     framestyle = :box)
 
+## Plot IRFs of inflation and outpt to shocks
 p1 = plot(1:ex2irfs.T,ex2irfs.x[1,1,:]-ex2irfs.a[1,1,:],
     title  = L"Output ($q_0\to y_t$)");
 
@@ -91,4 +99,3 @@ plot(p1,p2,p3,p4, layout = (2,2),
     legend     = false,
     tickfont   = font(12),
     framestyle = :box)
-
