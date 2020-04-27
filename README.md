@@ -9,6 +9,8 @@ This package provides a fast and robust method for solving LQG Dynamic Ratinoal 
   1.  `solve_drip`: a function for solving the **steady state distribution** of actions and shocks.
   2.  `solve_trip`: a function for solving the **transition dynamics** to the steady state distribution from an aribitrary initial distribution.
   3.  `dripirfs`: a function for generating the impulse response functions of actions and beliefs both in the **steady state** and **transition path** of the optimal information structure.
+### Documentation
+https://afrouzi.github.io/DRIPs.jl/
 ### Resources
 * [Afrouzi and Yang (2019): Dynamic Rational Inattention and the Phillips Curve](http://www.afrouzi.com/dynamic_inattention.pdf)
 * [GitHub Repository for Matlab code, Jupyter notebooks and earlier versions](https://github.com/choongryulyang/dynamic_multivariate_RI)
