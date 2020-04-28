@@ -13,8 +13,8 @@ using Test
 		p   = Drip();
 	    p   = Drip(ω,β,A,Q,H);
 	    p   = solve_drip(p);
-	    pp  = solve_drip(ω,β,A,Q,H);
-	    @test p.err < 1e-4;
+	    pp  = solve_drip(ω,β,A,Q,H)
+	    @test p.err < 1e-4
 	    @test p.Σ_p ≈ pp.Σ_p atol = 1e-4
     println("Solving Sims (2011) with fixed capacity ...")
 	    cap = DRIPs.capacity(p);
@@ -22,7 +22,7 @@ using Test
 	    pf  = p;
 	    pf  = Drip(cap,β,A,Q,H);
 	    pf  = solve_drip(pf;fcap=true);
-	    @test pf.err < 1e-4;
+	    @test pf.err < 1e-4
 	    @test pf.Σ_p ≈ p.Σ_p atol = 1e-2
     println("Solving transition dynamics for Sims (2011) ...")
 	    S   = Signal([1 0; 0 1],[0 0;0 0]);
@@ -34,10 +34,12 @@ using Test
 		ptssirfs  = dripirfs(ptss,15);
 		Sp        = Signal([0 0; 0 0], [1 0; 0 1]);
 		ptssirfsp = dripirfs(p,15,Sp);
-		@test pirfs.x_hat ≈ ptssirfs.x_hat atol = 1e-4	
-		@test pirfs.x_hat ≈ ptssirfsp.x_hat atol = 1e-4		
+		ptssirfspn= dripirfs(p,15,Sp; reoptimize = false);
+		@test pirfs.x_hat ≈ ptssirfs.x_hat atol = 1e-4
+		@test pirfs.x_hat ≈ ptssirfsp.x_hat atol = 1e-4
+		@test pirfs.x_hat ≈ ptssirfspn.x_hat atol = 1e-4
 	println("Final tests on internal functions ...")
-		x(j) = 0.5^j 
+		x(j) = 0.5^j
 		sum  = DRIPs.infinitesum(x)
-		@test sum ≈ 2 atol = 1e-4 
+		@test sum ≈ 2 atol = 1e-4
 end

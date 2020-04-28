@@ -6,7 +6,7 @@
 # Q      : Std. Dev. matrix: x=Ax+Qu
 # H      : Mapping of shocks to actions: v=-0.5(a'-x'H)(a-H'x)
 
-## Outputs: a Drip structure with 
+## Outputs: a Drip structure with
 # Σ_1    : Steady-state Prior uncertainty
 # Σ_p    : Steady-state posterior uncertainty
 # Λ      : Shadow matrix on the no-forgetting constraint -- Λ*(Σ-Σ_p) = 0
@@ -24,7 +24,7 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
                     maxit      = 10000)     # optional: maximum number of iterations
 
     ## initialize
-    (n,m) = length(size(H)) == 2 ? size(H) : (size(H,1),1);  
+    (n,m) = length(size(H)) == 2 ? size(H) : (size(H,1),1);
     # n: dimension of state, m: number of actions
     eye   = Matrix{Float64}(I,n,n);
     err   = 1
@@ -35,13 +35,13 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
     Σ_p   = Matrix{Float64}(I,n,n)
     Λ     = Matrix{Float64}(I,n,n)
     κ     = ω
-    # iterate 
+    # iterate
     while (err > tol) & (iter < maxit)
         D, U    = eigen(SqRΣ*Ω0*SqRΣ);
         D       = diagm(getreal(D));
         U       = getreal(U);
-        
-        if fcap == true 
+
+        if fcap == true
             ω = (2^(2*κ)/det(max.(ω*eye,D)))^(-1/n);
         end
         Λ       = U*(max.(ω*eye-D,0.0))*U';
@@ -78,7 +78,7 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
     return(P)
 end
 
-function solve_drip(P   ::Drip;             # D.R.I.P. to be solved 
+function solve_drip(P   ::Drip;             # D.R.I.P. to be solved
                     fcap::Bool = false,     # optional: if true then solves the problem with fixed capacity κ = ω.
                     Ω0         = P.H*P.H',  # optional: initial guess for steady state information matrix
                     Σ0         = P.A*P.A'+P.Q*P.Q', # optional: initial guess for steady state prior
@@ -95,30 +95,30 @@ function solve_drip(P   ::Drip;             # D.R.I.P. to be solved
     return(P)
 end
 
-## solve_Trip: this function solves for the transition dynamics given an initial prior covariance matrix 
-function solve_trip(Ss::Drip,             # D.R.I.P. steady state 
+## solve_Trip: this function solves for the transition dynamics given an initial prior covariance matrix
+function solve_trip(Ss::Drip,             # D.R.I.P. steady state
                     Σ0::Array{Float64,2}; # initial prior matrix
                     T     = 100,          # optional: time until convergence to steady state
                     tol   = 1e-4,         # optional: tolerance for convergence
                     maxit = 1000          # optional: max iterations
                     )
-    ## Initialize 
+    ## Initialize
     Ωs  = repeat(Ss.Ω, inner = [1,1,T]);
     Ωsp = Ωs;
 
     Σ_1s  = repeat(Ss.Σ_1, inner = [1,1,T]); Σ_1s[:,:,1] = Σ0;
     Σ_1sp = Σ_1s;
-    (n,m) = length(size(Ss.H)) == 2 ? size(Ss.H) : (size(Ss.H,1),1);  
+    (n,m) = length(size(Ss.H)) == 2 ? size(Ss.H) : (size(Ss.H,1),1);
     # n: dimension of state, m: number of actions
 
     Σ_ps= repeat(Ss.Σ_p, inner = [1,1,T]); # initialize posteriors
-    Ds  = zeros(n,T);                          # initialize eigenvalues 
+    Ds  = zeros(n,T);                          # initialize eigenvalues
 
     iter = 0;
     err  = 1;
     eye  = Matrix(I,n,n);
     while (err > tol) & (iter <= maxit)
-        ## Given Ωs, find Sigmas using the law of motion for priors 
+        ## Given Ωs, find Sigmas using the law of motion for priors
         for i in 1:1:T-1
             SqSigma        = real.(sqrt(Σ_1s[:,:,i]));
             D, U           = eigen(SqSigma*Ωs[:,:,i]*SqSigma);
@@ -146,12 +146,12 @@ function solve_trip(Ss::Drip,             # D.R.I.P. steady state
     con_err = norm(Ss.Q*Ss.Q'+Ss.A*Σ_ps[:,:,end-1]*Ss.A'-Ss.Σ_1)/norm(Ss.Σ_1);
     if (con_err  > tol)
         error("T was too short for convergence of Trip. Try larger T.");
-    end 
+    end
     # Finally, store the eigenvalues of steady state
     SqSigma      = real.(sqrt(Σ_1s[:,:,end]));
     D, U         = eigen(SqSigma*Ωs[:,:,end]*SqSigma);
     Ds[:,end]    = real.(D);
-    # return the Trip structure 
+    # return the Trip structure
     return(Trip(Ss,T,Σ_1s,Σ_ps,Ωs,Ds,err))
 end
 
@@ -166,7 +166,7 @@ function solve_trip(Ss::Drip,        # D.R.I.P.
     Σ0   = Ss.Σ_1-K0*S.L'*Ss.Σ_1;              # Get Kalman gain from new signal
     trip = solve_trip(Ss,Σ0;T=T,tol=tol,maxit=maxit);
     return(trip)
-end 
+end
 
 ########## Aux. Functions ############
 
@@ -190,22 +190,22 @@ function infinitesum(func; tol = 1e-6,maxit = 1000,start=0)
     return(infsum)
 end
 
-## calculate the amount of information acquired in bits/nats for a Drip 
+## calculate the amount of information acquired in bits/nats for a Drip
 function capacity(P::Drip;      # Drip structure
-                  unit = "bit"  # optional: unit of capacity (bit or nat). 
+                  unit = "bit"  # optional: unit of capacity (bit or nat).
                   )
     if unit == "bit"
         κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p))/log(2); #returns capacity in bits
-    elseif unit == "nat" 
-        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p));        #returns capacity in nats 
-    else 
+    elseif unit == "nat"
+        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p));        #returns capacity in nats
+    else
         println("Invalid input for unit! Capacity is reported in bits.")
         κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p))/log(2);
     end
     return(κ)
 end
 
-## get steady state irfs 
+## get steady state irfs
 function dripirfs(P::Drip,T::Int)
     (n,m) = length(size(P.H)) == 2 ? size(P.H) : (size(P.H,1),1)
     (_,k) = length(size(P.Q)) == 2 ? size(P.Q) : (size(P.Q,1),1)
@@ -215,10 +215,10 @@ function dripirfs(P::Drip,T::Int)
     for kk in 1:k
         e_k = zeros(k,1); e_k[kk] = 1;
         for ii in 1:T
-            if ii==1 
+            if ii==1
                 x[:,kk,ii]     = P.Q*e_k;
                 x_hat[:,kk,ii] = (P.K*P.Y')*(x[:,kk,ii]);
-            else 
+            else
                 x[:,kk,ii]     =P.A*x[:,kk,ii-1];
                 x_hat[:,kk,ii] =P.A*x_hat[:,kk,ii-1]+(P.K*P.Y')*(x[:,kk,ii]-P.A*x_hat[:,kk,ii-1]);
             end
@@ -228,23 +228,23 @@ function dripirfs(P::Drip,T::Int)
     return(Dripirfs(T,x,x_hat,a))
 end
 
-## get irfs with optimal signals acquired under Pt::Trip 
+## get irfs with optimal signals acquired under Pt::Trip
 function dripirfs(Pt::Trip,T::Int)
     Ss    = Pt.P; # steady state Drip
     (n,m) = length(size(Ss.H)) == 2 ? size(Ss.H) : (size(Ss.H,1),1) # dimensions of state and actions
     (_,k) = length(size(Ss.Q)) == 2 ? size(Ss.Q) : (size(Ss.Q,1),1) # number of structural shocks
     eye   = Matrix(I,n,n);
 
-    x     = zeros(n,k,T); # initialize IRFs of state 
-    x_hat = zeros(n,k,T); # initialize IRFs of beliefs 
+    x     = zeros(n,k,T); # initialize IRFs of state
+    x_hat = zeros(n,k,T); # initialize IRFs of beliefs
     a     = zeros(m,k,T); # initialize IRFs of actions
     for kk in 1:k
         e_k = zeros(k,1); e_k[kk] = 1;
         for ii in 1:T
-            if ii==1 
+            if ii==1
                 x[:,kk,ii]     = Ss.Q*e_k;
                 x_hat[:,kk,ii] = (eye-Pt.Σ_ps[:,:,ii]*pinv(Pt.Σ_1s[:,:,ii]))*(x[:,kk,ii]);
-            else 
+            else
                 x[:,kk,ii]     =Ss.A*x[:,kk,ii-1];
                 x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-Pt.Σ_ps[:,:,ii]*pinv(Pt.Σ_1s[:,:,ii]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
             end
@@ -256,9 +256,9 @@ end
 
 ## get irfs with information treatment S at time zero.
 function dripirfs(Ss::Drip,          # Steady state Drip (when treatment happens)
-                  T::Int,            # Length of irfs 
-                  S::Signal;         # Signal for treatment  
-                  reoptimize = true, # if true gives the irfs with reoptimized signals, if false with steady state signals 
+                  T::Int,            # Length of irfs
+                  S::Signal;         # Signal for treatment
+                  reoptimize = true, # if true gives the irfs with reoptimized signals, if false with steady state signals
                   trip       = false # if false solves the trip, if = P::trip then takes P as the trip
                   )
 
@@ -267,32 +267,31 @@ function dripirfs(Ss::Drip,          # Steady state Drip (when treatment happens
     eye   = Matrix(I,n,n);
 
     if (trip == false) & (reoptimize == true) # get the solution to trip if reoptimize = true
-        trip = solve_trip(Ss,S;T = T); 
-    end 
-    K0   = Ss.Σ_1*S.L/(S.L'*Ss.Σ_1*S.L+S.Σ_z); # Get prior covariance matrix from new signal
-    Σ0   = trip.Σ_1s[:,:,1];
-
-    x     = zeros(n,k,T); # initialize IRFs of state 
-    x_hat = zeros(n,k,T); # initialize IRFs of beliefs 
+        trip = solve_trip(Ss,S;T = T);
+    end
+    x     = zeros(n,k,T); # initialize IRFs of state
+    x_hat = zeros(n,k,T); # initialize IRFs of beliefs
     a     = zeros(m,k,T); # initialize IRFs of actions
     for kk in 1:k
+        K0   = Ss.Σ_1*S.L/(S.L'*Ss.Σ_1*S.L+S.Σ_z); # Get prior covariance matrix from new signal
+        Σ0   = Ss.Σ_1-K0*S.L'*Ss.Σ_1;
         e_k = zeros(k,1); e_k[kk] = 1;
         for ii in 1:T
-            if ii==1 
+            if ii==1
                 x[:,kk,ii]     = Ss.Q*e_k;
                 x_hat_p        = K0*S.L'*(x[:,kk,ii]);
                 if reoptimize == true
                     x_hat[:,kk,ii] = x_hat_p + (eye-trip.Σ_ps[:,:,ii]*pinv(trip.Σ_1s[:,:,ii]))*(x[:,kk,ii]-x_hat_p);
-                else 
+                else
                     K0 = Σ0*Ss.Y/(Ss.Y'*Σ0*Ss.Y+Ss.Σ_z);
                     Σ0 = Ss.Q*Ss.Q' + Ss.A*(Σ0-K0*Ss.Y'*Σ0)*Ss.A';
                     x_hat[:,kk,ii] = x_hat_p + (K0*Ss.Y')*(x[:,kk,ii]-x_hat_p);
                 end
-            else 
+            else
                 x[:,kk,ii]     =Ss.A*x[:,kk,ii-1];
                 if reoptimize  == true
                     x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-trip.Σ_ps[:,:,ii]*pinv(trip.Σ_1s[:,:,ii]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
-                else 
+                else
                     K0 = Σ0*Ss.Y/(Ss.Y'*Σ0*Ss.Y+Ss.Σ_z);
                     Σ0 = Ss.Q*Ss.Q' + Ss.A*(Σ0-K0*Ss.Y'*Σ0)*Ss.A';
                     x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(K0*Ss.Y')*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
