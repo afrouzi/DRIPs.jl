@@ -20,7 +20,7 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
                     Ω0         = H*H',      # optional: initial guess for steady state information matrix
                     Σ0         = A*A'+Q*Q', # optional: initial guess for steady state prior
                     w          = 1,         # optional: updating weight in iteration
-                    tol        = 1e-5,      # optional: tolerance level for convergence
+                    tol        = 1e-4,      # optional: tolerance level for convergence
                     maxit      = 10000)     # optional: maximum number of iterations
 
     ## initialize
