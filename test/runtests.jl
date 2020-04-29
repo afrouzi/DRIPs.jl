@@ -1,6 +1,6 @@
 using DRIPs
 using Test
-
+using BenchmarkTools
 @testset "DRIP.jl" begin
     # Write your own tests here.
     println("Running tests ...")
@@ -12,8 +12,8 @@ using Test
 	println("Solving Sims (2011) ...")
 		p   = Drip();
 	    p   = Drip(ω,β,A,Q,H);
-	    p   = solve_drip(p);
-	    pp  = solve_drip(ω,β,A,Q,H)
+	    p   = solve_drip(p)
+	    @benchmark pp  = solve_drip(ω,β,A,Q,H)
 	    @test p.err < 1e-4
 	    @test p.Σ_p ≈ pp.Σ_p atol = 1e-4
     println("Solving Sims (2011) with fixed capacity ...")
@@ -35,9 +35,9 @@ using Test
 		Sp        = Signal([0 0; 0 0], [1 0; 0 1]);
 		ptssirfsp = dripirfs(p,15,Sp);
 		ptssirfspn= dripirfs(p,15,Sp; reoptimize = false);
-		@test pirfs.x_hat ≈ ptssirfs.x_hat atol = 1e-4
-		@test pirfs.x_hat ≈ ptssirfsp.x_hat atol = 1e-4
-		@test pirfs.x_hat ≈ ptssirfspn.x_hat atol = 1e-4
+		@test pirfs.x_hat ≈ ptssirfs.x_hat atol = 1e-3
+		@test pirfs.x_hat ≈ ptssirfsp.x_hat atol = 1e-3
+		@test pirfs.x_hat ≈ ptssirfspn.x_hat atol = 1e-3
 	println("Final tests on internal functions ...")
 		x(j) = 0.5^j
 		sum  = DRIPs.infinitesum(x)

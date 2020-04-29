@@ -37,23 +37,23 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
     κ     = ω
     # iterate
     while (err > tol) & (iter < maxit)
-        D, U    = eigen(SqRΣ*Ω0*SqRΣ);
-        D       = diagm(getreal(D));
+        D, U    = eigen(Symmetric(SqRΣ*Ω0*SqRΣ));
+        D       = diagm(D);
         U       = getreal(U);
 
         if fcap == true
             ω = (2^(2*κ)/det(max.(ω*eye,D)))^(-1/n);
         end
-        Λ       = U*(max.(ω*eye-D,0.0))*U';
-        Σ_p     = getreal(ω*SqRΣ*U/(max.(D,ω*eye))*U'*SqRΣ);
+        Λ       = Symmetric(U*(max.(ω*eye-D,0.0))*U');
+        Σ_p     = Symmetric(ω*SqRΣ*U/(max.(D,ω*eye))*U'*SqRΣ);
 
-        Σ1      = A*Σ_p*A' + Q*Q'
+        Σ1      = Symmetric(A*Σ_p*A' + Q*Q');
         err     = norm(Σ1 - Σ0,2)/norm(Σ0,2);
 
         Σ0      = w*Σ1 + (1-w)*Σ0
 
         SqRΣ    = getreal(sqrt(Σ0));
-        invSqRΣ = pinv(SqRΣ);
+        invSqRΣ = getreal(inv(SqRΣ));
 
         Ω0      = w*(Ω_c + β*A'*invSqRΣ*(ω*eye - Λ)*invSqRΣ*A)+(1-w)*Ω0;
         Ω0      = (abs.(Ω0).>1e-10).*Ω0;
