@@ -1,6 +1,6 @@
 using DRIPs
 using Test
-
+using LinearAlgebra
 @testset "Endogenous Feedback" begin
     ρ   = 0.6;        #persistence of money growth
     σ_u = 0.1;        #std. deviation of shocks to money growth

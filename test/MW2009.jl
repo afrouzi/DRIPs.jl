@@ -1,5 +1,6 @@
 using DRIPs
 using Test
+using LinearAlgebra
 
 @testset "MW2009.jl" begin
 	## Parameters
@@ -75,7 +76,7 @@ using Test
 	@test agg.err < 1e-4
 	agg, err = agg_drip(10*σq^2,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
 	@test agg.err < 1e-4
-	idi  = solve_drip(ω,1,A,Qz,H,w = 0.9);
+	idi  = solve_drip(2.4σq^2,1,A,Qz,H,w = 0.9);
 	@test idi.err < 1e-4
 
 end
