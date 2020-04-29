@@ -20,7 +20,7 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
                     Ω0         = H*H',      # optional: initial guess for steady state information matrix
                     Σ0         = A*A'+Q*Q', # optional: initial guess for steady state prior
                     w          = 1,         # optional: updating weight in iteration
-                    tol        = 1e-4,      # optional: tolerance level for convergence
+                    tol        = 1e-5,      # optional: tolerance level for convergence
                     maxit      = 10000)     # optional: maximum number of iterations
 
     ## initialize
@@ -37,14 +37,13 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
     κ     = ω
     # iterate
     while (err > tol) & (iter < maxit)
-        D, U    = eigen(Symmetric(SqRΣ*Ω0*SqRΣ));
+        D, U    = eigen!(Symmetric(SqRΣ*Ω0*SqRΣ));
         D       = diagm(D);
         U       = getreal(U);
 
         if fcap == true
             ω = (2^(2*κ)/det(max.(ω*eye,D)))^(-1/n);
         end
-        Λ       = Symmetric(U*(max.(ω*eye-D,0.0))*U');
         Σ_p     = Symmetric(ω*SqRΣ*U/(max.(D,ω*eye))*U'*SqRΣ);
 
         Σ1      = Symmetric(A*Σ_p*A' + Q*Q');
@@ -55,7 +54,7 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
         SqRΣ    = getreal(sqrt(Σ0));
         invSqRΣ = getreal(inv(SqRΣ));
 
-        Ω0      = w*(Ω_c + β*A'*invSqRΣ*(ω*eye - Λ)*invSqRΣ*A)+(1-w)*Ω0;
+        Ω0      = w*(Ω_c + β*A'*invSqRΣ*U*(min.(D,ω*eye))*U'*invSqRΣ*A)+(1-w)*Ω0;
         Ω0      = (abs.(Ω0).>1e-10).*Ω0;
 
         iter   += 1
