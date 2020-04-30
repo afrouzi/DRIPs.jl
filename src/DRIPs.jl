@@ -10,8 +10,10 @@ module DRIPs
 
 using LinearAlgebra
 
-include("structs.jl")
-include("functions.jl")
+include("drip_methods.jl")
+include("trip_methods.jl")
+include("dripirfs_methods.jl")
+include("aux_funcs.jl")
 
 export Drip, Trip, Dripirfs, Signal,
 	   solve_drip,

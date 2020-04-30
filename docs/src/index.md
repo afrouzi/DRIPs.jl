@@ -1,21 +1,41 @@
-# A Toolbox for Solving Dynamic Rational Inattention Problems
+# Dynamic Rational Inattention Problems
 
-This notebook explains how to solve LQG Dynamic Rational Inattention models using the methods and the [solver](https://github.com/choongryulyang/dynamic_multivariate_RI) from [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) that was adapted for Julia by the authors and [Miguel Acosta](https://www.acostamiguel.com/home).
+This package provides a fast and robust method for solving LQG Dynamic Rational Inattention models using the methods developed by [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf).
 
+```@contents
+```
+## Installation
 To add the package, execute:
 
+```@julia
+using Pkg; Pkg.add("DRIPs");
 ```
-] DRIPs
-```
-
-To include the package, execute:
+To import and use the package, execute:
 
 ```julia
 using DRIP;
 ```
 
-## Modules
+## Steady State of Dynamic Rational Inattention Problems (DRIPs)
 ```@autodocs
 Modules = [DRIPs]
-Order   = [:function, :type]
+Pages   = ["drip_methods.jl"]
+```
+
+## Transition dynamics of Rational Inattention Problems (TRIPs)
+```@autodocs
+Modules = [DRIPs]
+Pages   = ["trip_methods.jl"]
+```
+
+## Impulse Response Functions
+```@autodocs
+Modules = [DRIPs]
+Pages   = ["dripirfs_methods.jl"]
+```
+
+## Aux. Functions
+```@autodocs
+Modules = [DRIPs]
+Pages   = ["aux_funcs.jl"]
 ```
