@@ -1,11 +1,7 @@
 name = "DRIPs"
 uuid = "12fec403-b259-46d8-9e74-75aa213074e9"
 authors = ["Hassan Afrouzi", "Choongryul Yang", "Miguel Acosta"]
-<<<<<<< HEAD
 version = "0.1.1"
-=======
-version = "0.1.2"
->>>>>>> docs
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
