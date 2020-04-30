@@ -6,7 +6,7 @@
 [![Codecov](https://codecov.io/gh/afrouzi/DRIPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/afrouzi/DRIPs.jl)
 [![Coveralls](https://coveralls.io/repos/github/afrouzi/DRIPs.jl/badge.svg?branch=master)](https://coveralls.io/github/afrouzi/DRIPs.jl?branch=master)
 
-This package provides a fast and robust method for solving LQG Dynamic Ratinoal Inattnetion Problems based on methods developed in [Afrouzi and Yang (2019): Dynamic Rational Inattention and the Phillips Curve](http://www.afrouzi.com/dynamic_inattention.pdf). For detailed documentation of the software, see the [documentation page](https://afrouzi.github.io/DRIPs.jl/dev).
+This package provides a fast and robust method for solving LQG Dynamic Ratinoal Inattention Problems based on methods developed in [Afrouzi and Yang (2019): Dynamic Rational Inattention and the Phillips Curve](http://www.afrouzi.com/dynamic_inattention.pdf). For detailed documentation of the software, see the [documentation page](https://afrouzi.github.io/DRIPs.jl/dev).
 
 ### Installation
 The package is registered in the [General](https://github.com/JuliaRegistries/General) registry and can be installed at the REPL with `] add DRIPs`.

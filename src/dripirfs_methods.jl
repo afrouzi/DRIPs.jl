@@ -33,7 +33,7 @@ end
                   T = 40    # Optional: length of impulse response functions
                   ) -> Dripirfs
 Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
-    beliefs (`x_hat`) and actions (`a`) to all the structural shocks
+    and actions (`a`) to all the structural shocks
     **under the steady state information strucutre**. In particular, if `n` is the
     dimension of `x`, `m` is the dimension of `a` and `k` is the number of
     structural shocks, then
@@ -75,7 +75,7 @@ end
                   T = 40    # Optional: length of impulse response functions
                   ) -> Dripirfs
 Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
-    beliefs (`x_hat`) and actions (`a`) to all the structural shocks
+    and actions (`a`) to all the structural shocks
     **under the information structure implied by** `P`. In particular, if `n` is the
     dimension of `x`, `m` is the dimension of `a` and `k` is the number of
     structural shocks, then
@@ -126,9 +126,9 @@ end
                   trip       = false # optional: if false solves for the optimal trip, if = P::trip then takes P as the transition dynamics after treatment
                   ) -> Dripirfs
 Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
-    beliefs (`x_hat`) and actions (`a`) to all the structural shocks
+    and actions (`a`) to all the structural shocks
     **under the information structure implied by a one time information treatment
-    with** `S` ** in the steady state of the DRIP** `P`. In particular, if `n` is the
+    with** `S` **in the steady state of the DRIP** `P`. In particular, if `n` is the
     dimension of `x`, `m` is the dimension of `a` and `k` is the number of
     structural shocks, then
 
