@@ -4,9 +4,9 @@ os:
   - linux
   - osx
 julia:
-  - 1.2
+#  - 1.2
   - 1.3
-  - nightly
+#  - nightly
 notifications:
   email: false
 after_success:
