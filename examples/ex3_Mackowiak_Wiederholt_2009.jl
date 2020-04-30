@@ -52,7 +52,7 @@ function agg_drip(ω,A,Qq,        #primitives of drip except for H because H is 
 
             err= 0.5*norm(H1-H0,2)/norm(H0)+0.5*err;
             if DRIPs.capacity(agg) < 1e-2 # perturb the initial guess if solution is the zero capacity one
-                H0 = 0.9*H0+0.1*rand(L);
+                H0 = H0+rand(L).*(H-H0);
             else # store the solution if it has positive capacity
                 H0 = H1;
                 if err < errmin
@@ -62,7 +62,7 @@ function agg_drip(ω,A,Qq,        #primitives of drip except for H because H is 
             end
             iter += 1;
     end
-    return(aggmin)
+    return(aggmin, errmin)
 end;
 
 ## Function to find ω given a fixed κ
@@ -76,7 +76,7 @@ function MW(κ,α,A,Qq,Qz,Hq,Hz; #primitives of MW problem
     err   = 1;
     it    = 0;
     while (err > tol) & (iter < maxit)
-        agg = agg_drip(ω,A,Qq,α,H; H0 = rand(L),maxit=25,w=0.95);
+        agg, errtemp = agg_drip(ω,A,Qq,α,H; H0 = rand(L),maxit=25,w=0.95);
         idi = solve_drip(ω,1,A,Qz,H,w = 0.9) ;
         cap = DRIPs.capacity(agg, unit = "bit") + DRIPs.capacity(idi, unit = "bit");
         x = ω/σq^2;
@@ -97,7 +97,8 @@ end;
 
 ## Solve for κ = 3
 ω    = MW(3,α,A,Qq,Qz,H,H);
-agg  = agg_drip(ω,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95);
+agg, err  = agg_drip(ω,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95);
+display(err)
 idi  = solve_drip(ω,1,A,Qz,H,w = 0.9);
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",DRIPs.capacity(agg),DRIPs.capacity(idi));
 
