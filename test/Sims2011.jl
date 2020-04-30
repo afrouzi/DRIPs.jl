@@ -30,12 +30,14 @@ using Test
 	    pt  = solve_trip(p,S;T=30);
 	    @test pt.err < 1e-4;
     println("Checking IRFs ...")
-		pirfs     = dripirfs(p,15);
+		pirfs     = dripirfs(p,T = 15);
 		ptss      = solve_trip(p,p.Σ_1;T = 15);
-		ptssirfs  = dripirfs(ptss,15);
+		ptssirfs  = dripirfs(ptss,T = 15);
 		Sp        = Signal([0 0; 0 0], [1 0; 0 1]);
-		ptssirfsp = dripirfs(p,15,Sp);
-		ptssirfspn= dripirfs(p,15,Sp; reoptimize = false);
+		ptssirfsp = dripirfs(p,Sp, T = 30);
+		ptssirfsp = dripirfs(p,Sp, T = 10);
+		ptssirfsp = dripirfs(p,Sp, T = 15);
+		ptssirfspn= dripirfs(p,Sp; reoptimize = false, T = 15);
 		@test pirfs.x_hat ≈ ptssirfs.x_hat atol = 1e-3
 		@test pirfs.x_hat ≈ ptssirfsp.x_hat atol = 1e-3
 		@test pirfs.x_hat ≈ ptssirfspn.x_hat atol = 1e-3

@@ -54,7 +54,7 @@ using LinearAlgebra
 
 	            err= 0.5*norm(H1-H0,2)/norm(H0)+0.5*err;
 	            if DRIPs.capacity(agg) < 1e-2 # perturb the initial guess if solution is the zero capacity one
-	                H0 = 0.9*H0+0.1*rand(L);
+	                H0 = H0+rand(L).*(H-H0);
 	            else # store the solution if it has positive capacity
 	                H0 = H1;
 	                if err < errmin

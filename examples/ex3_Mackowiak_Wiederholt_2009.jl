@@ -103,8 +103,8 @@ idi  = solve_drip(ω,1,A,Qz,H,w = 0.9);
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",DRIPs.capacity(agg),DRIPs.capacity(idi));
 
 ## Get and plot irfs for benchmark
-iirfs  = dripirfs(idi,L)
-airfs  = dripirfs(agg,L)
+iirfs  = dripirfs(idi, T = L)
+airfs  = dripirfs(agg, T = L)
 
 p1 = plot([iirfs.a[1,1,:],σz*H],
      label             = ["Perfect information" "Rational inattention"],
@@ -138,19 +138,19 @@ plot(p1,p2,
 
 ## Robustness: other αs
 ω_α7   = MW(3,0.7,A,Qq,Qz,H,H);
-agg_α7 = agg_drip(ω_α7,A,Qq,0.7,H; H0 = rand(L), maxit = 100, w = 0.95);
+agg_α7, err = agg_drip(ω_α7,A,Qq,0.7,H; H0 = rand(L), maxit = 100, w = 0.95);
 idi_α7 = solve_drip(ω_α7,1,A,Qz,H,w = 0.9);
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",
         DRIPs.capacity(agg_α7),DRIPs.capacity(idi_α7));
 
 ω_α0   = MW(3,0,A,Qq,Qz,H,H);
-agg_α0 = agg_drip(ω_α0,A,Qq,0,H; H0 = rand(L), maxit = 100, w = 0.95);
+agg_α0, err = agg_drip(ω_α0,A,Qq,0,H; H0 = rand(L), maxit = 100, w = 0.95);
 idi_α0 = solve_drip(ω_α0,1,A,Qz,H,w = 0.9);
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",
         DRIPs.capacity(agg_α0),DRIPs.capacity(idi_α0));
 # plot irfs
-airfs_α7  = dripirfs(agg_α7,L);
-airfs_α0  = dripirfs(agg_α0,L);
+airfs_α7  = dripirfs(agg_α7, T = L);
+airfs_α0  = dripirfs(agg_α0, T = L);
 
 plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_α7.a[1,1,:],airfs_α0.a[1,1,:]],
     label             = ["Perfect information" L"Rational inattention, benchmark economy, $\alpha = 0.85$" L"Lower degree of real rigidity, $\alpha = 0.7$" L"Lower degree of real rigidity, $\alpha = 0$"],
@@ -173,19 +173,19 @@ plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_α7.a[1,1,:],airfs_α0.a[1,1,:]],
 
 ## Robustness: other κs
 ω_κ4   = MW(4,α,A,Qq,Qz,H,H);
-agg_κ4 = agg_drip(ω_κ4,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
+agg_κ4, err = agg_drip(ω_κ4,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
 idi_κ4 = solve_drip(ω_κ4,1,A,Qz,H,w = 0.9)
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",
         DRIPs.capacity(agg_κ4),DRIPs.capacity(idi_κ4));
 
 ω_κ5   = MW(5,α,A,Qq,Qz,H,H; ω = 0.1*σq^2);
-agg_κ5 = agg_drip(ω_κ5,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
+agg_κ5, err = agg_drip(ω_κ5,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
 idi_κ5 = solve_drip(ω_κ5,1,A,Qz,H,w = 0.9)
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",
         DRIPs.capacity(agg_κ5),DRIPs.capacity(idi_κ5));
 # plots irfs
-airfs_κ4  = dripirfs(agg_κ4,L);
-airfs_κ5  = dripirfs(agg_κ5,L);
+airfs_κ4  = dripirfs(agg_κ4, T = L);
+airfs_κ5  = dripirfs(agg_κ5, T = L);
 
 plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_κ4.a[1,1,:],airfs_κ5.a[1,1,:]],
     label             = ["Perfect information" L"Rational inattention, benchmark economy, $\kappa = 3$" L"Rational inattention $\kappa = 4$" L"Rational inattention $\kappa = 5$"],

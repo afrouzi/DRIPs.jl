@@ -1,8 +1,11 @@
-## A Software Package for Solving Dynamic Rational Inattention Problems (D.R.I.P.)
-## Copyright © 2020 Hassan Afrouzi, Choongryul Yang and Miguel Acosta
-## When using this package for your work, cite Afrouzi and Yang (2019) for reference.
-## Julia code written by Miguel Acosta / Modified by Hassan Afrouzi
+"""
+# A Package for Solving Dynamic Rational Inattention Problems (DRIPs)
+Copyright © 2020 Hassan Afrouzi, Choongryul Yang and Miguel Acosta
 
+When using this package for your work, cite
+[Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf)
+for reference.
+"""
 module DRIPs
 
 using LinearAlgebra
@@ -13,6 +16,6 @@ include("functions.jl")
 export Drip, Trip, Dripirfs, Signal,
 	   solve_drip,
 	   solve_trip,
-	   dripirfs 
-		
+	   dripirfs
+
 end # module
