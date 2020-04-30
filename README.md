@@ -1,5 +1,6 @@
 ## A Software Package for LQG Dynamic Rational Inattention Problems (DRIPs)
 
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://afrouzi.github.io/DRIPs.jl/stable)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://afrouzi.github.io/DRIPs.jl/dev)
 [![Build Status](https://travis-ci.com/afrouzi/DRIPs.jl.svg?branch=master)](https://travis-ci.com/afrouzi/DRIPs.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/afrouzi/DRIPs.jl?svg=true)](https://ci.appveyor.com/project/afrouzi/DRIPs-jl)

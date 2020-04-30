@@ -25,7 +25,7 @@ end
   the signal `S = L'*x+z, z₀~N(0,Σ_z)`.
 # Fields
 
-* L    : loading on `x`
+* L    : loading of the signal on `x`
 * Σ_z  : variance covariance matrix of the noise
 """
 struct Signal
