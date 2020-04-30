@@ -15,6 +15,7 @@
 # Σ_z    : Covariance matrix of the rational inattention error
 # K      : Kalman gain matrix
 
+
 """
     solve_drip(ω,β,A,Q,H;
                fcap  = false,
