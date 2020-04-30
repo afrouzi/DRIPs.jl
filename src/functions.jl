@@ -15,6 +15,48 @@
 # Σ_z    : Covariance matrix of the rational inattention error
 # K      : Kalman gain matrix
 
+"""
+    solve_drip(ω,β,A,Q,H;
+               fcap  = false,
+               Ω0    = H*H',
+               Σ0    = A*A'+Q*Q',
+               w     = 1,
+               tol   = 1e-4,
+               maxit = 10000) -> Drip
+
+Solves for the steady state of a Dynamic Rational Inattention Problem (DRIP)
+    defined by the arguments. See [Afrouzi and  Yang (2019)](http://afrouzi.com/dynamic_inattention.pdf)
+    for details.
+# Arguments
+The function takes the primitives of the Drip as arguments:
+    * ω      : Cost of information
+    * β      : Discount factor
+    * A      : Transition matrix: x=Ax+Qu
+    * Q      : Std. Dev. matrix: x=Ax+Qu
+    * H      : Mapping of shocks to actions: v=-0.5(a'-x'H)(a-H'x)
+## Optional Arguments
+Default values are set unless specified otherwise by user.
+
+    * fcap  = false    [if `true` then solves the problem with fixed capacity = ω bits]
+    * Ω0    = H*H'     [initial guess for steady state information matrix]
+    * Σ0    = A*A'+Q*Q'[initial guess for steady state prior]
+    * w     = 1        [updating weight on the new guess in iteration]
+    * tol   = 1e-4     [tolerance level for convergence]
+    * maxit = 10000    [maximum number of iterations]
+# Outputs
+The function returns a `Drip` structure with the primitives and the solution objects:
+
+    * Y      : Weight vector for evolution of actions
+    * Σ_z    : Covariance matrix of the rational inattention error
+    * K      : Kalman gain matrix
+    * Σ_1    : Steady-state prior covariance matrix under the solution
+    * Σ_p    : Steady-state posterior covariance matrix under the solution
+    * Ω      : Dynamic benefit matrix
+# Examples
+```julia-repl
+julia> P = solve_drip(ω,β,A,Q,H)
+```
+"""
 function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
                     fcap::Bool = false,     # optional: if true then solves the problem with fixed capacity κ = ω.
                     Ω0         = H*H',      # optional: initial guess for steady state information matrix
@@ -77,6 +119,16 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
     return(P)
 end
 
+"""
+    solve_drip(P::Drip;...) -> Drip
+Same as above but infers `ω,β,A,Q` and `H` from `P` and returns a `Drip` structure
+with the primitives and the solution.
+# Examples
+```julia-repl
+julia> P = Drip(ω,β,A,Q,H)
+julia> P = solve_drip(P)
+```
+"""
 function solve_drip(P   ::Drip;             # D.R.I.P. to be solved
                     fcap::Bool = false,     # optional: if true then solves the problem with fixed capacity κ = ω.
                     Ω0         = P.H*P.H',  # optional: initial guess for steady state information matrix
@@ -95,8 +147,31 @@ function solve_drip(P   ::Drip;             # D.R.I.P. to be solved
 end
 
 ## solve_Trip: this function solves for the transition dynamics given an initial prior covariance matrix
-function solve_trip(Ss::Drip,             # D.R.I.P. steady state
+
+"""
+         solve_trip(Ss::Drip,             # steady state of D.R.I.P.
                     Σ0::Array{Float64,2}; # initial prior matrix
+                    T     = 100,          # optional: guess for time until convergence to steady state
+                    tol   = 1e-4,         # optional: tolerance for convergence
+                    maxit = 1000          # optional: max iterations
+                    ) -> Trip
+Solves for the transition dynamics of the optimal information structure starting
+    from the initial prior distribution with covariance matrix `Σ0`.
+    See [Afrouzi and  Yang (2019)](http://afrouzi.com/dynamic_inattention.pdf)
+    for details.
+# Outputs
+Returns a `Trip` structure with the steady state and transition path of
+    the optimal information structure.
+
+# Examples
+```julia-repl
+julia> Ss = solve_drip(ω,β,A,Q,H)
+julia> Σ0 = 0.1*Ss.Σ_1;
+julia> Pt = solve_trip(Ss,Σ0);
+```
+"""
+function solve_trip(Ss::Drip,             # D.R.I.P. steady state
+                    Σ0::Array{Float64};   # initial prior matrix
                     T     = 100,          # optional: time until convergence to steady state
                     tol   = 1e-4,         # optional: tolerance for convergence
                     maxit = 1000          # optional: max iterations
@@ -155,6 +230,28 @@ function solve_trip(Ss::Drip,             # D.R.I.P. steady state
 end
 
 ## solve_Trip: this function solves for the transition dynamics given an initial signal for information treatment
+"""
+         solve_trip(Ss::Drip,             # steady state of D.R.I.P.
+                    S::Signal;            # information treatment in the steady state
+                    T     = 100,          # optional: guess for time until convergence to steady state
+                    tol   = 1e-4,         # optional: tolerance for convergence
+                    maxit = 1000          # optional: max iterations
+                    ) -> Trip
+Solves for the transition dynamics of the optimal information structure starting
+    from a one time treatment with a signal `S` in the steady state.
+    See [Afrouzi and  Yang (2019)](http://afrouzi.com/dynamic_inattention.pdf)
+    for details.
+# Outputs
+Returns a `Trip` structure with the steady state and transition path of
+    the optimal information structure.
+
+# Examples
+```julia-repl
+julia> Ss = solve_drip(ω,β,A,Q,H)
+julia> S  = Signal(L,Σ_z);
+julia> Pt = solve_trip(Ss,S);
+```
+"""
 function solve_trip(Ss::Drip,        # D.R.I.P.
                     S::Signal;       # initial Signal for information treatment
                     T     = 100,     # optional: time until convergence to steady state
@@ -167,45 +264,27 @@ function solve_trip(Ss::Drip,        # D.R.I.P.
     return(trip)
 end
 
-########## Aux. Functions ############
-
-function getreal(M)
-    #if maximum(abs.(imag.(M))) > 1e-6
-    #    print("Warning: Matrix decomposition returned complex numbers larger than 1e-6")
-    #end
-    return(real.(M))
-end
-
-function infinitesum(func; tol = 1e-6,maxit = 1000,start=0)
-    diff  = 1.0
-    infsum = func(start)
-    it    = start + 1
-    while (diff > tol) & (it < maxit)
-        func_it = func(it)
-        infsum += func_it
-        diff = maximum(func_it)
-        it += 1
-    end
-    return(infsum)
-end
-
-## calculate the amount of information acquired in bits/nats for a Drip
-function capacity(P::Drip;      # Drip structure
-                  unit = "bit"  # optional: unit of capacity (bit or nat).
-                  )
-    if unit == "bit"
-        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p))/log(2); #returns capacity in bits
-    elseif unit == "nat"
-        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p));        #returns capacity in nats
-    else
-        println("Invalid input for unit! Capacity is reported in bits.")
-        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p))/log(2);
-    end
-    return(κ)
-end
-
 ## get steady state irfs
-function dripirfs(P::Drip,T::Int)
+"""
+         dripirfs(P::Drip;  # Steady state of the DRIP
+                  T = 40    # Optional: length of impulse response functions
+                  ) -> Dripirfs
+Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
+    beliefs (`x_hat`) and actions (`a`) to all the structural shocks
+    **under the steady state information strucutre**. In particular, if `n` is the
+    dimension of `x`, `m` is the dimension of `a` and `k` is the number of
+    structural shocks, then
+
+* `x` has dimension `n*k*T` where `x(i,j,:)` is the impulse response function
+    of the `i`'th dimension of `x` to the `j`'th structural shock.
+* `x_hat` has dimension `n*k*T` where `x_hat(i,j,:)` is the impulse response function
+    of the agent's average belief about the `i`'th dimension of `x` to the `j`'th
+    structural shock.
+* `a` has dimension `m*k*T` where `a(i,j,:)` is the impulse response function
+    of the `i`'th action to the `j`'th structural shock.
+"""
+function dripirfs(P::Drip;
+                  T = 40)
     (n,m) = length(size(P.H)) == 2 ? size(P.H) : (size(P.H,1),1)
     (_,k) = length(size(P.Q)) == 2 ? size(P.Q) : (size(P.Q,1),1)
     x     = zeros(n,k,T);
@@ -228,12 +307,31 @@ function dripirfs(P::Drip,T::Int)
 end
 
 ## get irfs with optimal signals acquired under Pt::Trip
-function dripirfs(Pt::Trip,T::Int)
+"""
+         dripirfs(P::Trip;  # Transition dynamics of the DRIP
+                  T = 40    # Optional: length of impulse response functions
+                  ) -> Dripirfs
+Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
+    beliefs (`x_hat`) and actions (`a`) to all the structural shocks
+    **under the information structure implied by** `P`. In particular, if `n` is the
+    dimension of `x`, `m` is the dimension of `a` and `k` is the number of
+    structural shocks, then
+
+* `x` has dimension `n*k*T` where `x(i,j,:)` is the impulse response function
+    of the `i`'th dimension of `x` to the `j`'th structural shock.
+* `x_hat` has dimension `n*k*T` where `x_hat(i,j,:)` is the impulse response function
+    of the agent's average belief about the `i`'th dimension of `x` to the `j`'th
+    structural shock.
+* `a` has dimension `m*k*T` where `a(i,j,:)` is the impulse response function
+    of the `i`'th action to the `j`'th structural shock.
+"""
+function dripirfs(Pt::Trip; T = 40)
     Ss    = Pt.P; # steady state Drip
     (n,m) = length(size(Ss.H)) == 2 ? size(Ss.H) : (size(Ss.H,1),1) # dimensions of state and actions
     (_,k) = length(size(Ss.Q)) == 2 ? size(Ss.Q) : (size(Ss.Q,1),1) # number of structural shocks
-    eye   = Matrix(I,n,n);
+    L     = size(Pt.Ds,1) # length of Trip
 
+    eye   = Matrix(I,n,n);
     x     = zeros(n,k,T); # initialize IRFs of state
     x_hat = zeros(n,k,T); # initialize IRFs of beliefs
     a     = zeros(m,k,T); # initialize IRFs of actions
@@ -243,9 +341,12 @@ function dripirfs(Pt::Trip,T::Int)
             if ii==1
                 x[:,kk,ii]     = Ss.Q*e_k;
                 x_hat[:,kk,ii] = (eye-Pt.Σ_ps[:,:,ii]*pinv(Pt.Σ_1s[:,:,ii]))*(x[:,kk,ii]);
-            else
+            elseif ii <= L
                 x[:,kk,ii]     =Ss.A*x[:,kk,ii-1];
                 x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-Pt.Σ_ps[:,:,ii]*pinv(Pt.Σ_1s[:,:,ii]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
+            else
+                x[:,kk,ii]     =Ss.A*x[:,kk,ii-1];
+                x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-Pt.Σ_ps[:,:,end]*pinv(Pt.Σ_1s[:,:,end]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
             end
             a[:,kk,ii]  .= Ss.H'*x_hat[:,kk,ii];
         end
@@ -254,9 +355,31 @@ function dripirfs(Pt::Trip,T::Int)
 end
 
 ## get irfs with information treatment S at time zero.
-function dripirfs(Ss::Drip,          # Steady state Drip (when treatment happens)
-                  T::Int,            # Length of irfs
+"""
+         dripirfs(Ss::Drip,          # Steady state of the DRIP (when treatment happens)
+                  S::Signal;         # Signal for treatment at time 0
+                  T = 40,            # optional: length of irfs
+                  reoptimize = true, # optional: if true gives the irfs with reoptimized signals, if false with steady state signals
+                  trip       = false # optional: if false solves for the optimal trip, if = P::trip then takes P as the transition dynamics after treatment
+                  ) -> Dripirfs
+Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
+    beliefs (`x_hat`) and actions (`a`) to all the structural shocks
+    **under the information structure implied by a one time information treatment
+    with** `S` ** in the steady state of the DRIP** `P`. In particular, if `n` is the
+    dimension of `x`, `m` is the dimension of `a` and `k` is the number of
+    structural shocks, then
+
+* `x` has dimension `n*k*T` where `x(i,j,:)` is the impulse response function
+    of the `i`'th dimension of `x` to the `j`'th structural shock.
+* `x_hat` has dimension `n*k*T` where `x_hat(i,j,:)` is the impulse response function
+    of the agent's average belief about the `i`'th dimension of `x` to the `j`'th
+    structural shock.
+* `a` has dimension `m*k*T` where `a(i,j,:)` is the impulse response function
+    of the `i`'th action to the `j`'th structural shock.
+"""
+function dripirfs(Ss::Drip,          # Steady state of the DRIP (when treatment happens)
                   S::Signal;         # Signal for treatment
+                  T = 40,            # optional: length of irfs
                   reoptimize = true, # if true gives the irfs with reoptimized signals, if false with steady state signals
                   trip       = false # if false solves the trip, if = P::trip then takes P as the trip
                   )
@@ -265,9 +388,13 @@ function dripirfs(Ss::Drip,          # Steady state Drip (when treatment happens
     (_,k) = length(size(Ss.Q)) == 2 ? size(Ss.Q) : (size(Ss.Q,1),1) # number of structural shocks
     eye   = Matrix(I,n,n);
 
-    if (trip == false) & (reoptimize == true) # get the solution to trip if reoptimize = true
-        trip = solve_trip(Ss,S;T = T);
+    if reoptimize == true
+        if trip == false
+            trip = solve_trip(Ss,S;T = T);
+        end
+        L     = size(trip.Ds,1) # length of Trips
     end
+
     x     = zeros(n,k,T); # initialize IRFs of state
     x_hat = zeros(n,k,T); # initialize IRFs of beliefs
     a     = zeros(m,k,T); # initialize IRFs of actions
@@ -289,7 +416,11 @@ function dripirfs(Ss::Drip,          # Steady state Drip (when treatment happens
             else
                 x[:,kk,ii]     =Ss.A*x[:,kk,ii-1];
                 if reoptimize  == true
-                    x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-trip.Σ_ps[:,:,ii]*pinv(trip.Σ_1s[:,:,ii]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
+                    if ii <= L
+                        x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-trip.Σ_ps[:,:,ii]*pinv(trip.Σ_1s[:,:,ii]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
+                    else
+                        x_hat[:,kk,ii] =Ss.A*x_hat[:,kk,ii-1]+(eye-trip.Σ_ps[:,:,end]*pinv(trip.Σ_1s[:,:,end]))*(x[:,kk,ii]-Ss.A*x_hat[:,kk,ii-1]);
+                    end
                 else
                     K0 = Σ0*Ss.Y/(Ss.Y'*Σ0*Ss.Y+Ss.Σ_z);
                     Σ0 = Ss.Q*Ss.Q' + Ss.A*(Σ0-K0*Ss.Y'*Σ0)*Ss.A';
@@ -300,4 +431,58 @@ function dripirfs(Ss::Drip,          # Steady state Drip (when treatment happens
         end
     end
     return(Dripirfs(T,x,x_hat,a))
+end
+
+
+########## Aux. Functions ############
+
+"""
+    getreal(M)
+Returns the real part of `M` (Same as `real.(M)`).
+"""
+function getreal(M)
+    #if maximum(abs.(imag.(M))) > 1e-6
+    #    print("Warning: Matrix decomposition returned complex numbers larger than 1e-6")
+    #end
+    return(real.(M))
+end
+
+"""
+    infinitesum(func; tol = 1e-6,maxit = 1000,start=0)
+Returns the infinite sum `Σₓfunc(x)` starting from `x = start` up to tolderance
+`tol` or max iteration `maxit`.
+"""
+function infinitesum(func; tol = 1e-6,maxit = 1000,start=0)
+    diff  = 1.0
+    infsum = func(start)
+    it    = start + 1
+    while (diff > tol) & (it < maxit)
+        func_it = func(it)
+        infsum += func_it
+        diff = maximum(func_it)
+        it += 1
+    end
+    return(infsum)
+end
+
+## calculate the amount of information acquired in bits/nats for a Drip
+"""
+        capacity(P::Drip;      # Drip structure
+                 unit = "bit"  # optional: unit of capacity (bit or nat).
+                 )
+Returns the amount of information processes per unit of time in the steady state
+of the DRIP `P`.
+"""
+function capacity(P::Drip;      # Drip structure
+                  unit = "bit"  # optional: unit of capacity (bit or nat).
+                  )
+    if unit == "bit"
+        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p))/log(2); #returns capacity in bits
+    elseif unit == "nat"
+        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p));        #returns capacity in nats
+    else
+        println("Invalid input for unit! Capacity is reported in bits.")
+        κ = 0.5*log(det(P.Σ_1)/det(P.Σ_p))/log(2);
+    end
+    return(κ)
 end

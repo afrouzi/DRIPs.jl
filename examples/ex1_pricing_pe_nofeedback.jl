@@ -16,7 +16,7 @@ ex1 = solve_drip(ω,β,A,Q,H);
 
 @benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 100*rand()) # solves and times the function for a random set of ω's
 
-ex1irfs = dripirfs(ex1,20);
+ex1irfs = dripirfs(ex1,T = 20);
 
 plot(1:ex1irfs.T,[ex1irfs.x[1,1,:],ex1irfs.a[1,1,:]],
     xlabel     = "Time",
@@ -62,7 +62,7 @@ ex2  = solve_drip(ω,β,A,Q,H);
 
 @benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 100*rand()) # solves and times the function for a random set of ω's
 
-ex2irfs = dripirfs(ex2,20);
+ex2irfs = dripirfs(ex2,T = 20);
 
 ## Plot IRFs of price to both shocks
 p1 = plot(1:ex2irfs.T,[ex2irfs.x[1,1,:],ex2irfs.a[1,1,:]],

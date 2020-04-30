@@ -61,18 +61,17 @@ end;
 @time @suppress  ge = ge_drip(ω,β,A,Q,α,Hq,L) # remove suppress to see convergence log
 
 ## Plot irfs
-T      = L;
-geirfs = dripirfs(ge,T);
+geirfs = dripirfs(ge,T = L);
 
-M  = [zeros(1,T-1) 0; Matrix(I,T-1,T-1) zeros(T-1,1)]; # shift matrix
+M  = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)]; # shift matrix
 dq = diagm(Hq)*geirfs.x[1,1,:];                        # IRF of the Δq
 Pi = (I-M)*geirfs.a[1,1,:];                            # IRF of inflation
 y  = inv(I-M)*(dq-Pi);                                 # IRF of output
 
-p1 = plot(1:T,[dq,Pi],
+p1 = plot(1:L,[dq,Pi],
      label = [L"Agg. Demand Growth ($\Delta q$)" L"Inflation ($\pi$)"]);
 
-p2 = plot(1:T,y,
+p2 = plot(1:L,y,
      label  = L"Output ($y$)");
 
 plot(p1,p2,

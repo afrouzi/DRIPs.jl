@@ -29,7 +29,7 @@ sol_hβ = solve_drip(ω,1,A,Q,H); display(sol_hβ.Σ_p);
 
 ## IRFs for benchmark parameterization
 T = 25; #length of IRFs
-irfs_bp = dripirfs(sol_bp,T);
+irfs_bp = dripirfs(sol_bp,T = T);
 
 p1 = plot(1:T, [irfs_bp.x[1,1,:], irfs_bp.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
@@ -62,7 +62,7 @@ p = plot(p1,p2,
 
 ## IRFs for low ω
 T = 25; #length of IRFs
-irfs_lω = dripirfs(sol_lω,T);
+irfs_lω = dripirfs(sol_lω,T = T);
 
 p1 = plot(1:T, [irfs_lω.x[1,1,:], irfs_lω.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
@@ -95,8 +95,8 @@ p = plot(p1,p2,
 
 ## IRFs for different βs
 T = 25; #length of IRFs
-irfs_lβ = dripirfs(sol_lβ,T);
-irfs_hβ = dripirfs(sol_hβ,T);
+irfs_lβ = dripirfs(sol_lβ,T = T);
+irfs_hβ = dripirfs(sol_hβ,T = T);
 
 p1 = plot(1:T, [irfs_bp.x[1,1,:],irfs_hβ.a[1,1,:], irfs_lβ.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
@@ -155,8 +155,8 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,
 ## IRFs with information treatment
 T = 30; #length of IRFs
 
-tirfs_bp = dripirfs(sol_bp,T,s0); # irfs with treatment
-irfs_bp  = dripirfs(sol_bp,T);    # irfs in the Ss (without treatment)
+tirfs_bp = dripirfs(sol_bp,s0, T = T); # irfs with treatment
+irfs_bp  = dripirfs(sol_bp, T = T);    # irfs in the Ss (without treatment)
 
 p1 = plot(1:T, [irfs_bp.x[1,1,:], tirfs_bp.a[1,1,:], irfs_bp.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
