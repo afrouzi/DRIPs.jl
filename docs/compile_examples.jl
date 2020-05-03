@@ -1,1 +1,2 @@
 Literate.markdown("examples/ex4_Sims_2011.jl", "docs/src/examples/sims2011"; documenter=true, execute = true, codefence = "```julia" => "```")
+Literate.markdown("examples/ex3_Mackowiak_Wiederholt_2009.jl", "docs/src/examples/mw2009"; documenter=true, execute = true, codefence = "```julia" => "```")

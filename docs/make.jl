@@ -11,7 +11,10 @@ makedocs(
          "Home" => "index.md",
          "Overview" => "overview.md",
          "Syntax" => "syntax.md",
-         "Examples and Replications" => Any["examples/sims2011/ex4_Sims_2011.md"]
+         "Examples and Replications" => Any[
+            "examples/mw2009/ex3_Mackowiak_Wiederholt_2009.md",
+            "examples/sims2011/ex4_Sims_2011.md",
+            ]
          ]
     )
 #makedocs()

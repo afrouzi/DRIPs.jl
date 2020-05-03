@@ -1,29 +1,25 @@
-```@meta
-EditURL = "<unknown>/examples/ex4_Sims_2011.jl"
-```
-
 # Replication of Sims (2011)
 
 This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the `DRIPs` package.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master) to run and modify the following code (no software is needed on the local machine).
+[![Binder](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
 
 ## Contents
-* [Setup](@ref setup)
-* [Initialization](@ref param)
-* [Solution](@ref solution)
-    * [Benchmark Parameterization](@ref benchmark)
-    * [Lower Cost of Attention: $\omega = 0.1$](@ref lowomega)
-    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref betas)
-* [Impulse Response Functions](@ref figures)
-    * [Benchmark Parameterization](@ref fig_benchmark)
-    * [Lower Cost of Attention: $\omega = 0.1$](@ref fig_lowomega)
-    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref fig_betas)
-* [Extensions](@ref extensions)
-    * [Transition Dynamics of Attention](@ref trip)
-    * [Impulse Response Functions with Information Treatment](@ref trip_irfs)
+* [Setup](@ref sims2011_setup)
+* [Initialization](@ref sims2011_param)
+* [Solution](@ref sims2011_solution)
+    * [Benchmark Parameterization](@ref sims2011_benchmark)
+    * [Lower Cost of Attention: $\omega = 0.1$](@ref sims2011_lowomega)
+    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref sims2011_betas)
+* [Impulse Response Functions](@ref sims2011_figures)
+    * [Benchmark Parameterization](@ref sims2011_fig_benchmark)
+    * [Lower Cost of Attention: $\omega = 0.1$](@ref sims2011_fig_lowomega)
+    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref sims2011_fig_betas)
+* [Extensions](@ref sims2011_extensions)
+    * [Transition Dynamics of Attention](@ref sims2011_trip)
+    * [Impulse Response Functions with Information Treatment](@ref sims2011_trip_irfs)
 
-## [Setup](@id setup)
+## [Setup](@id sims2011_setup)
 
 The problem in [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf), as it appears on page 21, with slight change of notation,
 ```math
@@ -54,7 +50,7 @@ where
 ```
 We have renamed the parameters so that the problem directly maps to a D.R.I.P. Otherwise, the problem is the same.
 
-## [Initialization](@id param)
+## [Initialization](@id sims2011_param)
 Include the solver:
 
 ```julia
@@ -73,8 +69,8 @@ H = [1.0; 1.0];
 nothing #hide
 ```
 
-## [Solution and Performance](@id solution)
-### [Benchmark Parameterization](@id benchmark)
+## [Solution and Performance](@id sims2011_solution)
+### [Benchmark Parameterization](@id sims2011_benchmark)
 Solve and display the optimal posterior covariance matrix:
 
 ```julia
@@ -100,10 +96,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     85.132 μs (0.00% GC)
-  median time:      99.080 μs (0.00% GC)
-  mean time:        118.221 μs (12.44% GC)
-  maximum time:     4.605 ms (95.85% GC)
+  minimum time:     84.580 μs (0.00% GC)
+  median time:      110.245 μs (0.00% GC)
+  mean time:        138.093 μs (19.10% GC)
+  maximum time:     7.917 ms (97.75% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -120,16 +116,16 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     88.597 μs (0.00% GC)
-  median time:      114.020 μs (0.00% GC)
-  mean time:        130.698 μs (11.93% GC)
-  maximum time:     4.434 ms (96.21% GC)
+  minimum time:     87.071 μs (0.00% GC)
+  median time:      121.607 μs (0.00% GC)
+  mean time:        150.740 μs (18.75% GC)
+  maximum time:     11.666 ms (97.72% GC)
   --------------
   samples:          10000
   evals/sample:     1
 ```
 
-### [Lower Cost of Attention: $\omega = 0.1$](@id lowomega)
+### [Lower Cost of Attention: $\omega = 0.1$](@id sims2011_lowomega)
 Solve and display the optimal posterior covariance matrix:
 
 ```julia
@@ -143,7 +139,7 @@ sol_lω.Σ_p
  -0.304142   0.386163
 ```
 
-### [Different Discount Factors: $\beta \in \{0,1\}$](@id betas)
+### [Different Discount Factors: $\beta \in \{0,1\}$](@id sims2011_betas)
 Solve the model for $\beta=0$ and $\beta=1$ to compare with the benchmark value of $\beta=0.9$:
 
 ``\beta = 0``
@@ -172,8 +168,8 @@ sol_hβ.Σ_p
  -0.178019   0.799701
 ```
 
-## [Impulse Response Functions](@id figures)
-### [Benchmark Parameterization](@id fig_benchmark)
+## [Impulse Response Functions](@id sims2011_figures)
+### [Benchmark Parameterization](@id sims2011_fig_benchmark)
 Get the IRFs:
 
 ```julia
@@ -217,7 +213,7 @@ p = plot(p1,p2,
 ```
 ![](3227358035.png)
 
-### [Lower Cost of Attention: $\omega=0.1$](@id fig_lowomega)
+### [Lower Cost of Attention: $\omega=0.1$](@id sims2011_fig_lowomega)
 Get the IRFs:
 
 ```julia
@@ -260,7 +256,7 @@ p = plot(p1,p2,
 ```
 ![](238384670.png)
 
-### [Other Discount Factors: $\beta\in\{0,1\}$](@id fig_betas)
+### [Other Discount Factors: $\beta\in\{0,1\}$](@id sims2011_fig_betas)
 Get the IRFs:
 
 ```julia
@@ -304,9 +300,9 @@ p = plot(p1,p2,
 ```
 ![](3696022472.png)
 
-## [Extensions](@id extensions)
+## [Extensions](@id sims2011_extensions)
 
-### [Transition Dynamics of Attention](@id trip)
+### [Transition Dynamics of Attention](@id sims2011_trip)
 
 In this section, we solve for the transition dynamics of the optimal posterior covariance matrix starting from an initial prior that is different from the steady state prior.
 
@@ -338,15 +334,15 @@ Performance for solving the transition dynamics for a random signal:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  746.50 KiB
-  allocs estimate:  6440
+  memory estimate:  751.28 KiB
+  allocs estimate:  6443
   --------------
-  minimum time:     642.102 μs (0.00% GC)
-  median time:      803.984 μs (0.00% GC)
-  mean time:        927.505 μs (12.27% GC)
-  maximum time:     10.013 ms (90.77% GC)
+  minimum time:     691.975 μs (0.00% GC)
+  median time:      813.364 μs (0.00% GC)
+  mean time:        946.442 μs (13.59% GC)
+  maximum time:     13.512 ms (93.44% GC)
   --------------
-  samples:          5377
+  samples:          5270
   evals/sample:     1
 ```
 
@@ -374,7 +370,7 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,
 ```
 ![](1376016511.png)
 
-### [Impulse Response Functions with Information Treatment](@id trip_irfs)
+### [Impulse Response Functions with Information Treatment](@id sims2011_trip_irfs)
 Get the IRFs in the transition path after treatment:
 
 ```julia

@@ -1,4 +1,4 @@
-# Dynamic Rational Inattention Problems
+# Dynamic Rational Inattention Problems (DRIPs)
 
 This package provides a fast and robust method for solving LQG Dynamic Rational Inattention models using the methods developed by [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf).
 ## Installation
@@ -25,6 +25,6 @@ Depth = 3
 ```
 ## Examples and Replications
 ```@contents
-Pages = ["examples/sims2011.md"]
+Pages = ["examples/mw2009/ex3_Mackowiak_Wiederholt_2009.md","examples/sims2011/ex3_Sims_2011.md"]
 Depth = 2
 ```
