@@ -23,3 +23,8 @@ Depth = 3
 Pages = ["syntax.md",]
 Depth = 3
 ```
+## Examples and Replications
+```@contents
+Pages = ["examples/sims2011.md"]
+Depth = 1
+```

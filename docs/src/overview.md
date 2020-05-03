@@ -5,7 +5,7 @@ A LQG Dynamic Rational Inattention Problem (**Drip**) is defined as the followin
     & \min_{\{\vec{a}_t\}_{t\geq 0}} \mathbb{E}\left[\sum_{t=0}^\infty \beta^t (\vec{a}_t - \vec{x}_t'\mathbf{H})'(\vec{a}_t - \vec{x}_t'\mathbf{H}) - \omega \mathbb{I}(\vec{a}^t;\vec{x}^t|\vec{a}^{t-1})\lvert \vec{a}^{-1}\right] \\
     s.t.\quad &
         \vec{x}_t=\mathbf{A}\vec{x}_{t-1}+\mathbf{Q}\vec{u}_t,\quad \vec{u}_t\sim \mathcal{N}(\mathbf{0},\mathbf{I}^{k\times k}) \\
-        \vec{a}^{-1} \text{ given.}
+        & \vec{a}^{-1} \text{ given.}
 \end{aligned}
 ```
 
@@ -27,22 +27,22 @@ Theorem 2 and Proposition 3 in [Afrouzi and Yang (2019)](http://www.afrouzi.com/
 ```math
 \begin{aligned}
     \vec{a}_t &= \mathbf{H}'\hat{x}_t = \mathbf{H}'\mathbf{A}\hat{x}_{t-1}+\mathbf{Y_t}'(\vec{x}_t-\mathbf{A}\hat{x}_{t-1})+\vec{z}_t \\
-    \hat{x}_t &= \mathbf{A}\hat{x}_{t-1}+\mathbf{K_t}\mathbf{Y_t}'(\vec{x}_t-\mathbf{A}\hat{x}_{t-1})+\mathbf{K_t}\vec{z}_t,\quad \vec{z}\sim\mathcal{N}(0,\Sigma_z)
+    \hat{x}_t &= \mathbf{A}\hat{x}_{t-1}+\mathbf{K}_t\mathbf{Y}_t'(\vec{x}_t-\mathbf{A}\hat{x}_{t-1})+\mathbf{K}_t\vec{z}_t,\quad \vec{z}\sim\mathcal{N}(0,\Sigma_z)
 \end{aligned}
 ```
 
 Here,
 
-* ``\mathbf{K_t}\in\mathbb{R}^{n\times m}`` is the Kalman-gain matrix of the agent in under optimal information acquisition at time $t$.
-* ``\mathbf{Y_t}\in\mathbb{R}^{m\times m}`` is the loading of optimal signals on the state at time $t$.
+* ``\mathbf{K}_t\in\mathbb{R}^{n\times m}`` is the Kalman-gain matrix of the agent in under optimal information acquisition at time $t$.
+* ``\mathbf{Y}_t\in\mathbb{R}^{m\times m}`` is the loading of optimal signals on the state at time $t$.
 * ``\mathbf{\Sigma}_{z,t}\in\mathbb{R}^{m\times m}`` is the variance-covariance matrix of the agent's rational inattention error at time $t$.
 
 In addition to these, we might also be interested in the agent's prior and posterior subjective uncertainty, along with the continuation value that she assigns to information:
 * ``\mathbf{\Sigma}_{p,t}=\mathbb{V}ar(\vec{x}_t|\vec{a}^{t})\in\mathbb{R}^{n\times n}``.
 * ``\mathbf{\Sigma}_{-1,t}=\mathbb{V}ar(\vec{x}_t|\vec{a}^{t-1})\in\mathbb{R}^{n\times n}``,
-* ``\bar{\Omega}\in\mathbb{R}^{n\times n}``.
+* ``\bar{\Omega}_t\in\mathbb{R}^{n\times n}``.
 
-The matrix $\bar{\Omega}$, which is the continuation value of information, is also important for the number of iterations that the code needs to converge. When $n$ is large, accurate guesses for $\bar{\Omega}$ and $\mathbf{\Sigma}_{-1}$ speed up the convergence considerably.
+where the matrix $\bar{\Omega}_t$ captures the value of information (see [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for details)
 
 ## Steady State of DRIPs
 
@@ -64,4 +64,4 @@ Once the model is solved, one can generate the impulse response functions of act
 
 We have also included a built-in function that generates these IRFs. The function `dripirfs(P::Drip)` takes a `Drip` structure as input and returns the irfs of the state, beliefs and actions to all structural shocks within a `Dripirfs` structure.
 
-The function also returns IRFs for transition dynamics if an initial signal is specified. See the [syntax section for Trip methods](@ref IRFs) for the definition of the `Dripirfs` structure as well as for more information about `dripirfs`.
+The function also returns IRFs for transition dynamics if an initial signal is specified. See the [syntax section Impulse Response Functions](@ref IRFs) for the definition of the `Dripirfs` structure as well as for more information about `dripirfs`.
