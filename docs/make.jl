@@ -1,5 +1,8 @@
 using Documenter, DRIPs
 
+# uncomment the following line to compile examples 
+# include("compile_examples.jl") 
+
 makedocs(
     modules  = [DRIPs],
     format = Documenter.HTML(prettyurls = "--local" ∉ ARGS),
@@ -8,7 +11,7 @@ makedocs(
          "Home" => "index.md",
          "Overview" => "overview.md",
          "Syntax" => "syntax.md",
-         "Examples and Replications" => Any["examples/sims2011/sims2011.md"]
+         "Examples and Replications" => Any["examples/sims2011/ex4_Sims_2011.md"]
          ]
     )
 #makedocs()
