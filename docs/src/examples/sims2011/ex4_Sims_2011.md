@@ -9,7 +9,7 @@ This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbo
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master) to run and modify the following code (no software is needed on the local machine).
 
 ## Contents
-* [Setup] (@ref setup)
+* [Setup](@ref setup)
 * [Initialization](@ref param)
 * [Solution](@ref solution)
     * [Benchmark Parameterization](@ref benchmark)
@@ -57,14 +57,14 @@ We have renamed the parameters so that the problem directly maps to a D.R.I.P. O
 ## [Initialization](@id param)
 Include the solver:
 
-```@example ex4_Sims_2011
+```julia
 using DRIPs;
 nothing #hide
 ```
 
 Set parameters:
 
-```@example ex4_Sims_2011
+```julia
 β = 0.9;
 ω = 1.0;
 A = [0.95 0.0; 0.0 0.4];
@@ -77,30 +77,70 @@ nothing #hide
 ### [Benchmark Parameterization](@id benchmark)
 Solve and display the optimal posterior covariance matrix:
 
-```@example ex4_Sims_2011
+```julia
 sol_bp = solve_drip(ω,β,A,Q,H);
 sol_bp.Σ_p
 ```
 
+```
+2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+  0.359213  -0.177025
+ -0.177025   0.794584
+```
+
 Performance for random values of $\omega\in [0,2]$:
 
-```@example ex4_Sims_2011
+```julia
 using BenchmarkTools;
 @benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 2*rand())
 ```
 
+```
+BenchmarkTools.Trial: 
+  memory estimate:  176.06 KiB
+  allocs estimate:  1545
+  --------------
+  minimum time:     85.132 μs (0.00% GC)
+  median time:      99.080 μs (0.00% GC)
+  mean time:        118.221 μs (12.44% GC)
+  maximum time:     4.605 ms (95.85% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+```
+
 Performance for random values of $\beta\in[0,1]$:
 
-```@example ex4_Sims_2011
+```julia
 @benchmark solve_drip(ω,β,A,Q,H) setup = (β = rand())
+```
+
+```
+BenchmarkTools.Trial: 
+  memory estimate:  176.06 KiB
+  allocs estimate:  1545
+  --------------
+  minimum time:     88.597 μs (0.00% GC)
+  median time:      114.020 μs (0.00% GC)
+  mean time:        130.698 μs (11.93% GC)
+  maximum time:     4.434 ms (96.21% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
 ```
 
 ### [Lower Cost of Attention: $\omega = 0.1$](@id lowomega)
 Solve and display the optimal posterior covariance matrix:
 
-```@example ex4_Sims_2011
+```julia
 sol_lω = solve_drip(0.1,β,A,Q,H);
 sol_lω.Σ_p
+```
+
+```
+2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+  0.319919  -0.304142
+ -0.304142   0.386163
 ```
 
 ### [Different Discount Factors: $\beta \in \{0,1\}$](@id betas)
@@ -108,23 +148,35 @@ Solve the model for $\beta=0$ and $\beta=1$ to compare with the benchmark value 
 
 ``\beta = 0``
 
-```@example ex4_Sims_2011
+```julia
 sol_lβ = solve_drip(ω,0,A,Q,H);
 sol_lβ.Σ_p
 ```
 
+```
+2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+  0.495403  -0.152171
+ -0.152171   0.808939
+```
+
 ``\beta = 1``:
 
-```@example ex4_Sims_2011
+```julia
 sol_hβ = solve_drip(ω,1,A,Q,H);
 sol_hβ.Σ_p
+```
+
+```
+2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+  0.337666  -0.178019
+ -0.178019   0.799701
 ```
 
 ## [Impulse Response Functions](@id figures)
 ### [Benchmark Parameterization](@id fig_benchmark)
 Get the IRFs:
 
-```@example ex4_Sims_2011
+```julia
 T = 25;
 irfs_bp = dripirfs(sol_bp,T = T);
 nothing #hide
@@ -132,7 +184,7 @@ nothing #hide
 
 Plot IRFs:
 
-```@example ex4_Sims_2011
+```julia
 using Plots, LaTeXStrings; pyplot();
 p1 = plot(1:T, [irfs_bp.x[1,1,:], irfs_bp.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
@@ -163,11 +215,12 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 ```
+![](3227358035.png)
 
 ### [Lower Cost of Attention: $\omega=0.1$](@id fig_lowomega)
 Get the IRFs:
 
-```@example ex4_Sims_2011
+```julia
 T = 25; #length of IRFs
 irfs_lω = dripirfs(sol_lω,T = T);
 nothing #hide
@@ -175,7 +228,7 @@ nothing #hide
 
 Plot IRFs:
 
-```@example ex4_Sims_2011
+```julia
 p1 = plot(1:T, [irfs_lω.x[1,1,:], irfs_lω.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
     label             = ["Shock" "Price"],
@@ -205,11 +258,12 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 ```
+![](238384670.png)
 
 ### [Other Discount Factors: $\beta\in\{0,1\}$](@id fig_betas)
 Get the IRFs:
 
-```@example ex4_Sims_2011
+```julia
 T = 25; #length of IRFs
 irfs_lβ = dripirfs(sol_lβ,T = T);
 irfs_hβ = dripirfs(sol_hβ,T = T);
@@ -218,7 +272,7 @@ nothing #hide
 
 Plot IRFs:
 
-```@example ex4_Sims_2011
+```julia
 p1 = plot(1:T, [irfs_bp.x[1,1,:],irfs_hβ.a[1,1,:], irfs_lβ.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
     label             = ["Shock" L"Price ($\beta=1$)" L"Price ($\beta=0$)"],
@@ -248,6 +302,7 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 ```
+![](3696022472.png)
 
 ## [Extensions](@id extensions)
 
@@ -262,14 +317,14 @@ $$s_0 = \mathbf{H}'\vec{x}_0$$
 #### Solve for the transition dynamics
 The function `solve_trip` solves for the transition dynamics automatically given the initial signal. Start by initializing the initial signal:
 
-```@example ex4_Sims_2011
+```julia
 s0 = Signal(H,0.0);
 nothing #hide
 ```
 
 Solve for the transition dynamics given $s_0$:
 
-```@example ex4_Sims_2011
+```julia
 Tss     = 15; # guess for time until convergence
 bp_trip = solve_trip(sol_bp, s0; T = Tss);
 nothing #hide
@@ -277,15 +332,29 @@ nothing #hide
 
 Performance for solving the transition dynamics for a random signal:
 
-```@example ex4_Sims_2011
+```julia
 @benchmark solve_trip(sol_bp, S; T = 30) setup = (S = Signal(rand(2),0.0))
+```
+
+```
+BenchmarkTools.Trial: 
+  memory estimate:  746.50 KiB
+  allocs estimate:  6440
+  --------------
+  minimum time:     642.102 μs (0.00% GC)
+  median time:      803.984 μs (0.00% GC)
+  mean time:        927.505 μs (12.27% GC)
+  maximum time:     10.013 ms (90.77% GC)
+  --------------
+  samples:          5377
+  evals/sample:     1
 ```
 
 #### Plot Transition Path of Eigenvalues
 
 Plot the marginal values of information. In this problem the state is two dimensional. At any time, for every orthogonalized dimension, the agent weighs the **marginal value** of acquiring information in that dimension against the **marginal cost** of attention which is the parameter $\omega$.**The number of signals that the agent acquires at any time is the number of marginal values that are larger than $\omega$.**
 
-```@example ex4_Sims_2011
+```julia
 p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,1)],
     label             = ["Low marginal value dim." "High marginal value dim." "Marginal cost of attention"],
     size              = (900,275),
@@ -303,11 +372,12 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,
     fontfamily        = "serif",
     framestyle        = :box)
 ```
+![](1376016511.png)
 
 ### [Impulse Response Functions with Information Treatment](@id trip_irfs)
 Get the IRFs in the transition path after treatment:
 
-```@example ex4_Sims_2011
+```julia
 T = 30;
 
 tirfs_bp = dripirfs(sol_bp,s0,T = T); # irfs with treatment
@@ -317,7 +387,7 @@ nothing #hide
 
 Plot IRFs:
 
-```@example ex4_Sims_2011
+```julia
 p1 = plot(1:T, [irfs_bp.x[1,1,:], tirfs_bp.a[1,1,:], irfs_bp.a[1,1,:]],
     title             = L"IRFs to Slow-Moving Shock ($\rho = 0.95$)",
     label             = ["Shock" "Price (w/ treatment)" "Price (w/o treatment)"],
@@ -347,6 +417,7 @@ p = plot(p1,p2,
     size       = (900,550),
     framestyle = :box)
 ```
+![](3849941689.png)
 
 ---
 

@@ -26,5 +26,5 @@ Depth = 3
 ## Examples and Replications
 ```@contents
 Pages = ["examples/sims2011.md"]
-Depth = 1
+Depth = 2
 ```
