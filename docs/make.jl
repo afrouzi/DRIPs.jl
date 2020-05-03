@@ -4,9 +4,11 @@ makedocs(
     modules  = [DRIPs],
     format = Documenter.HTML(prettyurls = "--local" ∉ ARGS),
     sitename = "DRIPs.jl",
-    # pages    = Any[
-    #     "Home" => "index.md",
-    #    ]
+    pages    = Any[
+         "Home" => "index.md",
+         "Overview" => "overview.md",
+         "Syntax" => "syntax.md",
+         ]
     )
 #makedocs()
 deploydocs(

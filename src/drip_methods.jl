@@ -110,7 +110,8 @@ function solve_drip(ω,β,A,Q,H;              # primitives of the D.R.I.P.
         SqRΣ    = getreal(sqrt(Σ0));
         invSqRΣ = getreal(inv(SqRΣ));
 
-        Ω0      = w*(Ω_c + β*A'*invSqRΣ*U*(min.(D,ω*eye))*U'*invSqRΣ*A)+(1-w)*Ω0;
+        Ω0      = w*(Ω_c .+ β*A'*invSqRΣ*U*(min.(D,ω*eye))*U'*invSqRΣ*A)
+                +(1-w)*Ω0;
         Ω0      = (abs.(Ω0).>1e-10).*Ω0;
 
         iter   += 1

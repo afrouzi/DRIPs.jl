@@ -98,7 +98,7 @@ end;
 ## Solve for κ = 3
 ω    = MW(3,α,A,Qq,Qz,H,H);
 agg, err  = agg_drip(ω,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95);
-display(err)
+
 idi  = solve_drip(ω,1,A,Qz,H,w = 0.9);
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",DRIPs.capacity(agg),DRIPs.capacity(idi));
 

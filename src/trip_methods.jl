@@ -79,12 +79,12 @@ function solve_trip(Ss::Drip,             # D.R.I.P. steady state
         ## Given Ωs, find Sigmas using the law of motion for priors
         for i in 1:1:T-1
             SqSigma        = real.(sqrt(Σ_1s[:,:,i]));
-            D, U           = eigen(SqSigma*Ωs[:,:,i]*SqSigma);
+            D, U           = eigen!(Symmetric(SqSigma*Ωs[:,:,i]*SqSigma));
             Ds[:,i]        = real.(D);
             U              = real.(U);
             D              = diagm(Ds[:,i]);
-            Σ_ps[:,:,i]    = Ss.ω*SqSigma*U/(max.(D,Ss.ω*eye))*U'*SqSigma;
-            Σ_1sp[:,:,i+1] = Ss.Q*Ss.Q'+Ss.A*Σ_ps[:,:,i]*Ss.A';
+            Σ_ps[:,:,i]    = Symmetric(Ss.ω*SqSigma*U/(max.(D,Ss.ω*eye))*U'*SqSigma);
+            Σ_1sp[:,:,i+1] = Symmetric(Ss.Q*Ss.Q'+Ss.A*Σ_ps[:,:,i]*Ss.A');
         end
         # Given Σ_1s, Find Omegas using the Euler equation
         for i = T-1:-1:1
@@ -93,7 +93,9 @@ function solve_trip(Ss::Drip,             # D.R.I.P. steady state
             D, U         = eigen(SqSigma*Ωs[:,:,i+1]*SqSigma);
             D            = diagm(getreal(D));
             U            = real.(U);
-            Ωsp[:,:,i]   = Ss.H*Ss.H'+Ss.β*Ss.A'*invSqSigma*U*min.(D,Ss.ω*eye)*U'*invSqSigma*Ss.A;
+            Ωsp[:,:,i]   = Symmetric(Ss.H*Ss.H' .+
+                           Ss.β*Ss.A'*invSqSigma*U*
+                           min.(D,Ss.ω*eye)*U'*invSqSigma*Ss.A);
         end
         err    = norm(Σ_1sp-Σ_1s)/norm(Σ_1s);
         Σ_1s   = real.(Σ_1sp);
@@ -101,13 +103,13 @@ function solve_trip(Ss::Drip,             # D.R.I.P. steady state
         iter  += 1;
     end
     # Throw error if T was too short for convergence to steady state
-    con_err = norm(Ss.Q*Ss.Q'+Ss.A*Σ_ps[:,:,end-1]*Ss.A'-Ss.Σ_1)/norm(Ss.Σ_1);
+    con_err = norm(Ss.Q*Ss.Q'.+Ss.A*Σ_ps[:,:,end-1]*Ss.A'.-Ss.Σ_1)/norm(Ss.Σ_1);
     if (con_err  > tol)
         error("T was too short for convergence of Trip. Try larger T.");
     end
     # Finally, store the eigenvalues of steady state
     SqSigma      = real.(sqrt(Σ_1s[:,:,end]));
-    D, U         = eigen(SqSigma*Ωs[:,:,end]*SqSigma);
+    D, U         = eigen!(Symmetric(SqSigma*Ωs[:,:,end]*SqSigma));
     Ds[:,end]    = real.(D);
     # return the Trip structure
     return(Trip(Ss,T,Σ_1s,Σ_ps,Ωs,Ds,err))
@@ -142,8 +144,8 @@ function solve_trip(Ss::Drip,        # D.R.I.P.
                     tol   = 1e-4,    # optional: tolerance for convergence
                     maxit = 1000     # optional: max iterations
                     )
-    K0   = Ss.Σ_1*S.L/(S.L'*Ss.Σ_1*S.L+S.Σ_z); # Get prior covariance matrix from new signal
-    Σ0   = Ss.Σ_1-K0*S.L'*Ss.Σ_1;              # Get Kalman gain from new signal
+    K0   = Ss.Σ_1*S.L/(S.L'*Ss.Σ_1*S.L.+S.Σ_z); # Get prior covariance matrix from new signal
+    Σ0   = Ss.Σ_1.-K0*S.L'*Ss.Σ_1;              # Get Kalman gain from new signal
     trip = solve_trip(Ss,Σ0;T=T,tol=tol,maxit=maxit);
     return(trip)
 end
