@@ -16,7 +16,7 @@ using DRIPs;
 ## Overview
 ```@contents
 Pages = ["overview.md"]
-Depth = 3
+Depth = 2
 ```
 ## Syntax
 ```@contents
@@ -25,6 +25,10 @@ Depth = 3
 ```
 ## Examples and Replications
 ```@contents
-Pages = ["examples/mw2009/ex3_Mackowiak_Wiederholt_2009.md","examples/sims2011/ex3_Sims_2011.md"]
-Depth = 2
+Pages = [
+"examples/ex1_pricing_nofeedback/ex1_pricing_pe_nofeedback.md",
+"examples/ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback.md",
+"examples/ex3_mw2009/ex3_Mackowiak_Wiederholt_2009.md",
+"examples/ex4_sims2011/ex4_Sims_2011.md"]
+Depth = 1
 ```

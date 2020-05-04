@@ -1,8 +1,10 @@
 # # Replication of Mackowiak and Wiederholt (2009)
 
-# This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the methods and the [solver](https://github.com/choongryulyang/dynamic_multivariate_RI) from [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf).
+# This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs) package. 
 
-# [![Binder](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+# [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+
+# See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 # ## Contents
 # * [Setup](@ref mw2009_setup)
@@ -44,8 +46,7 @@
 # Moreover, since the problem above has a fixed capacity, instead of a fixed cost of attention ($\omega$) as in D.R.I.P. pacakge, we need to iterate over $\omega$'s to find the one that corresponds with $\kappa$.
 
 # ## [Initialization](@id mw2009_param)
-# Include the solver and import packages:
-
+# Include the package::
 using DRIPs;
 
 # Assign parameters:
@@ -192,7 +193,7 @@ plot(p1,p2,
 
 # ### [Other values of real rigidity ($\alpha$)](@id mw2009_robust_alpha)
 
-# ``\alpha = 0.7``
+# For $\alpha = 0.7$:
 
 ω_α7 = MW(3,0.7,A,Qq,Qz,H,H);
 
@@ -202,7 +203,7 @@ idi_α7      = solve_drip(ω_α7,1,A,Qz,H,w = 0.9);
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",
         DRIPs.capacity(agg_α7),DRIPs.capacity(idi_α7));
 
-# ``\alpha = 0``:
+# For $\alpha = 0$:
 
 ω_α0 = MW(3,0,A,Qq,Qz,H,H);
 
@@ -237,7 +238,7 @@ plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_α7.a[1,1,:],airfs_α0.a[1,1,:]],
     ylabel            = "Impulse responses to shocks \n of one standard deviation")
 
 # ### [Other values of information capacity ($\kappa$)](@id mw2009_robust_kappa)
-# ``\kappa=4``:
+# For $\kappa=4$:
 
 ω_κ4 = MW(4,α,A,Qq,Qz,H,H);
 
@@ -247,7 +248,7 @@ idi_κ4      = solve_drip(ω_κ4,1,A,Qz,H,w = 0.9)
 @printf("Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits",
         DRIPs.capacity(agg_κ4),DRIPs.capacity(idi_κ4));
 
-# ``\kappa=5``:
+# For $\kappa=5$:
 
 ω_κ5 = MW(5,α,A,Qq,Qz,H,H; ω = 0.1*σq^2);
 
@@ -281,8 +282,8 @@ plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_κ4.a[1,1,:],airfs_κ5.a[1,1,:]],
     xlabel            = "Periods",
     ylabel            = "Impulse responses to shocks \n of one standard deviation")
 
-# ### [Measure Performance/Speed](@id mw2009_performance)
-# #### Performance of the code for aggregate problem with feedback
+# ## [Measure Performance/Speed](@id mw2009_performance)
+# ### Performance of the code for aggregate problem with feedback
 
 # For random values of $\omega$ and benchmark values of other parameters:
 
@@ -293,6 +294,6 @@ using BenchmarkTools;
 
 @benchmark agg_drip(ω_α7,A,Qq,0.7,H; H0 = rand(L), maxit = 100, w = 0.95) setup = (ω = σq^2*5*rand())
 
-# #### Performance of the code for idiosyncratic problem
+# ### Performance of the code for idiosyncratic problem
 
 @benchmark solve_drip(ω,1,A,Qz,H,w = 0.9) setup = (ω = σq^2*5*rand())

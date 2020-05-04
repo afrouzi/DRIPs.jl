@@ -1,8 +1,10 @@
 # # Replication of Sims (2011)
 
-# This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the `DRIPs` package. 
+# This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs) package. 
 
-# [![Binder](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+# [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+
+# See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 # ## Contents
 # * [Setup](@ref sims2011_setup)
@@ -51,8 +53,7 @@
 # We have renamed the parameters so that the problem directly maps to a D.R.I.P. Otherwise, the problem is the same.
 
 # ## [Initialization](@id sims2011_param)
-# Include the solver:
-
+# Include the package:
 using DRIPs;
 
 # Set parameters:

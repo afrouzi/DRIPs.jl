@@ -1,8 +1,14 @@
+```@meta
+EditURL = "<unknown>/examples/ex3_Mackowiak_Wiederholt_2009.jl"
+```
+
 # Replication of Mackowiak and Wiederholt (2009)
 
-This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the methods and the [solver](https://github.com/choongryulyang/dynamic_multivariate_RI) from [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf).
+This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
-[![Binder](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+
+See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 ## Contents
 * [Setup](@ref mw2009_setup)
@@ -44,7 +50,7 @@ There are a few ways of translating the problem above to a D.R.I.P. structure; h
 Moreover, since the problem above has a fixed capacity, instead of a fixed cost of attention ($\omega$) as in D.R.I.P. pacakge, we need to iterate over $\omega$'s to find the one that corresponds with $\kappa$.
 
 ## [Initialization](@id mw2009_param)
-Include the solver and import packages:
+Include the package::
 
 ```julia
 using DRIPs;
@@ -176,26 +182,14 @@ nothing #hide
 
 ```
 ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.07 
-ω = 2.12σq² for κ = 3.05 
-ω = 2.33σq² for κ = 2.96 
+ω = 2.00σq² for κ = 3.10 
+ω = 2.18σq² for κ = 3.02 
+ω = 2.22σq² for κ = 3.01 
+ω = 2.43σq² for κ = 2.93 
+ω = 2.25σq² for κ = 2.99 
 ω = 2.24σq² for κ = 3.01 
-ω = 2.25σq² for κ = 3.00 
-ω = 2.25σq² for κ = 2.98 
-ω = 2.26σq² for κ = 3.01 
-ω = 2.25σq² for κ = 3.00 
 ω = 2.25σq² for κ = 2.99 
-ω = 2.25σq² for κ = 2.99 
-ω = 2.28σq² for κ = 2.98 
-ω = 2.20σq² for κ = 3.01 
-ω = 2.24σq² for κ = 2.98 
-ω = 2.22σq² for κ = 2.99 
-ω = 2.19σq² for κ = 3.02 
-ω = 2.21σq² for κ = 3.02 
-ω = 2.13σq² for κ = 3.04 
-ω = 2.36σq² for κ = 2.95 
-ω = 2.23σq² for κ = 3.01 
-ω = 2.25σq² for κ = 3.00 
+ω = 2.24σq² for κ = 3.00 
 Agg. Capacity = 0.12 bits, Idio. Capacity = 2.89 bits
 ```
 
@@ -240,7 +234,7 @@ plot(p1,p2,
 
 ### [Other values of real rigidity ($\alpha$)](@id mw2009_robust_alpha)
 
-``\alpha = 0.7``
+For $\alpha = 0.7$:
 
 ```julia
 ω_α7 = MW(3,0.7,A,Qq,Qz,H,H);
@@ -256,13 +250,12 @@ nothing #hide
 ```
 ω = 1.00σq² for κ = 3.83 
 ω = 2.00σq² for κ = 3.19 
-ω = 2.31σq² for κ = 3.07 
-ω = 2.47σq² for κ = 3.00 
-ω = 2.48σq² for κ = 3.00 
+ω = 2.30σq² for κ = 3.07 
+ω = 2.46σq² for κ = 3.00 
 Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits
 ```
 
-``\alpha = 0``:
+For $\alpha = 0$:
 
 ```julia
 ω_α0 = MW(3,0,A,Qq,Qz,H,H);
@@ -312,7 +305,7 @@ plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_α7.a[1,1,:],airfs_α0.a[1,1,:]],
 ![](4292027058.png)
 
 ### [Other values of information capacity ($\kappa$)](@id mw2009_robust_kappa)
-``\kappa=4``:
+For $\kappa=4$:
 
 ```julia
 ω_κ4 = MW(4,α,A,Qq,Qz,H,H);
@@ -326,17 +319,17 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.06 
-ω = 0.45σq² for κ = 4.45 
-ω = 0.95σq² for κ = 3.72 
-ω = 0.75σq² for κ = 3.94 
-ω = 0.70σq² for κ = 4.01 
+ω = 1.00σq² for κ = 3.66 
+ω = 2.00σq² for κ = 3.10 
+ω = 0.40σq² for κ = 4.55 
+ω = 1.01σq² for κ = 3.66 
+ω = 0.78σq² for κ = 3.91 
+ω = 0.70σq² for κ = 4.02 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits
 ```
 
-``\kappa=5``:
+For $\kappa=5$:
 
 ```julia
 ω_κ5 = MW(5,α,A,Qq,Qz,H,H; ω = 0.1*σq^2);
@@ -385,8 +378,8 @@ plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_κ4.a[1,1,:],airfs_κ5.a[1,1,:]],
 ```
 ![](3805172047.png)
 
-### [Measure Performance/Speed](@id mw2009_performance)
-#### Performance of the code for aggregate problem with feedback
+## [Measure Performance/Speed](@id mw2009_performance)
+### Performance of the code for aggregate problem with feedback
 
 For random values of $\omega$ and benchmark values of other parameters:
 
@@ -397,15 +390,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  139.47 MiB
-  allocs estimate:  55898
+  memory estimate:  126.46 MiB
+  allocs estimate:  51486
   --------------
-  minimum time:     198.567 ms (9.67% GC)
-  median time:      773.531 ms (6.21% GC)
-  mean time:        614.599 ms (6.64% GC)
-  maximum time:     856.778 ms (6.63% GC)
+  minimum time:     206.332 ms (10.30% GC)
+  median time:      249.751 ms (9.64% GC)
+  mean time:        483.843 ms (6.86% GC)
+  maximum time:     949.984 ms (6.35% GC)
   --------------
-  samples:          9
+  samples:          11
   evals/sample:     1
 ```
 
@@ -417,19 +410,19 @@ For $\alpha=0.7$ and random values of $\omega$:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  64.57 MiB
-  allocs estimate:  27746
+  memory estimate:  64.22 MiB
+  allocs estimate:  27416
   --------------
-  minimum time:     97.247 ms (4.82% GC)
-  median time:      123.570 ms (9.58% GC)
-  mean time:        126.127 ms (8.35% GC)
-  maximum time:     180.149 ms (4.52% GC)
+  minimum time:     93.083 ms (4.03% GC)
+  median time:      143.308 ms (8.04% GC)
+  mean time:        141.721 ms (7.53% GC)
+  maximum time:     187.958 ms (6.86% GC)
   --------------
-  samples:          40
+  samples:          36
   evals/sample:     1
 ```
 
-#### Performance of the code for idiosyncratic problem
+### Performance of the code for idiosyncratic problem
 
 ```julia
 @benchmark solve_drip(ω,1,A,Qz,H,w = 0.9) setup = (ω = σq^2*5*rand())
@@ -440,12 +433,12 @@ BenchmarkTools.Trial:
   memory estimate:  12.94 MiB
   allocs estimate:  6135
   --------------
-  minimum time:     24.886 ms (0.00% GC)
-  median time:      31.435 ms (0.00% GC)
-  mean time:        30.652 ms (3.24% GC)
-  maximum time:     40.149 ms (9.84% GC)
+  minimum time:     27.859 ms (0.00% GC)
+  median time:      35.775 ms (0.00% GC)
+  mean time:        34.491 ms (3.01% GC)
+  maximum time:     42.769 ms (10.54% GC)
   --------------
-  samples:          164
+  samples:          145
   evals/sample:     1
 ```
 
