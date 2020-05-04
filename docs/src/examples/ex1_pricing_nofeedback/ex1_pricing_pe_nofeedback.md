@@ -6,7 +6,9 @@ EditURL = "<unknown>/examples/ex1_pricing_pe_nofeedback.jl"
 
 This document goes through a couple of examples for solving pricing under rational inattention without endogenous feedback using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+```julia
+#[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/www.github.com/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
+```
 
 See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
@@ -98,13 +100,13 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  66.66 KiB
-  allocs estimate:  533
+  memory estimate:  57.50 KiB
+  allocs estimate:  447
   --------------
-  minimum time:     41.904 μs (0.00% GC)
-  median time:      126.806 μs (0.00% GC)
-  mean time:        156.523 μs (18.90% GC)
-  maximum time:     10.794 ms (97.89% GC)
+  minimum time:     32.694 μs (0.00% GC)
+  median time:      122.510 μs (0.00% GC)
+  mean time:        135.805 μs (11.03% GC)
+  maximum time:     3.864 ms (95.69% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -229,10 +231,10 @@ BenchmarkTools.Trial:
   memory estimate:  123.44 KiB
   allocs estimate:  782
   --------------
-  minimum time:     95.243 μs (0.00% GC)
-  median time:      248.004 μs (0.00% GC)
-  mean time:        267.444 μs (8.48% GC)
-  maximum time:     5.189 ms (93.96% GC)
+  minimum time:     98.548 μs (0.00% GC)
+  median time:      249.666 μs (0.00% GC)
+  mean time:        266.135 μs (6.49% GC)
+  maximum time:     3.626 ms (89.75% GC)
   --------------
   samples:          10000
   evals/sample:     1

@@ -6,7 +6,9 @@ EditURL = "<unknown>/examples/ex3_Mackowiak_Wiederholt_2009.jl"
 
 This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+```julia
+#[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/www.github.com/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
+```
 
 See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
@@ -182,15 +184,16 @@ nothing #hide
 
 ```
 ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.10 
-ω = 2.18σq² for κ = 3.02 
-ω = 2.22σq² for κ = 3.01 
-ω = 2.43σq² for κ = 2.93 
-ω = 2.25σq² for κ = 2.99 
-ω = 2.24σq² for κ = 3.01 
-ω = 2.25σq² for κ = 2.99 
-ω = 2.24σq² for κ = 3.00 
-Agg. Capacity = 0.12 bits, Idio. Capacity = 2.89 bits
+ω = 2.00σq² for κ = 3.05 
+ω = 2.09σq² for κ = 3.06 
+ω = 1.29σq² for κ = 3.40 
+ω = 2.24σq² for κ = 2.98 
+ω = 2.20σq² for κ = 3.01 
+ω = 2.21σq² for κ = 3.01 
+ω = 2.08σq² for κ = 3.03 
+ω = 2.29σq² for κ = 2.99 
+ω = 2.26σq² for κ = 3.00 
+Agg. Capacity = 0.11 bits, Idio. Capacity = 2.89 bits
 ```
 
 Plot IRFs
@@ -251,7 +254,8 @@ nothing #hide
 ω = 1.00σq² for κ = 3.83 
 ω = 2.00σq² for κ = 3.19 
 ω = 2.30σq² for κ = 3.07 
-ω = 2.46σq² for κ = 3.00 
+ω = 2.46σq² for κ = 3.01 
+ω = 2.48σq² for κ = 3.00 
 Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits
 ```
 
@@ -319,12 +323,12 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.66 
-ω = 2.00σq² for κ = 3.10 
-ω = 0.40σq² for κ = 4.55 
-ω = 1.01σq² for κ = 3.66 
-ω = 0.78σq² for κ = 3.91 
-ω = 0.70σq² for κ = 4.02 
+ω = 1.00σq² for κ = 3.67 
+ω = 2.00σq² for κ = 3.05 
+ω = 0.46σq² for κ = 4.42 
+ω = 0.93σq² for κ = 3.74 
+ω = 0.75σq² for κ = 3.95 
+ω = 0.70σq² for κ = 4.01 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits
 ```
@@ -390,15 +394,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  126.46 MiB
-  allocs estimate:  51486
+  memory estimate:  121.81 MiB
+  allocs estimate:  48904
   --------------
-  minimum time:     206.332 ms (10.30% GC)
-  median time:      249.751 ms (9.64% GC)
-  mean time:        483.843 ms (6.86% GC)
-  maximum time:     949.984 ms (6.35% GC)
+  minimum time:     161.401 ms (7.74% GC)
+  median time:      720.444 ms (8.12% GC)
+  mean time:        582.915 ms (8.25% GC)
+  maximum time:     849.107 ms (6.94% GC)
   --------------
-  samples:          11
+  samples:          9
   evals/sample:     1
 ```
 
@@ -410,15 +414,15 @@ For $\alpha=0.7$ and random values of $\omega$:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  64.22 MiB
-  allocs estimate:  27416
+  memory estimate:  61.38 MiB
+  allocs estimate:  26395
   --------------
-  minimum time:     93.083 ms (4.03% GC)
-  median time:      143.308 ms (8.04% GC)
-  mean time:        141.721 ms (7.53% GC)
-  maximum time:     187.958 ms (6.86% GC)
+  minimum time:     96.899 ms (9.75% GC)
+  median time:      135.716 ms (8.74% GC)
+  mean time:        137.548 ms (8.65% GC)
+  maximum time:     183.673 ms (13.48% GC)
   --------------
-  samples:          36
+  samples:          37
   evals/sample:     1
 ```
 
@@ -433,12 +437,12 @@ BenchmarkTools.Trial:
   memory estimate:  12.94 MiB
   allocs estimate:  6135
   --------------
-  minimum time:     27.859 ms (0.00% GC)
-  median time:      35.775 ms (0.00% GC)
-  mean time:        34.491 ms (3.01% GC)
-  maximum time:     42.769 ms (10.54% GC)
+  minimum time:     26.192 ms (0.00% GC)
+  median time:      33.738 ms (0.00% GC)
+  mean time:        33.139 ms (3.03% GC)
+  maximum time:     40.700 ms (8.18% GC)
   --------------
-  samples:          145
+  samples:          151
   evals/sample:     1
 ```
 

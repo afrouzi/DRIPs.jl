@@ -6,7 +6,9 @@ EditURL = "<unknown>/examples/ex4_Sims_2011.jl"
 
 This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master?filepath=Julia) to run and modify the following code (no software is needed on the local machine).
+```julia
+#[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/www.github.com/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
+```
 
 See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
@@ -102,10 +104,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     102.218 μs (0.00% GC)
-  median time:      115.439 μs (0.00% GC)
-  mean time:        145.847 μs (19.24% GC)
-  maximum time:     9.079 ms (97.59% GC)
+  minimum time:     102.941 μs (0.00% GC)
+  median time:      116.895 μs (0.00% GC)
+  mean time:        147.812 μs (17.75% GC)
+  maximum time:     10.049 ms (97.65% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -122,10 +124,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     99.666 μs (0.00% GC)
-  median time:      123.752 μs (0.00% GC)
-  mean time:        153.173 μs (18.61% GC)
-  maximum time:     8.484 ms (98.03% GC)
+  minimum time:     91.865 μs (0.00% GC)
+  median time:      126.656 μs (0.00% GC)
+  mean time:        153.966 μs (17.44% GC)
+  maximum time:     6.914 ms (97.52% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -340,15 +342,15 @@ Performance for solving the transition dynamics for a random signal:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  751.52 KiB
+  memory estimate:  749.61 KiB
   allocs estimate:  6443
   --------------
-  minimum time:     680.084 μs (0.00% GC)
-  median time:      860.913 μs (0.00% GC)
-  mean time:        1.001 ms (13.56% GC)
-  maximum time:     11.834 ms (92.98% GC)
+  minimum time:     666.689 μs (0.00% GC)
+  median time:      829.770 μs (0.00% GC)
+  mean time:        961.309 μs (13.28% GC)
+  maximum time:     11.727 ms (90.55% GC)
   --------------
-  samples:          4982
+  samples:          5187
   evals/sample:     1
 ```
 

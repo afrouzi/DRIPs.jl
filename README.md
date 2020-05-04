@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.com/afrouzi/DRIPs.jl.svg?branch=master)](https://travis-ci.com/afrouzi/DRIPs.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/afrouzi/DRIPs.jl?svg=true)](https://ci.appveyor.com/project/afrouzi/DRIPs-jl)
 [![Codecov](https://codecov.io/gh/afrouzi/DRIPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/afrouzi/DRIPs.jl)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/www.github.com/afrouzi/DRIPs.jl/binder?filepath=examples) 
 <!-- [![Coveralls](https://coveralls.io/repos/github/afrouzi/DRIPs.jl/badge.svg?branch=master)](https://coveralls.io/github/afrouzi/DRIPs.jl?branch=master)
  -->
 This package provides a fast and robust method for solving LQG Dynamic Ratinoal Inattention Problems based on methods developed in [Afrouzi and Yang (2019): Dynamic Rational Inattention and the Phillips Curve](http://www.afrouzi.com/dynamic_inattention.pdf). For detailed documentation of the software, see the [documentation page](https://afrouzi.github.io/DRIPs.jl/dev).
@@ -22,5 +23,3 @@ The package is registered in the [General](https://github.com/JuliaRegistries/Ge
 * Pricing with Rational Inattention with Endogenous Feedback [[HTML]](https://afrouzi.github.io/DRIPs.jl/dev/examples/ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback/) [[Jupyter notebook]](https://github.com/afrouzi/DRIPs.jl/blob/master/examples/ex2_pricing_pe_with_feedback.ipynb) [[.jl file]](https://github.com/afrouzi/DRIPs.jl/blob/master/examples/ex2_pricing_pe_with_feedback.jl)
 * Replication of [Mackowiack and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) [[HTML]](https://afrouzi.github.io/DRIPs.jl/dev/examples/ex3_mw2009/ex3_Mackowiak_Wiederholt_2009/) [[Jupyter notebook]](https://github.com/afrouzi/DRIPs.jl/blob/master/examples/ex3_Mackowiak_Wiederholt_2009.ipynb) [[.jl file]](https://github.com/afrouzi/DRIPs.jl/blob/master/examples/ex3_Mackowiak_Wiederholt_2009.jl)
 * Replication of [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) [[HTML]](https://afrouzi.github.io/DRIPs.jl/dev/examples/ex4_sims2011/ex4_Sims_2011/) [[Jupyter notebook]](https://github.com/afrouzi/DRIPs.jl/blob/master/examples/ex4_Sims_2011.ipynb) [[.jl file]](https://github.com/afrouzi/DRIPs.jl/blob/master/examples/ex4_Sims_2011.jl)
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/choongryulyang/dynamic_multivariate_RI/master) to run and modify the examples online (no software is needed on the local machine).
