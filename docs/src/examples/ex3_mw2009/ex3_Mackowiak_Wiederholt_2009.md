@@ -6,9 +6,7 @@ EditURL = "<unknown>/examples/ex3_Mackowiak_Wiederholt_2009.jl"
 
 This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
-```julia
-#[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/www.github.com/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
-```
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
 See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
@@ -183,16 +181,12 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.05 
-ω = 2.09σq² for κ = 3.06 
-ω = 1.29σq² for κ = 3.40 
-ω = 2.24σq² for κ = 2.98 
+ω = 1.00σq² for κ = 3.66 
+ω = 2.00σq² for κ = 3.09 
+ω = 2.16σq² for κ = 3.02 
 ω = 2.20σq² for κ = 3.01 
-ω = 2.21σq² for κ = 3.01 
-ω = 2.08σq² for κ = 3.03 
-ω = 2.29σq² for κ = 2.99 
-ω = 2.26σq² for κ = 3.00 
+ω = 2.25σq² for κ = 3.00 
+ω = 2.24σq² for κ = 3.00 
 Agg. Capacity = 0.11 bits, Idio. Capacity = 2.89 bits
 ```
 
@@ -254,7 +248,7 @@ nothing #hide
 ω = 1.00σq² for κ = 3.83 
 ω = 2.00σq² for κ = 3.19 
 ω = 2.30σq² for κ = 3.07 
-ω = 2.46σq² for κ = 3.01 
+ω = 2.46σq² for κ = 3.00 
 ω = 2.48σq² for κ = 3.00 
 Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits
 ```
@@ -323,11 +317,11 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.05 
-ω = 0.46σq² for κ = 4.42 
-ω = 0.93σq² for κ = 3.74 
-ω = 0.75σq² for κ = 3.95 
+ω = 1.00σq² for κ = 3.66 
+ω = 2.00σq² for κ = 3.08 
+ω = 0.43σq² for κ = 4.49 
+ω = 0.98σq² for κ = 3.69 
+ω = 0.76σq² for κ = 3.93 
 ω = 0.70σq² for κ = 4.01 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits
@@ -394,15 +388,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  121.81 MiB
-  allocs estimate:  48904
+  memory estimate:  172.08 MiB
+  allocs estimate:  71405
   --------------
-  minimum time:     161.401 ms (7.74% GC)
-  median time:      720.444 ms (8.12% GC)
-  mean time:        582.915 ms (8.25% GC)
-  maximum time:     849.107 ms (6.94% GC)
+  minimum time:     300.252 ms (6.06% GC)
+  median time:      771.501 ms (7.48% GC)
+  mean time:        702.003 ms (7.78% GC)
+  maximum time:     1.012 s (7.32% GC)
   --------------
-  samples:          9
+  samples:          8
   evals/sample:     1
 ```
 
@@ -414,15 +408,15 @@ For $\alpha=0.7$ and random values of $\omega$:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  61.38 MiB
-  allocs estimate:  26395
+  memory estimate:  56.15 MiB
+  allocs estimate:  23930
   --------------
-  minimum time:     96.899 ms (9.75% GC)
-  median time:      135.716 ms (8.74% GC)
-  mean time:        137.548 ms (8.65% GC)
-  maximum time:     183.673 ms (13.48% GC)
+  minimum time:     88.271 ms (14.87% GC)
+  median time:      133.945 ms (11.35% GC)
+  mean time:        133.629 ms (10.55% GC)
+  maximum time:     176.224 ms (8.74% GC)
   --------------
-  samples:          37
+  samples:          38
   evals/sample:     1
 ```
 
@@ -437,12 +431,12 @@ BenchmarkTools.Trial:
   memory estimate:  12.94 MiB
   allocs estimate:  6135
   --------------
-  minimum time:     26.192 ms (0.00% GC)
-  median time:      33.738 ms (0.00% GC)
-  mean time:        33.139 ms (3.03% GC)
-  maximum time:     40.700 ms (8.18% GC)
+  minimum time:     26.757 ms (0.00% GC)
+  median time:      31.307 ms (0.00% GC)
+  mean time:        32.203 ms (4.08% GC)
+  maximum time:     58.940 ms (0.00% GC)
   --------------
-  samples:          151
+  samples:          156
   evals/sample:     1
 ```
 

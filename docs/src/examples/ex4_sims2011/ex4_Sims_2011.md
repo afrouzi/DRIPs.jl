@@ -6,9 +6,7 @@ EditURL = "<unknown>/examples/ex4_Sims_2011.jl"
 
 This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
-```julia
-#[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/www.github.com/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
-```
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
 See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
@@ -104,10 +102,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     102.941 μs (0.00% GC)
-  median time:      116.895 μs (0.00% GC)
-  mean time:        147.812 μs (17.75% GC)
-  maximum time:     10.049 ms (97.65% GC)
+  minimum time:     101.437 μs (0.00% GC)
+  median time:      115.738 μs (0.00% GC)
+  mean time:        147.859 μs (18.96% GC)
+  maximum time:     11.428 ms (98.63% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -124,10 +122,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     91.865 μs (0.00% GC)
-  median time:      126.656 μs (0.00% GC)
-  mean time:        153.966 μs (17.44% GC)
-  maximum time:     6.914 ms (97.52% GC)
+  minimum time:     90.173 μs (0.00% GC)
+  median time:      122.480 μs (0.00% GC)
+  mean time:        149.929 μs (18.11% GC)
+  maximum time:     8.384 ms (97.86% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -345,12 +343,12 @@ BenchmarkTools.Trial:
   memory estimate:  749.61 KiB
   allocs estimate:  6443
   --------------
-  minimum time:     666.689 μs (0.00% GC)
-  median time:      829.770 μs (0.00% GC)
-  mean time:        961.309 μs (13.28% GC)
-  maximum time:     11.727 ms (90.55% GC)
+  minimum time:     650.802 μs (0.00% GC)
+  median time:      822.985 μs (0.00% GC)
+  mean time:        953.259 μs (13.70% GC)
+  maximum time:     11.835 ms (89.76% GC)
   --------------
-  samples:          5187
+  samples:          5233
   evals/sample:     1
 ```
 
