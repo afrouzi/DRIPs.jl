@@ -1,8 +1,8 @@
 # Dynamic Rational Inattention Problems (DRIPs)
 
-This package provides a fast and robust method for solving LQG Dynamic Rational Inattention models using the methods developed by [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf).
+`DRIPs.jl` is a Julia software package that provides a fast and robust method for solving LQG Dynamic Rational Inattention models using the methods developed by [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf).
 ## Installation
-To add the package, execute:
+To add the package, execute the following in Julia REPL:
 
 ```@julia
 using Pkg; Pkg.add("DRIPs");

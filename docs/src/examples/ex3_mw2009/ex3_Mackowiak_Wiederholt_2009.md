@@ -1,5 +1,5 @@
 ```@meta
-EditURL = "<unknown>/examples/ex3_Mackowiak_Wiederholt_2009.jl"
+EditURL = "<unknown>/examples/src/ex3_Mackowiak_Wiederholt_2009.jl"
 ```
 
 # Replication of Mackowiak and Wiederholt (2009)
@@ -145,7 +145,7 @@ function MW(κ,α,A,Qq,Qz,Hq,Hz; #primitives of MW problem
     err   = 1;
     it    = 0;
     while (err > tol) & (iter < maxit)
-        agg, errtemp = agg_drip(ω,A,Qq,α,H; H0 = rand(L),maxit=25,w=0.95);
+        agg, errtemp = agg_drip(ω,A,Qq,α,H; H0 = rand(L),maxit=20,w=0.95);
         idi = solve_drip(ω,1,A,Qz,H,w = 0.9) ;
         cap = DRIPs.capacity(agg, unit = "bit") + DRIPs.capacity(idi, unit = "bit");
         x = ω/σq^2;
@@ -181,13 +181,11 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.66 
-ω = 2.00σq² for κ = 3.09 
-ω = 2.16σq² for κ = 3.02 
-ω = 2.20σq² for κ = 3.01 
-ω = 2.25σq² for κ = 3.00 
-ω = 2.24σq² for κ = 3.00 
-Agg. Capacity = 0.11 bits, Idio. Capacity = 2.89 bits
+ω = 1.00σq² for κ = 3.67 
+ω = 2.00σq² for κ = 3.08 
+ω = 2.14σq² for κ = 3.03 
+ω = 2.21σq² for κ = 3.00 
+Agg. Capacity = 0.12 bits, Idio. Capacity = 2.90 bits
 ```
 
 Plot IRFs
@@ -246,9 +244,9 @@ nothing #hide
 
 ```
 ω = 1.00σq² for κ = 3.83 
-ω = 2.00σq² for κ = 3.19 
-ω = 2.30σq² for κ = 3.07 
-ω = 2.46σq² for κ = 3.00 
+ω = 2.00σq² for κ = 3.20 
+ω = 2.31σq² for κ = 3.06 
+ω = 2.46σq² for κ = 3.01 
 ω = 2.48σq² for κ = 3.00 
 Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits
 ```
@@ -317,12 +315,12 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.66 
-ω = 2.00σq² for κ = 3.08 
-ω = 0.43σq² for κ = 4.49 
-ω = 0.98σq² for κ = 3.69 
-ω = 0.76σq² for κ = 3.93 
-ω = 0.70σq² for κ = 4.01 
+ω = 1.00σq² for κ = 3.67 
+ω = 2.00σq² for κ = 3.10 
+ω = 0.42σq² for κ = 4.50 
+ω = 0.99σq² for κ = 3.68 
+ω = 0.77σq² for κ = 3.92 
+ω = 0.70σq² for κ = 4.02 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits
 ```
@@ -388,13 +386,13 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  172.08 MiB
-  allocs estimate:  71405
+  memory estimate:  203.12 MiB
+  allocs estimate:  82085
   --------------
-  minimum time:     300.252 ms (6.06% GC)
-  median time:      771.501 ms (7.48% GC)
-  mean time:        702.003 ms (7.78% GC)
-  maximum time:     1.012 s (7.32% GC)
+  minimum time:     235.854 ms (7.64% GC)
+  median time:      708.076 ms (4.85% GC)
+  mean time:        670.843 ms (4.99% GC)
+  maximum time:     842.052 ms (4.32% GC)
   --------------
   samples:          8
   evals/sample:     1
@@ -408,15 +406,15 @@ For $\alpha=0.7$ and random values of $\omega$:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  56.15 MiB
-  allocs estimate:  23930
+  memory estimate:  66.93 MiB
+  allocs estimate:  28873
   --------------
-  minimum time:     88.271 ms (14.87% GC)
-  median time:      133.945 ms (11.35% GC)
-  mean time:        133.629 ms (10.55% GC)
-  maximum time:     176.224 ms (8.74% GC)
+  minimum time:     94.669 ms (4.00% GC)
+  median time:      124.228 ms (7.35% GC)
+  mean time:        125.809 ms (6.92% GC)
+  maximum time:     162.196 ms (10.32% GC)
   --------------
-  samples:          38
+  samples:          40
   evals/sample:     1
 ```
 
@@ -431,12 +429,12 @@ BenchmarkTools.Trial:
   memory estimate:  12.94 MiB
   allocs estimate:  6135
   --------------
-  minimum time:     26.757 ms (0.00% GC)
-  median time:      31.307 ms (0.00% GC)
-  mean time:        32.203 ms (4.08% GC)
-  maximum time:     58.940 ms (0.00% GC)
+  minimum time:     26.274 ms (0.00% GC)
+  median time:      31.465 ms (0.00% GC)
+  mean time:        31.407 ms (2.86% GC)
+  maximum time:     38.304 ms (8.50% GC)
   --------------
-  samples:          156
+  samples:          160
   evals/sample:     1
 ```
 

@@ -1,5 +1,5 @@
 ```@meta
-EditURL = "<unknown>/examples/ex4_Sims_2011.jl"
+EditURL = "<unknown>/examples/src/ex4_Sims_2011.jl"
 ```
 
 # Replication of Sims (2011)
@@ -102,10 +102,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     101.437 μs (0.00% GC)
-  median time:      115.738 μs (0.00% GC)
-  mean time:        147.859 μs (18.96% GC)
-  maximum time:     11.428 ms (98.63% GC)
+  minimum time:     87.996 μs (0.00% GC)
+  median time:      114.701 μs (0.00% GC)
+  mean time:        147.636 μs (18.99% GC)
+  maximum time:     16.140 ms (97.53% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -122,10 +122,10 @@ BenchmarkTools.Trial:
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     90.173 μs (0.00% GC)
-  median time:      122.480 μs (0.00% GC)
-  mean time:        149.929 μs (18.11% GC)
-  maximum time:     8.384 ms (97.86% GC)
+  minimum time:     104.575 μs (0.00% GC)
+  median time:      127.528 μs (0.00% GC)
+  mean time:        159.719 μs (18.26% GC)
+  maximum time:     8.158 ms (96.60% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -340,15 +340,15 @@ Performance for solving the transition dynamics for a random signal:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  749.61 KiB
-  allocs estimate:  6443
+  memory estimate:  751.44 KiB
+  allocs estimate:  6444
   --------------
-  minimum time:     650.802 μs (0.00% GC)
-  median time:      822.985 μs (0.00% GC)
-  mean time:        953.259 μs (13.70% GC)
-  maximum time:     11.835 ms (89.76% GC)
+  minimum time:     681.081 μs (0.00% GC)
+  median time:      846.014 μs (0.00% GC)
+  mean time:        965.988 μs (11.75% GC)
+  maximum time:     10.516 ms (91.40% GC)
   --------------
-  samples:          5233
+  samples:          5163
   evals/sample:     1
 ```
 
