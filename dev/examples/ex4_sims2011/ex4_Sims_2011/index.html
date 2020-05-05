@@ -31,20 +31,20 @@ sol_bp.Σ_p</code></pre><pre><code class="language-none">2×2 LinearAlgebra.Symm
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     101.437 μs (0.00% GC)
-  median time:      115.738 μs (0.00% GC)
-  mean time:        147.859 μs (18.96% GC)
-  maximum time:     11.428 ms (98.63% GC)
+  minimum time:     87.996 μs (0.00% GC)
+  median time:      114.701 μs (0.00% GC)
+  mean time:        147.636 μs (18.99% GC)
+  maximum time:     16.140 ms (97.53% GC)
   --------------
   samples:          10000
   evals/sample:     1</code></pre><p>Performance for random values of <span>$\beta\in[0,1]$</span>:</p><pre><code class="language-julia">@benchmark solve_drip(ω,β,A,Q,H) setup = (β = rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
   memory estimate:  176.06 KiB
   allocs estimate:  1545
   --------------
-  minimum time:     90.173 μs (0.00% GC)
-  median time:      122.480 μs (0.00% GC)
-  mean time:        149.929 μs (18.11% GC)
-  maximum time:     8.384 ms (97.86% GC)
+  minimum time:     104.575 μs (0.00% GC)
+  median time:      127.528 μs (0.00% GC)
+  mean time:        159.719 μs (18.26% GC)
+  maximum time:     8.158 ms (96.60% GC)
   --------------
   samples:          10000
   evals/sample:     1</code></pre><h3 id="sims2011_lowomega-1"><a class="docs-heading-anchor" href="#sims2011_lowomega-1">Lower Cost of Attention: <span>$\omega = 0.1$</span></a><a class="docs-heading-anchor-permalink" href="#sims2011_lowomega-1" title="Permalink"></a></h3><p>Solve and display the optimal posterior covariance matrix:</p><pre><code class="language-julia">sol_lω = solve_drip(0.1,β,A,Q,H);
@@ -149,15 +149,15 @@ p = plot(p1,p2,
 nothing #hide</code></pre><p>Solve for the transition dynamics given <span>$s_0$</span>:</p><pre><code class="language-julia">Tss     = 15; # guess for time until convergence
 bp_trip = solve_trip(sol_bp, s0; T = Tss);
 nothing #hide</code></pre><p>Performance for solving the transition dynamics for a random signal:</p><pre><code class="language-julia">@benchmark solve_trip(sol_bp, S; T = 30) setup = (S = Signal(rand(2),0.0))</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
-  memory estimate:  749.61 KiB
-  allocs estimate:  6443
+  memory estimate:  751.44 KiB
+  allocs estimate:  6444
   --------------
-  minimum time:     650.802 μs (0.00% GC)
-  median time:      822.985 μs (0.00% GC)
-  mean time:        953.259 μs (13.70% GC)
-  maximum time:     11.835 ms (89.76% GC)
+  minimum time:     681.081 μs (0.00% GC)
+  median time:      846.014 μs (0.00% GC)
+  mean time:        965.988 μs (11.75% GC)
+  maximum time:     10.516 ms (91.40% GC)
   --------------
-  samples:          5233
+  samples:          5163
   evals/sample:     1</code></pre><h4 id="Plot-Transition-Path-of-Eigenvalues-1"><a class="docs-heading-anchor" href="#Plot-Transition-Path-of-Eigenvalues-1">Plot Transition Path of Eigenvalues</a><a class="docs-heading-anchor-permalink" href="#Plot-Transition-Path-of-Eigenvalues-1" title="Permalink"></a></h4><p>Plot the marginal values of information. In this problem the state is two dimensional. At any time, for every orthogonalized dimension, the agent weighs the <strong>marginal value</strong> of acquiring information in that dimension against the <strong>marginal cost</strong> of attention which is the parameter <span>$\omega$</span>.<strong>The number of signals that the agent acquires at any time is the number of marginal values that are larger than <span>$\omega$</span>.</strong></p><pre><code class="language-julia">p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,1)],
     label             = [&quot;Low marginal value dim.&quot; &quot;High marginal value dim.&quot; &quot;Marginal cost of attention&quot;],
     size              = (900,275),
@@ -204,4 +204,4 @@ p = plot(p1,p2,
     legendfont = font(12),
     tickfont   = font(12),
     size       = (900,550),
-    framestyle = :box)</code></pre><p><img src="../3849941689.png" alt/></p><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ex3_mw2009/ex3_Mackowiak_Wiederholt_2009/">« Replication of Mackowiak and Wiederholt (2009)</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 4 May 2020 04:48">Monday 4 May 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    framestyle = :box)</code></pre><p><img src="../3849941689.png" alt/></p><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ex3_mw2009/ex3_Mackowiak_Wiederholt_2009/">« Replication of Mackowiak and Wiederholt (2009)</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 5 May 2020 16:38">Tuesday 5 May 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
