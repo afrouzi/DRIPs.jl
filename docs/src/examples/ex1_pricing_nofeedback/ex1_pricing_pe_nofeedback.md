@@ -1,5 +1,5 @@
 ```@meta
-EditURL = "<unknown>/examples/ex1_pricing_pe_nofeedback.jl"
+EditURL = "<unknown>/examples/src/ex1_pricing_pe_nofeedback.jl"
 ```
 
 # Pricing under RI w/o Endogenous Feedback
@@ -101,10 +101,10 @@ BenchmarkTools.Trial:
   memory estimate:  66.66 KiB
   allocs estimate:  533
   --------------
-  minimum time:     42.500 μs (0.00% GC)
-  median time:      128.416 μs (0.00% GC)
-  mean time:        154.567 μs (17.73% GC)
-  maximum time:     7.563 ms (97.10% GC)
+  minimum time:     41.664 μs (0.00% GC)
+  median time:      129.069 μs (0.00% GC)
+  mean time:        156.600 μs (17.54% GC)
+  maximum time:     12.371 ms (97.95% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -229,10 +229,10 @@ BenchmarkTools.Trial:
   memory estimate:  123.44 KiB
   allocs estimate:  782
   --------------
-  minimum time:     105.234 μs (0.00% GC)
-  median time:      268.608 μs (0.00% GC)
-  mean time:        292.787 μs (8.04% GC)
-  maximum time:     7.076 ms (91.13% GC)
+  minimum time:     113.388 μs (0.00% GC)
+  median time:      258.636 μs (0.00% GC)
+  mean time:        271.715 μs (7.47% GC)
+  maximum time:     4.104 ms (92.19% GC)
   --------------
   samples:          10000
   evals/sample:     1

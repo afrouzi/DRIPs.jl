@@ -1,5 +1,5 @@
 ```@meta
-EditURL = "<unknown>/examples/ex2_pricing_pe_with_feedback.jl"
+EditURL = "<unknown>/examples/src/ex2_pricing_pe_with_feedback.jl"
 ```
 
 # Pricing under RI with Endogenous Feedback
@@ -195,7 +195,7 @@ nothing #hide
 ```
 
 ```
-  0.487946 seconds (125.67 k allocations: 311.980 MiB, 11.60% gc time)
+  0.430235 seconds (125.65 k allocations: 311.946 MiB, 9.60% gc time)
 
 ```
 
@@ -240,13 +240,13 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  285.01 MiB
-  allocs estimate:  34164
+  memory estimate:  285.60 MiB
+  allocs estimate:  34248
   --------------
-  minimum time:     313.412 ms (11.94% GC)
-  median time:      333.675 ms (12.50% GC)
-  mean time:        334.790 ms (12.48% GC)
-  maximum time:     368.399 ms (12.45% GC)
+  minimum time:     303.752 ms (10.12% GC)
+  median time:      321.614 ms (10.93% GC)
+  mean time:        319.948 ms (11.25% GC)
+  maximum time:     335.572 ms (11.65% GC)
   --------------
   samples:          16
   evals/sample:     1

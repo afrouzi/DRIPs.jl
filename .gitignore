@@ -4,5 +4,6 @@
 .DS_Store
 **/Manifest.toml
 /dev/
-/binder
 docs/build/
+/binder_dependencies.jl
+/push_binder.sh

@@ -126,7 +126,7 @@ function MW(κ,α,A,Qq,Qz,Hq,Hz; #primitives of MW problem
     err   = 1;
     it    = 0;
     while (err > tol) & (iter < maxit)
-        agg, errtemp = agg_drip(ω,A,Qq,α,H; H0 = rand(L),maxit=25,w=0.95);
+        agg, errtemp = agg_drip(ω,A,Qq,α,H; H0 = rand(L),maxit=20,w=0.95);
         idi = solve_drip(ω,1,A,Qz,H,w = 0.9) ;
         cap = DRIPs.capacity(agg, unit = "bit") + DRIPs.capacity(idi, unit = "bit");
         x = ω/σq^2;

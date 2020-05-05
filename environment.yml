@@ -1,7 +1,0 @@
-# Python dependencies for mybinder 
-dependencies:
-  - matplotlib
-  - numpy
-  - pip
-  - pip:
-      - julia
