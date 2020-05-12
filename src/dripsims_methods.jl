@@ -16,20 +16,20 @@ Returns a `Dripirfs` structure with the impulse response functions of the fundam
 function dripsims(P::Drip;
                   T    = 500,
                   burn = 100)
-    (n,m)    = length(size(P.H)) = = 2 ? size(P.H) : (size(P.H,1),1)
-    (_,k)    = length(size(P.Q)) = = 2 ? size(P.Q) : (size(P.Q,1),1)
+    (n,m)    = length(size(P.H)) == 2 ? size(P.H) : (size(P.H,1),1)
+    (_,k)    = length(size(P.Q)) == 2 ? size(P.Q) : (size(P.Q,1),1)
     x_Shocks = randn(k,burn+T);
-    a_Shocks = randn(m,burn+T);
-    x        = zeros(n,T);
-    x_hat    = zeros(n,T);
-    a        = zeros(m,T);
+    a_Shocks = sqrt(P.Σ_z)*randn(m,burn+T);
+    x        = zeros(n,burn+T);
+    x_hat    = zeros(n,burn+T);
+    a        = zeros(m,burn+T);
     for ii in 1:T+burn
         if ii==1
             x[:,ii]     = P.Q*x_Shocks[:,ii];
-            x_hat[:,ii] = (P.K*P.Y')*(x[:,ii])+P.K*a_Shocks[:,ii];
+            x_hat[:,ii] = (P.K*P.Y')*(x[:,ii])+P.K[:,:]*a_Shocks[:,ii];
         else
-            x[:,ii]     = P.A*x[:,kk,ii-1]+P.Q*x_Shocks[:,ii];
-            x_hat[:,ii] = P.A*x_hat[:,kk,ii-1]+(P.K*P.Y')*(x[:,kk,ii]-P.A*x_hat[:,kk,ii-1])+P.K*a_Shocks[:,ii];
+            x[:,ii]     = P.A*x[:,ii-1]+P.Q*x_Shocks[:,ii];
+            x_hat[:,ii] = P.A*x_hat[:,ii-1]+(P.K*P.Y')*(x[:,ii]-P.A*x_hat[:,ii-1])+P.K[:,:]*a_Shocks[:,ii];
         end
         a[:,ii]  .= P.H'*x_hat[:,ii];
     end
