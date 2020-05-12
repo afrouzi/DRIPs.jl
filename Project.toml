@@ -1,10 +1,11 @@
 name = "DRIPs"
 uuid = "12fec403-b259-46d8-9e74-75aa213074e9"
 authors = ["Hassan Afrouzi", "Choongryul Yang", "Miguel Acosta"]
-version = "0.1.4"
+version = "0.1.41"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 julia = "^1.2"

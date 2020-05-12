@@ -1,7 +1,8 @@
 """
          dripsims(P::Drip;      # Steady state of the DRIP
                   T    = 500,   # Optional: length of simulation
-                  burn = 100    # Optional: length of initial burn
+                  burn = 100,   # Optional: length of initial burn
+                  seed = true   # Optional: seed number for fundamental shocks
                   ) -> Dripirfs
 Returns a `Dripirfs` structure with a simulated path of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`)
@@ -14,10 +15,17 @@ Returns a `Dripirfs` structure with a simulated path of the fundamental (`x`), b
 """
 function dripsims(P::Drip;
                   T    = 500,
-                  burn = 100)
+                  burn = 100,
+                  seed = true)
     (n,m)    = length(size(P.H)) == 2 ? size(P.H) : (size(P.H,1),1)
     (_,k)    = length(size(P.Q)) == 2 ? size(P.Q) : (size(P.Q,1),1)
-    x_Shocks = randn(k,burn+T);
+    if seed == true
+        x_Shocks = randn(k,burn+T);
+    else
+        Random.seed!(seed);
+        x_Shocks = randn(k,burn+T);
+    end
+    Random.seed!();
     a_Shocks = sqrt(P.Σ_z)*randn(m,burn+T);
     x        = zeros(n,burn+T);
     x_hat    = zeros(n,burn+T);

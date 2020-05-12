@@ -8,7 +8,7 @@ for reference.
 """
 module DRIPs
 
-using LinearAlgebra
+using LinearAlgebra, Random
 
 include("drip_methods.jl")
 include("trip_methods.jl")
