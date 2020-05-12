@@ -31,7 +31,7 @@ using Test
 	    @test pt.err < 1e-4;
     println("Checking IRFs ...")
 		pirfs     = dripirfs(p,T = 15);
-		psims     = dripsims(p,T = 500, burn = 100);
+		psims     = dripsims(p,T = 500, burn = 100, N=100, seed = 0);
 		ptss      = solve_trip(p,p.Σ_1;T = 15);
 		ptssirfs  = dripirfs(ptss,T = 15);
 		Sp        = Signal([0 0; 0 0], [1 0; 0 1]);
