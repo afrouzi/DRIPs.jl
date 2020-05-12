@@ -10,10 +10,16 @@ Modules = [DRIPs]
 Pages   = ["trip_methods.jl"]
 ```
 
-## [Impulse Response Functions](@id IRFs)
+## [Methods for Impulse Response Functions](@id IRFs)
 ```@autodocs
 Modules = [DRIPs]
 Pages   = ["dripirfs_methods.jl"]
+```
+
+## [Methods for Simulating DRIPs](@id Simulations)
+```@autodocs
+Modules = [DRIPs]
+Pages   = ["dripsims_methods.jl"]
 ```
 
 ## Aux. Functions
