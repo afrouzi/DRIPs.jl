@@ -3,11 +3,10 @@
                   T    = 500,   # Optional: length of simulation
                   burn = 100    # Optional: length of initial burn
                   ) -> Dripirfs
-Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
-    and actions (`a`) to all the structural shocks
+Returns a `Dripirfs` structure with a simulated path of the fundamental (`x`), beliefs (`x_hat`)
+    and actions (`a`)
     **under the steady state information structure**. In particular, if `n` is the
-    dimension of `x`, `m` is the dimension of `a` and `k` is the number of
-    structural shocks, then
+    dimension of `x` and `m` is the dimension of `a`, then
 
 * `x` has dimension `n*T` where `x(:,t)` is the simulated value of `x` at time `t`.
 * `x_hat` has dimension `n*T` where `x_hat(:,t)` is the simulated value of `x_hat` at time `t`.
