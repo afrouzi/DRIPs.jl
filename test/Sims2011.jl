@@ -33,6 +33,7 @@ using Test
 		pirfs     = dripirfs(p,T = 15);
 		ptss      = solve_trip(p,p.Σ_1;T = 15);
 		ptssirfs  = dripirfs(ptss,T = 15);
+		ptssims   = dripsims(ptss);
 		Sp        = Signal([0 0; 0 0], [1 0; 0 1]);
 		ptssirfsp = dripirfs(p,Sp, T = 30);
 		ptssirfsp = dripirfs(p,Sp, T = 10);

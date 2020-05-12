@@ -13,11 +13,13 @@ using LinearAlgebra
 include("drip_methods.jl")
 include("trip_methods.jl")
 include("dripirfs_methods.jl")
+include("dripsims_methods.jl")
 include("aux_funcs.jl")
 
 export Drip, Trip, Dripirfs, Signal,
 	   solve_drip,
 	   solve_trip,
-	   dripirfs
+	   dripirfs,
+	   dripsims
 
 end # module
