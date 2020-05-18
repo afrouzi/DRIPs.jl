@@ -33,7 +33,7 @@
 #     p_{i,t}^*=\Phi(L)u_t
 # \end{aligned}
 # ```
-# where $\Phi(.)$ is a lag polynomial and $u_t$ is the shock to nominal demand. Here, we have basically guessed that the process for $p_{i,t}^*$ is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See [Afrouzi (2020)](http://www.afrouzi.com/strategic_inattetion.pdf)). Our objective is to find $\Phi(.)$. 
+# where $\Phi(.)$ is a lag polynomial and $u_t$ is the shock to nominal demand. Here, we have basically guessed that the process for $p_{i,t}^*$ is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See [Afrouzi (2020)](http://www.afrouzi.com/strategic_inattetion.pdf)). Our objective is to find $\Phi(.)$.
 
 # Since we cannot put $MA(\infty)$ processes in the computer, we approximate them with truncation. In particular, we know for stationary processes, we can arbitrarily get close to the true process by truncating $MA(\infty)$ processes to $MA(T)$ processes. Our problem here is that $p_{i,t}^*$ has a unit root and is not stationary. We can bypass this issue by re-writing the state space in the following way:
 # ```math
@@ -41,7 +41,7 @@
 #     p_{i,t}^*=\phi(L)\tilde{u}_t,\quad \tilde{u}_t=(1-L)^{-1}u_t =\sum_{j=0}^\infty u_{t-j}
 # \end{aligned}
 # ```
-# here $\tilde{u}_{t-j}$ is the unit root of the process and basically we have differenced out the unit root from the lag polynomial, and $\phi(L)=(1-L)\Phi(L)$. Notice that since the original process was difference stationary, differencing out the unit root means that $\phi(L)$ is now in $\ell_2$, and the process can now be approximated arbitrarily precisely with truncation. 
+# here $\tilde{u}_{t-j}$ is the unit root of the process and basically we have differenced out the unit root from the lag polynomial, and $\phi(L)=(1-L)\Phi(L)$. Notice that since the original process was difference stationary, differencing out the unit root means that $\phi(L)$ is now in $\ell_2$, and the process can now be approximated arbitrarily precisely with truncation.
 
 # ### [Matrix Notation](@id ex2_matrix_notation)
 
@@ -59,7 +59,7 @@
 #         0 & 1 & \dots & 0 & 0\\
 #         \vdots & \vdots & \ddots & \vdots & \vdots\\
 #         0 & 0 & \dots & 1 & 0
-#         \end{array}\right]}}\, \vec{x}_{t-1} 
+#         \end{array}\right]}}\, \vec{x}_{t-1}
 #     + \underset{\mathbf{Q}}{\underbrace{\left[\begin{array}{c}
 #         \sigma_u\\
 #         0\\
@@ -83,9 +83,9 @@
 # \end{aligned}
 # ```
 
-# where $q_t^{(j)}$ is the $j$'th order belief of firms, on average, of $q_t$. Now, we need to write these higher order beliefs in terms of the state vector. Suppose, for a given $j$, there exists $\mathbf{X}_j\in \mathbb{R}^{L\times L}$ such that 
+# where $q_t^{(j)}$ is the $j$'th order belief of firms, on average, of $q_t$. Now, we need to write these higher order beliefs in terms of the state vector. Suppose, for a given $j$, there exists $\mathbf{X}_j\in \mathbb{R}^{L\times L}$ such that
 # $$ q_t^{(j)} = \mathbf{H}_q'\mathbf{X}_j \vec{x}_t $$
-# This clearly holds for $j=0$ with $\mathbf{X}_0=\mathbf{I}$. 
+# This clearly holds for $j=0$ with $\mathbf{X}_0=\mathbf{I}$.
 
 # Now, note that
 # ```math
@@ -142,12 +142,12 @@ function ge_drip(ω,β,A,Q,          #primitives of drip except for H because H 
     M     = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)];
     while (err > tol) & (iter < maxit)
             if iter == 0
-                global ge  = solve_drip(ω,β,A,Q,H0, w = 0.9);
+                global ge  = Drip(ω,β,A,Q,H0, w = 0.9);
             else
-                global ge  = solve_drip(ω,β,A,Q,H0;Ω0 = ge.Ω ,Σ0 = ge.Σ_1,maxit=15);
+                global ge  = Drip(ω,β,A,Q,H0;Ω0 = ge.ss.Ω ,Σ0 = ge.ss.Σ_1,maxit=15);
             end
 
-            XFUN(jj) = ((I-ge.K*ge.Y')*ge.A)^jj * (ge.K*ge.Y') * (M')^jj
+            XFUN(jj) = ((I-ge.ss.K*ge.ss.Y')*ge.A)^jj * (ge.ss.K*ge.ss.Y') * (M')^jj
             X = DRIPs.infinitesum(XFUN; maxit=L, start = 0);  #E[x⃗]=X×x⃗
 
             XpFUN(jj) = α^jj * X^(jj)
@@ -174,7 +174,7 @@ using Suppressor; # suppresses printing of function. comment to see convergence 
 # ## [IRFs](@id ex2_irfs)
 # Get IRFs:
 
-geirfs = dripirfs(ge,T = L);
+geirfs = irfs(ge,T = L)
 
 M  = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)]; # shift matrix
 dq = diagm(Hq)*geirfs.x[1,1,:];                        # change in nominal demand
@@ -202,6 +202,4 @@ plot(p1,p2,
 
 # Solve and measure performance for random values of $\omega$:
 using BenchmarkTools;
-@suppress @benchmark ge_drip(ω,β,A,Q,α,Hq,L) setup = (ω=rand()) # solves and times the fixed point for different values of ω 
-
-
+@suppress @benchmark ge_drip(ω,β,A,Q,α,Hq,L) setup = (ω=rand()) # solves and times the fixed point for different values of ω

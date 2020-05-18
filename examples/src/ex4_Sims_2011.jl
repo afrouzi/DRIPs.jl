@@ -1,6 +1,6 @@
 # # Replication of Sims (2011)
 
-# This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs) package. 
+# This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
 
 # [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
@@ -24,7 +24,7 @@
 # ## [Setup](@id sims2011_setup)
 
 # The problem in [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf), as it appears on page 21, with slight change of notation,
-# ```math 
+# ```math
 # \begin{aligned}
 #             & \min_{\{\Sigma_{t|t}\succeq 0\}_{t\geq 0}} \mathbb{E}_0\left[\sum_{t=0}^\infty
 #   \beta^t \left(tr(\Sigma_{t|t}\mathbf{H}\mathbf{H}')+\omega\log\left(\frac{|\Sigma_{t|t-1}|}{|\Sigma_{t|t}|}\right)\right)\right] \\
@@ -35,7 +35,7 @@
 # ```
 
 # where
-# ```math 
+# ```math
 # \begin{aligned}
 #   \mathbf{H} = \left[\begin{array}{c} 1 \\ 1\end{array}\right],
 #     \quad
@@ -68,41 +68,41 @@ H = [1.0; 1.0];
 # ### [Benchmark Parameterization](@id sims2011_benchmark)
 # Solve and display the optimal posterior covariance matrix:
 
-sol_bp = solve_drip(ω,β,A,Q,H);
-sol_bp.Σ_p
+sol_bp = Drip(ω,β,A,Q,H);
+sol_bp.ss.Σ_p
 
 # Performance for random values of $\omega\in [0,2]$:
 
 using BenchmarkTools;
-@benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 2*rand())
+@benchmark Drip(ω,β,A,Q,H) setup = (ω = 2*rand())
 
 # Performance for random values of $\beta\in[0,1]$:
 
-@benchmark solve_drip(ω,β,A,Q,H) setup = (β = rand())
+@benchmark Drip(ω,β,A,Q,H) setup = (β = rand())
 
 # ### [Lower Cost of Attention: $\omega = 0.1$](@id sims2011_lowomega)
 # Solve and display the optimal posterior covariance matrix:
 
-sol_lω = solve_drip(0.1,β,A,Q,H);
-sol_lω.Σ_p
+sol_lω = Drip(0.1,β,A,Q,H);
+sol_lω.ss.Σ_p
 
 # ### [Different Discount Factors: $\beta \in \{0,1\}$](@id sims2011_betas)
 # Solve the model for $\beta=0$ and $\beta=1$ to compare with the benchmark value of $\beta=0.9$:
 
 # ``\beta = 0``
-sol_lβ = solve_drip(ω,0,A,Q,H); 
-sol_lβ.Σ_p
+sol_lβ = Drip(ω,0,A,Q,H);
+sol_lβ.ss.Σ_p
 
 # ``\beta = 1``:
-sol_hβ = solve_drip(ω,1,A,Q,H); 
-sol_hβ.Σ_p
+sol_hβ = Drip(ω,1,A,Q,H);
+sol_hβ.ss.Σ_p
 
 # ## [Impulse Response Functions](@id sims2011_figures)
 # ### [Benchmark Parameterization](@id sims2011_fig_benchmark)
 # Get the IRFs:
 
-T = 25; 
-irfs_bp = dripirfs(sol_bp,T = T);
+T = 25;
+irfs_bp = irfs(sol_bp,T = T);
 
 # Plot IRFs:
 
@@ -140,7 +140,7 @@ p = plot(p1,p2,
 # Get the IRFs:
 
 T = 25; #length of IRFs
-irfs_lω = dripirfs(sol_lω,T = T);
+irfs_lω = irfs(sol_lω,T = T);
 
 # Plot IRFs:
 
@@ -177,8 +177,8 @@ p = plot(p1,p2,
 # Get the IRFs:
 
 T = 25; #length of IRFs
-irfs_lβ = dripirfs(sol_lβ,T = T);
-irfs_hβ = dripirfs(sol_hβ,T = T);
+irfs_lβ = irfs(sol_lβ,T = T);
+irfs_hβ = irfs(sol_hβ,T = T);
 
 # Plot IRFs:
 
@@ -222,24 +222,24 @@ p = plot(p1,p2,
 # $$s_0 = \mathbf{H}'\vec{x}_0$$
 
 # #### Solve for the transition dynamics
-# The function `solve_trip` solves for the transition dynamics automatically given the initial signal. Start by initializing the initial signal:
+# The function `Trip` solves for the transition dynamics automatically given the initial signal. Start by initializing the initial signal:
 
-s0 = Signal(H,0.0);
+s0 = DRIPs.Signal(H,0.0);
 
 # Solve for the transition dynamics given $s_0$:
 
 Tss     = 15; # guess for time until convergence
-bp_trip = solve_trip(sol_bp, s0; T = Tss);
+bp_trip = Trip(sol_bp, s0; T = Tss);
 
 # Performance for solving the transition dynamics for a random signal:
 
-@benchmark solve_trip(sol_bp, S; T = 30) setup = (S = Signal(rand(2),0.0))
+@benchmark Trip(sol_bp, S; T = 30) setup = (S = DRIPs.Signal(rand(2),0.0))
 
 # #### Plot Transition Path of Eigenvalues
 
 # Plot the marginal values of information. In this problem the state is two dimensional. At any time, for every orthogonalized dimension, the agent weighs the **marginal value** of acquiring information in that dimension against the **marginal cost** of attention which is the parameter $\omega$.**The number of signals that the agent acquires at any time is the number of marginal values that are larger than $\omega$.**
 
-p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,1)],
+p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.p.ω*ones(Tss,1)],
     label             = ["Low marginal value dim." "High marginal value dim." "Marginal cost of attention"],
     size              = (900,275),
     title             = "Marginal Value of Information",
@@ -261,8 +261,8 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,
 
 T = 30;
 
-tirfs_bp = dripirfs(sol_bp,s0,T = T); # irfs with treatment
-irfs_bp  = dripirfs(sol_bp,T = T);    # irfs in the Ss (without treatment)
+tirfs_bp = irfs(sol_bp,s0,T = T); # irfs with treatment
+irfs_bp  = irfs(sol_bp,T = T);    # irfs in the Ss (without treatment)
 
 # Plot IRFs:
 
