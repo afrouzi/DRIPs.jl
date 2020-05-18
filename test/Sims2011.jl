@@ -11,27 +11,27 @@ using Test
 		H = [1.0; 1.0];
 	println("Solving Sims (2011) ...")
 	    p   = Drip(ω,β,A,Q,H)
-	    @test p.err < 1e-4
+	    @test p.ss.err < 1e-4
     println("Solving Sims (2011) with fixed capacity ...")
-	    cap = DRIPs.capacity(p);
-	    capn= DRIPs.capacity(p; unit = "nat");
-	    pf  = Drip(cap,β,A,Q,H;fcap=true);
-	    @test pf.err < 1e-4
-	    @test pf.Σ_p ≈ p.Σ_p atol = 1e-3
+	    cap = DRIPs.capacity(p)
+	    capn= DRIPs.capacity(p; unit = "nat")
+	    pf  = Drip(cap,β,A,Q,H;fcap=true)
+	    @test pf.ss.err < 1e-4
+	    @test pf.ss.Σ_p ≈ p.ss.Σ_p atol = 1e-3
     println("Solving transition dynamics for Sims (2011) ...")
-	    S   = DRIPs.Signal([1 0; 0 1],[0 0; 0 0]);
-	    pt  = solve_trip(p,S;T=30);
+	    S   = DRIPs.Signal([1 0; 0 1],[0 0; 0 0])
+	    pt  = Trip(p,S;T=30)
 	    @test pt.err < 1e-4;
     println("Checking IRFs ...")
-		pirfs     = dripirfs(p,T = 15);
-		psims     = dripsims(p,T = 500, burn = 100, N=100, seed = 0);
-		ptss      = solve_trip(p,p.Σ_1;T = 15);
-		ptssirfs  = dripirfs(ptss,T = 15);
-		Sp        = Signal([0 0; 0 0], [1 0; 0 1]);
-		ptssirfsp = dripirfs(p,Sp, T = 30);
-		ptssirfsp = dripirfs(p,Sp, T = 10);
-		ptssirfsp = dripirfs(p,Sp, T = 15);
-		ptssirfspn= dripirfs(p,Sp; reoptimize = false, T = 15);
+		pirfs     = irfs(p,T = 15)
+		psims     = simulate(p,T = 500, burn = 100, N=100, seed = 1)
+		ptss      = Trip(p,p.ss.Σ_1;T = 15)
+		ptssirfs  = irfs(ptss,T = 15)
+		Sp        = DRIPs.Signal([0 0; 0 0], [1 0; 0 1]);
+		ptssirfsp = irfs(p,Sp, T = 30)
+		ptssirfsp = irfs(p,Sp, T = 10)
+		ptssirfsp = irfs(p,Sp, T = 15)
+		ptssirfspn= irfs(p,Sp; reoptimize = false, T = 15)
 		@test pirfs.x_hat ≈ ptssirfs.x_hat atol = 1e-3
 		@test pirfs.x_hat ≈ ptssirfsp.x_hat atol = 1e-3
 		@test pirfs.x_hat ≈ ptssirfspn.x_hat atol = 1e-3

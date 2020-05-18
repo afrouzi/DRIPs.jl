@@ -12,13 +12,10 @@ using LinearAlgebra, Random
 
 include("drip_methods.jl")
 include("trip_methods.jl")
-include("dripirfs_methods.jl")
-include("dripsims_methods.jl")
+include("irfs_methods.jl")
+include("simulations_methods.jl")
 include("aux_funcs.jl")
 
-export Drip, Trip, Dripirfs,
-	   solve_trip,
-	   dripirfs,
-	   dripsims
+export Drip, Trip, irfs, simulate
 
 end # module

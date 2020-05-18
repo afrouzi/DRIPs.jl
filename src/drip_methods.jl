@@ -1,6 +1,29 @@
 ## A General Structure for D.R.I.P.
 """
 # Summary
+    A type srtucture for storing the steady state solution of a Drip.
+
+# Fields
+    K      : Kalman gain matrix
+    Y      : Weight vector for evolution of actions
+    Σ_z    : Covariance matrix of the rational inattention error
+    Σ_p    : Steady-state posterior covariance matrix under the solution
+    Σ_1    : Steady-state prior covariance matrix under the solution
+    Ω      : Dynamic benefit matrix
+    err    : Convergence error for the solution
+"""
+struct SteadyState
+    K   :: Array{Float64,2}
+    Y   :: Array{Float64,2}
+    Σ_z :: Array{Float64,2}
+    Σ_p :: Array{Float64,2}
+    Σ_1 :: Array{Float64,2}
+    Ω   :: Array{Float64,2}
+    err :: Float64
+end
+
+"""
+# Summary
   A Type Structure for LQG Dynamic Rational Inattention Problems (DRIPs)
 
 # Fields
@@ -10,32 +33,20 @@
     A      : Transition matrix: x=Ax+Qu
     Q      : Std. Dev. matrix: x=Ax+Qu
     H      : Mapping of shocks to actions: v=-0.5(a'-x'H)(a-H'x)
+    ss     : Steady State Solution as a SteadyState type
+See also: [`SteadyState`](@ref)
 
 ## Solution of the DRIP in the Steady State
-    K      : Kalman gain matrix
-    Y      : Weight vector for evolution of actions
-    Σ_z    : Covariance matrix of the rational inattention error
-    Σ_p    : Steady-state posterior covariance matrix under the solution
-    Σ_1    : Steady-state prior covariance matrix under the solution
-    Ω      : Dynamic benefit matrix
-    err    : Convergence error for the solution
 """
 struct Drip
 # primitives
-    ω   :: Float64;
-    β   :: Float64;
-    A   :: Array{Float64,2};
-    Q   :: Array{Float64,2};
-    H   :: Array{Float64,2};
-# solution
-    K   :: Array{Float64,2};
-    Y   :: Array{Float64,2};
-    Σ_z :: Array{Float64,2};
-    Σ_p :: Array{Float64,2};
-    Σ_1 :: Array{Float64,2};
-    Ω   :: Array{Float64,2};
-# convergence err
-    err :: Float64;
+    ω   :: Float64
+    β   :: Float64
+    A   :: Array{Float64,2}
+    Q   :: Array{Float64,2}
+    H   :: Array{Float64,2}
+# steady state
+    ss  :: SteadyState
 end
 
 """
@@ -135,5 +146,5 @@ function Drip(ω,β,A,Q,H; kwargs...)   # primitives of the D.R.I.P.
     K    = collect(Σ1*Y*inv(Y'*Σ1*Y .+ Σ_z))[:,:];
     Ω    = collect(Ω0)[:,:];
     err  = err;
-    return(Drip(ω,β,A,Q,H,K,Y,Σ_z,Σ_p,Σ_1,Ω,err))
+    return(Drip(ω,β,A,Q,H,SteadyState(K,Y,Σ_z,Σ_p,Σ_1,Ω,err)))
 end

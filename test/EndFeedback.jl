@@ -31,10 +31,10 @@ using LinearAlgebra
                 if iter == 0
                     global ge  = Drip(ω,β,A,Q,H0, w = 0.9);
                 else
-                    global ge  = Drip(ω,β,A,Q,H0;Ω0 = ge.Ω ,Σ0 = ge.Σ_1);
+                    global ge  = Drip(ω,β,A,Q,H0;Ω0 = ge.ss.Ω ,Σ0 = ge.ss.Σ_1);
                 end
 
-                XFUN(jj) = ((I-ge.K*ge.Y')*ge.A)^jj * (ge.K*ge.Y') * (M')^jj
+                XFUN(jj) = ((I-ge.ss.K*ge.ss.Y')*ge.A)^jj * (ge.ss.K*ge.ss.Y') * (M')^jj
                 X = DRIPs.infinitesum(XFUN; maxit=L, start = 0);  #E[x⃗]=X×x⃗
 
                 XpFUN(jj) = α^jj * X^(jj)
@@ -49,15 +49,15 @@ using LinearAlgebra
     end;
     println("Solving RI with Endogenous Feedback ...")
     ge,err = ge_drip(ω,β,A,Q,α,Hq,L) # remove suppress to see convergence log
-    @test ge.err < 1e-4
+    @test ge.ss.err < 1e-4
     @test err < 1e-4
     ge,err = ge_drip(0.001,β,A,Q,α,Hq,L) # remove suppress to see convergence log
-    @test ge.err < 1e-4
+    @test ge.ss.err < 1e-4
     @test err < 1e-4
     ge,err = ge_drip(0.1,β,A,Q,α,Hq,L) # remove suppress to see convergence log
-    @test ge.err < 1e-4
+    @test ge.ss.err < 1e-4
     @test err < 1e-4
     ge,err = ge_drip(1,β,A,Q,α,Hq,L) # remove suppress to see convergence log
-    @test ge.err < 1e-4
+    @test ge.ss.err < 1e-4
     @test err < 1e-4
 end

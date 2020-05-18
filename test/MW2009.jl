@@ -41,10 +41,10 @@ using LinearAlgebra
 	            if iter == 0
 	                global agg  = Drip(ω,β,A,Qq,H0;w = w);
 	            else
-	                global agg  = Drip(ω,β,A,Qq,H0;Ω0 = agg.Ω , Σ0 = agg.Σ_1,w = w);
+	                global agg  = Drip(ω,β,A,Qq,H0;Ω0 = agg.ss.Ω , Σ0 = agg.ss.Σ_1,w = w);
 	            end
 
-	            XFUN(jj) = ((I-agg.K*agg.Y')*agg.A)^jj * (agg.K*agg.Y') * (agg.A')^jj
+	            XFUN(jj) = ((I-agg.ss.K*agg.ss.Y')*agg.A)^jj * (agg.ss.K*agg.ss.Y') * (agg.A')^jj
 	            X = DRIPs.infinitesum(XFUN; maxit=200, start = 0);  #E[x⃗]=X×x⃗
 
 	            XpFUN(jj) = α^jj * X^(jj)
@@ -69,14 +69,13 @@ using LinearAlgebra
 	println("Solving Mackowiack and Wiederholt (2009) ...")
 	## Solve for κ = 3
 	agg, err = agg_drip(2.4σq^2,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
-	@test agg.err < 1e-4
+	@test agg.ss.err < 1e-4
 	agg, err = agg_drip(2.82σq^2,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
-	@test agg.err < 1e-4
+	@test agg.ss.err < 1e-4
 	agg, err = agg_drip(0.01*σq^2,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
-	@test agg.err < 1e-4
+	@test agg.ss.err < 1e-4
 	agg, err = agg_drip(10*σq^2,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
-	@test agg.err < 1e-4
+	@test agg.ss.err < 1e-4
 	idi  = Drip(2.4σq^2,1,A,Qz,H,w = 0.9);
-	@test idi.err < 1e-4
-
+	@test idi.ss.err < 1e-4
 end
