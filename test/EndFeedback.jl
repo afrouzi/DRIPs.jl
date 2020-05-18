@@ -29,9 +29,9 @@ using LinearAlgebra
         # iterate on GE
         while (err > tol) & (iter < maxit)
                 if iter == 0
-                    global ge  = solve_drip(ω,β,A,Q,H0, w = 0.9);
+                    global ge  = Drip(ω,β,A,Q,H0, w = 0.9);
                 else
-                    global ge  = solve_drip(ω,β,A,Q,H0;Ω0 = ge.Ω ,Σ0 = ge.Σ_1);
+                    global ge  = Drip(ω,β,A,Q,H0;Ω0 = ge.Ω ,Σ0 = ge.Σ_1);
                 end
 
                 XFUN(jj) = ((I-ge.K*ge.Y')*ge.A)^jj * (ge.K*ge.Y') * (M')^jj

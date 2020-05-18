@@ -10,23 +10,16 @@ using Test
 		Q = [√0.0975 0.0; 0.0 √0.86];
 		H = [1.0; 1.0];
 	println("Solving Sims (2011) ...")
-		p   = Drip();
-	    p   = Drip(ω,β,A,Q,H);
-	    p   = solve_drip(p)
-	    pp  = solve_drip(ω,β,A,Q,H)
+	    p   = Drip(ω,β,A,Q,H)
 	    @test p.err < 1e-4
-		@test pp.err < 1e-4
-	    @test p.Σ_p ≈ pp.Σ_p atol = 1e-3
     println("Solving Sims (2011) with fixed capacity ...")
 	    cap = DRIPs.capacity(p);
 	    capn= DRIPs.capacity(p; unit = "nat");
-	    pf  = p;
-	    pf  = Drip(cap,β,A,Q,H);
-	    pf  = solve_drip(pf;fcap=true);
+	    pf  = Drip(cap,β,A,Q,H;fcap=true);
 	    @test pf.err < 1e-4
 	    @test pf.Σ_p ≈ p.Σ_p atol = 1e-3
     println("Solving transition dynamics for Sims (2011) ...")
-	    S   = Signal([1 0; 0 1],[0 0;0 0]);
+	    S   = DRIPs.Signal([1 0; 0 1],[0 0; 0 0]);
 	    pt  = solve_trip(p,S;T=30);
 	    @test pt.err < 1e-4;
     println("Checking IRFs ...")

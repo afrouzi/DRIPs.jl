@@ -29,7 +29,12 @@ end
 * Σ_z  : variance covariance matrix of the noise
 """
 struct Signal
-    L; Σ_z;
+    L   :: Array{Float64,2}
+    Σ_z :: Array{Float64,2}
+    function Signal(L, Σ_z)
+        L, Σ_z = collect(L)[:,:], collect(Σ_z)[:,:]
+        return new(L,Σ_z)
+    end
 end
 
 """

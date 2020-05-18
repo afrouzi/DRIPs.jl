@@ -39,9 +39,9 @@ using LinearAlgebra
 	    L     = length(H);
 	    while (err > tol) & (iter < maxit)
 	            if iter == 0
-	                global agg  = solve_drip(ω,β,A,Qq,H0;w = w);
+	                global agg  = Drip(ω,β,A,Qq,H0;w = w);
 	            else
-	                global agg  = solve_drip(ω,β,A,Qq,H0;Ω0 = agg.Ω , Σ0 = agg.Σ_1,w = w);
+	                global agg  = Drip(ω,β,A,Qq,H0;Ω0 = agg.Ω , Σ0 = agg.Σ_1,w = w);
 	            end
 
 	            XFUN(jj) = ((I-agg.K*agg.Y')*agg.A)^jj * (agg.K*agg.Y') * (agg.A')^jj
@@ -76,7 +76,7 @@ using LinearAlgebra
 	@test agg.err < 1e-4
 	agg, err = agg_drip(10*σq^2,A,Qq,α,H; H0 = rand(L), maxit = 500, w = 0.95)
 	@test agg.err < 1e-4
-	idi  = solve_drip(2.4σq^2,1,A,Qz,H,w = 0.9);
+	idi  = Drip(2.4σq^2,1,A,Qz,H,w = 0.9);
 	@test idi.err < 1e-4
 
 end

@@ -16,8 +16,7 @@ include("dripirfs_methods.jl")
 include("dripsims_methods.jl")
 include("aux_funcs.jl")
 
-export Drip, Trip, Dripirfs, Signal,
-	   solve_drip,
+export Drip, Trip, Dripirfs,
 	   solve_trip,
 	   dripirfs,
 	   dripsims
