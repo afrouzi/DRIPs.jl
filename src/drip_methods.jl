@@ -33,10 +33,10 @@ end
     A      : Transition matrix: x=Ax+Qu
     Q      : Std. Dev. matrix: x=Ax+Qu
     H      : Mapping of shocks to actions: v=-0.5(a'-x'H)(a-H'x)
-    ss     : Steady State Solution as a SteadyState type
-See also: [`SteadyState`](@ref)
 
 ## Solution of the DRIP in the Steady State
+    ss     : Steady State Solution as a SteadyState type
+    See also: [`SteadyState`](@ref)
 """
 struct Drip
 # primitives
