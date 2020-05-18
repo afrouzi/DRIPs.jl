@@ -78,7 +78,7 @@ using BenchmarkTools;
 
 # ### [IRFs](@id ex1a_irfs)
 
-ex1irfs = irfs(ex1, T = 20)
+ex1irfs = irfs(ex1, T = 20);
 
 # Let's plot how the average price $p=\int_0^1 p_{i,t}di$ responds to a shock to money growth:
 

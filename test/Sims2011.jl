@@ -24,7 +24,7 @@ using Test
 	    @test pt.err < 1e-4;
     println("Checking IRFs ...")
 		pirfs     = irfs(p,T = 15)
-		psims     = simulate(p,T = 500, burn = 100, N=100, seed = 1)
+		psims     = simulate(p,T = 500, burn = 100, N=100, seed = 0)
 		ptss      = Trip(p,p.ss.Σ_1;T = 15)
 		ptssirfs  = irfs(ptss,T = 15)
 		Sp        = DRIPs.Signal([0 0; 0 0], [1 0; 0 1]);

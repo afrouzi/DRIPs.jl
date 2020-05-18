@@ -102,10 +102,10 @@ BenchmarkTools.Trial:
   memory estimate:  162.31 KiB
   allocs estimate:  1547
   --------------
-  minimum time:     94.480 μs (0.00% GC)
-  median time:      106.498 μs (0.00% GC)
-  mean time:        131.825 μs (17.30% GC)
-  maximum time:     9.431 ms (98.07% GC)
+  minimum time:     96.045 μs (0.00% GC)
+  median time:      108.008 μs (0.00% GC)
+  mean time:        133.933 μs (17.15% GC)
+  maximum time:     7.713 ms (97.55% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -122,10 +122,10 @@ BenchmarkTools.Trial:
   memory estimate:  162.31 KiB
   allocs estimate:  1547
   --------------
-  minimum time:     94.460 μs (0.00% GC)
-  median time:      118.014 μs (0.00% GC)
-  mean time:        143.971 μs (17.38% GC)
-  maximum time:     9.286 ms (97.35% GC)
+  minimum time:     95.989 μs (0.00% GC)
+  median time:      120.293 μs (0.00% GC)
+  mean time:        147.952 μs (17.15% GC)
+  maximum time:     9.569 ms (97.87% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -340,15 +340,15 @@ Performance for solving the transition dynamics for a random signal:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  745.14 KiB
-  allocs estimate:  6230
+  memory estimate:  745.06 KiB
+  allocs estimate:  6232
   --------------
-  minimum time:     654.756 μs (0.00% GC)
-  median time:      734.750 μs (0.00% GC)
-  mean time:        883.466 μs (14.70% GC)
-  maximum time:     23.218 ms (92.13% GC)
+  minimum time:     576.298 μs (0.00% GC)
+  median time:      725.284 μs (0.00% GC)
+  mean time:        861.449 μs (14.18% GC)
+  maximum time:     13.648 ms (91.51% GC)
   --------------
-  samples:          5639
+  samples:          5783
   evals/sample:     1
 ```
 

@@ -195,7 +195,7 @@ nothing #hide
 ```
 
 ```
-  0.457431 seconds (126.73 k allocations: 310.217 MiB, 10.85% gc time)
+  2.259711 seconds (4.55 M allocations: 536.065 MiB, 4.93% gc time)
 
 ```
 
@@ -240,15 +240,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  272.37 MiB
-  allocs estimate:  33079
+  memory estimate:  284.54 MiB
+  allocs estimate:  34362
   --------------
-  minimum time:     331.229 ms (9.66% GC)
-  median time:      354.425 ms (11.66% GC)
-  mean time:        359.638 ms (12.07% GC)
-  maximum time:     454.956 ms (11.23% GC)
+  minimum time:     292.944 ms (10.06% GC)
+  median time:      327.051 ms (11.75% GC)
+  mean time:        330.990 ms (11.61% GC)
+  maximum time:     377.057 ms (11.09% GC)
   --------------
-  samples:          14
+  samples:          16
   evals/sample:     1
 ```
 
