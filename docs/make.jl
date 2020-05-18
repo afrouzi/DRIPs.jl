@@ -1,6 +1,6 @@
 using Documenter, DRIPs
 
-# uncomment the following line to re-compile examples 
+# uncomment the following line to re-compile examples
 # using Literate; include("compile_examples.jl");
 
 makedocs(

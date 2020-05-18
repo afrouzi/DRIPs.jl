@@ -46,22 +46,30 @@ where the matrix $\bar{\Omega}_t$ captures the value of information (see [Afrouz
 
 ## Steady State of DRIPs
 
-The solver function is `solve_drip(ω,β,A,Q,H)`. It takes the primitives `(ω,β,A,Q,H)` as arguments and returns the solution of the model within a `Drip` structure that contains all the primitives and the solution objects of the model.
+The solver function is `Drip(ω,β,A,Q,H)`. It takes the primitives `(ω,β,A,Q,H)` as arguments and returns the solution of the model within a `Drip` type structure that contains all the primitives and the solution objects of the model.
 
-See the [syntax section for Drip methods](@ref DRIP_methods) for the definition of the `Drip` structure as well as for more information about `solve_drip`.
+See the [syntax section for Drip methods](@ref DRIP_methods) for the definition, syntax and options of `Drip`.
 
 ## Transition Dynamics of DRIPs
 
 The Euler equation derived in [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for the  also allows us to characterize the transition path of the information structure over time for an arbitrary initial prior.
 
-The function `solve_trip(P::Drip,s0)` takes the steady state solution `P=solve_drip(.)` along with an initial condition `s0` as an input and returns a `Trip` structure that summarizes the transition path of the optimal information structure. The initial condition `s0` can be given either as an initial prior covariance matrix or alternatively as a one time signal about the state that perturbs the steady state prior.
+The function `Trip(P::Drip,s0)` takes a `Drip` type structure along with an initial condition `s0` as an input and returns a `Trip` structure that summarizes the transition path of the optimal information structure. The initial condition `s0` can be given either as an initial prior covariance matrix or alternatively as a one time signal about the state that perturbs the steady state prior.
 
-See the [syntax section for Trip methods](@ref TRIP_methods) for the definition of the `Trip` structure as well as for more information about `solve_trip`.
+See the [syntax section for Trip methods](@ref TRIP_methods) for the definition, syntax and options of `Trip`.
 
 ## Impulse Response Functions
 
 Once the model is solved, one can generate the impulse response functions of actions and beliefs using the laws of motion stated above.
 
-We have also included a built-in function that generates these IRFs. The function `dripirfs(P::Drip)` takes a `Drip` structure as input and returns the irfs of the state, beliefs and actions to all structural shocks within a `Dripirfs` structure.
+We have also included a built-in function that generates these IRFs. The function `irfs(P::Drip)` takes a `Drip` structure as input and returns the irfs of the state, beliefs and actions to all structural shocks within a `Path` structure.
 
-The function also returns IRFs for transition dynamics if an initial signal is specified. See the [syntax section Impulse Response Functions](@ref IRFs) for the definition of the `Dripirfs` structure as well as for more information about `dripirfs`.
+The function also returns IRFs for transition dynamics if an initial signal is specified. See the [syntax section Impulse Response Functions](@ref IRFs) for the definition of the `Path` type structure as well as for more information about `irfs` function.
+
+## Simulations of DRIPs
+
+Once the model is solved, one can also generate the simulated paths for fundamental, actions and beliefs..
+
+We have also included a built-in function that generates these IRFs. The function `simulate(P::Drip)` takes a `Drip` structure as input and returns a simulated path of the state, beliefs and actions to all structural shocks within a `Path` structure.
+
+See the [syntax section Methods for Simulating DRIPs](@ref Simulations) for the definition of the `Path` type structure as well as for more information about `irfs` function.

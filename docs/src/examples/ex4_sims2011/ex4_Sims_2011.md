@@ -80,12 +80,12 @@ nothing #hide
 Solve and display the optimal posterior covariance matrix:
 
 ```julia
-sol_bp = solve_drip(ω,β,A,Q,H);
-sol_bp.Σ_p
+sol_bp = Drip(ω,β,A,Q,H);
+sol_bp.ss.Σ_p
 ```
 
 ```
-2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+2×2 Array{Float64,2}:
   0.359213  -0.177025
  -0.177025   0.794584
 ```
@@ -94,18 +94,18 @@ Performance for random values of $\omega\in [0,2]$:
 
 ```julia
 using BenchmarkTools;
-@benchmark solve_drip(ω,β,A,Q,H) setup = (ω = 2*rand())
+@benchmark Drip(ω,β,A,Q,H) setup = (ω = 2*rand())
 ```
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  176.06 KiB
-  allocs estimate:  1545
+  memory estimate:  162.31 KiB
+  allocs estimate:  1547
   --------------
-  minimum time:     87.996 μs (0.00% GC)
-  median time:      114.701 μs (0.00% GC)
-  mean time:        147.636 μs (18.99% GC)
-  maximum time:     16.140 ms (97.53% GC)
+  minimum time:     94.480 μs (0.00% GC)
+  median time:      106.498 μs (0.00% GC)
+  mean time:        131.825 μs (17.30% GC)
+  maximum time:     9.431 ms (98.07% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -114,18 +114,18 @@ BenchmarkTools.Trial:
 Performance for random values of $\beta\in[0,1]$:
 
 ```julia
-@benchmark solve_drip(ω,β,A,Q,H) setup = (β = rand())
+@benchmark Drip(ω,β,A,Q,H) setup = (β = rand())
 ```
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  176.06 KiB
-  allocs estimate:  1545
+  memory estimate:  162.31 KiB
+  allocs estimate:  1547
   --------------
-  minimum time:     104.575 μs (0.00% GC)
-  median time:      127.528 μs (0.00% GC)
-  mean time:        159.719 μs (18.26% GC)
-  maximum time:     8.158 ms (96.60% GC)
+  minimum time:     94.460 μs (0.00% GC)
+  median time:      118.014 μs (0.00% GC)
+  mean time:        143.971 μs (17.38% GC)
+  maximum time:     9.286 ms (97.35% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -135,12 +135,12 @@ BenchmarkTools.Trial:
 Solve and display the optimal posterior covariance matrix:
 
 ```julia
-sol_lω = solve_drip(0.1,β,A,Q,H);
-sol_lω.Σ_p
+sol_lω = Drip(0.1,β,A,Q,H);
+sol_lω.ss.Σ_p
 ```
 
 ```
-2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+2×2 Array{Float64,2}:
   0.319919  -0.304142
  -0.304142   0.386163
 ```
@@ -151,12 +151,12 @@ Solve the model for $\beta=0$ and $\beta=1$ to compare with the benchmark value 
 ``\beta = 0``
 
 ```julia
-sol_lβ = solve_drip(ω,0,A,Q,H);
-sol_lβ.Σ_p
+sol_lβ = Drip(ω,0,A,Q,H);
+sol_lβ.ss.Σ_p
 ```
 
 ```
-2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+2×2 Array{Float64,2}:
   0.495403  -0.152171
  -0.152171   0.808939
 ```
@@ -164,12 +164,12 @@ sol_lβ.Σ_p
 ``\beta = 1``:
 
 ```julia
-sol_hβ = solve_drip(ω,1,A,Q,H);
-sol_hβ.Σ_p
+sol_hβ = Drip(ω,1,A,Q,H);
+sol_hβ.ss.Σ_p
 ```
 
 ```
-2×2 LinearAlgebra.Symmetric{Float64,Array{Float64,2}}:
+2×2 Array{Float64,2}:
   0.337666  -0.178019
  -0.178019   0.799701
 ```
@@ -180,7 +180,7 @@ Get the IRFs:
 
 ```julia
 T = 25;
-irfs_bp = dripirfs(sol_bp,T = T);
+irfs_bp = irfs(sol_bp,T = T);
 nothing #hide
 ```
 
@@ -224,7 +224,7 @@ Get the IRFs:
 
 ```julia
 T = 25; #length of IRFs
-irfs_lω = dripirfs(sol_lω,T = T);
+irfs_lω = irfs(sol_lω,T = T);
 nothing #hide
 ```
 
@@ -267,8 +267,8 @@ Get the IRFs:
 
 ```julia
 T = 25; #length of IRFs
-irfs_lβ = dripirfs(sol_lβ,T = T);
-irfs_hβ = dripirfs(sol_hβ,T = T);
+irfs_lβ = irfs(sol_lβ,T = T);
+irfs_hβ = irfs(sol_hβ,T = T);
 nothing #hide
 ```
 
@@ -317,10 +317,10 @@ For instance let us consider a case where the firm is at the steady state of the
 $$s_0 = \mathbf{H}'\vec{x}_0$$
 
 #### Solve for the transition dynamics
-The function `solve_trip` solves for the transition dynamics automatically given the initial signal. Start by initializing the initial signal:
+The function `Trip` solves for the transition dynamics automatically given the initial signal. Start by initializing the initial signal:
 
 ```julia
-s0 = Signal(H,0.0);
+s0 = DRIPs.Signal(H,0.0);
 nothing #hide
 ```
 
@@ -328,27 +328,27 @@ Solve for the transition dynamics given $s_0$:
 
 ```julia
 Tss     = 15; # guess for time until convergence
-bp_trip = solve_trip(sol_bp, s0; T = Tss);
+bp_trip = Trip(sol_bp, s0; T = Tss);
 nothing #hide
 ```
 
 Performance for solving the transition dynamics for a random signal:
 
 ```julia
-@benchmark solve_trip(sol_bp, S; T = 30) setup = (S = Signal(rand(2),0.0))
+@benchmark Trip(sol_bp, S; T = 30) setup = (S = DRIPs.Signal(rand(2),0.0))
 ```
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  751.44 KiB
-  allocs estimate:  6444
+  memory estimate:  745.14 KiB
+  allocs estimate:  6230
   --------------
-  minimum time:     681.081 μs (0.00% GC)
-  median time:      846.014 μs (0.00% GC)
-  mean time:        965.988 μs (11.75% GC)
-  maximum time:     10.516 ms (91.40% GC)
+  minimum time:     654.756 μs (0.00% GC)
+  median time:      734.750 μs (0.00% GC)
+  mean time:        883.466 μs (14.70% GC)
+  maximum time:     23.218 ms (92.13% GC)
   --------------
-  samples:          5163
+  samples:          5639
   evals/sample:     1
 ```
 
@@ -357,7 +357,7 @@ BenchmarkTools.Trial:
 Plot the marginal values of information. In this problem the state is two dimensional. At any time, for every orthogonalized dimension, the agent weighs the **marginal value** of acquiring information in that dimension against the **marginal cost** of attention which is the parameter $\omega$.**The number of signals that the agent acquires at any time is the number of marginal values that are larger than $\omega$.**
 
 ```julia
-p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,1)],
+p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.p.ω*ones(Tss,1)],
     label             = ["Low marginal value dim." "High marginal value dim." "Marginal cost of attention"],
     size              = (900,275),
     title             = "Marginal Value of Information",
@@ -374,7 +374,7 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.P.ω*ones(Tss,
     fontfamily        = "serif",
     framestyle        = :box)
 ```
-![](1376016511.png)
+![](3751619983.png)
 
 ### [Impulse Response Functions with Information Treatment](@id sims2011_trip_irfs)
 Get the IRFs in the transition path after treatment:
@@ -382,8 +382,8 @@ Get the IRFs in the transition path after treatment:
 ```julia
 T = 30;
 
-tirfs_bp = dripirfs(sol_bp,s0,T = T); # irfs with treatment
-irfs_bp  = dripirfs(sol_bp,T = T);    # irfs in the Ss (without treatment)
+tirfs_bp = irfs(sol_bp,s0,T = T); # irfs with treatment
+irfs_bp  = irfs(sol_bp,T = T);    # irfs in the Ss (without treatment)
 nothing #hide
 ```
 

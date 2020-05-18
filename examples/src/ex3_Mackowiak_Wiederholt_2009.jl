@@ -84,9 +84,9 @@ function agg_drip(ω,A,Qq,        #primitives of drip except for H because H is 
     L     = length(H);
     while (err > tol) & (iter < maxit)
             if iter == 0
-                global agg  = solve_drip(ω,β,A,Qq,H0;w = w);
+                global agg  = Drip(ω,β,A,Qq,H0;w = w);
             else
-                global agg  = solve_drip(ω,β,A,Qq,H0;Ω0 = agg.ss.Ω , Σ0 = agg.ss.Σ_1,w = w);
+                global agg  = Drip(ω,β,A,Qq,H0;Ω0 = agg.ss.Ω , Σ0 = agg.ss.Σ_1,w = w);
             end
 
             XFUN(jj) = ((I-agg.ss.K*agg.ss.Y')*agg.A)^jj * (agg.ss.K*agg.ss.Y') * (agg.A')^jj

@@ -159,12 +159,12 @@ function ge_drip(ω,β,A,Q,          #primitives of drip except for H because H 
     M     = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)];
     while (err > tol) & (iter < maxit)
             if iter == 0
-                global ge  = solve_drip(ω,β,A,Q,H0, w = 0.9);
+                global ge  = Drip(ω,β,A,Q,H0, w = 0.9);
             else
-                global ge  = solve_drip(ω,β,A,Q,H0;Ω0 = ge.Ω ,Σ0 = ge.Σ_1,maxit=15);
+                global ge  = Drip(ω,β,A,Q,H0;Ω0 = ge.ss.Ω ,Σ0 = ge.ss.Σ_1,maxit=15);
             end
 
-            XFUN(jj) = ((I-ge.K*ge.Y')*ge.A)^jj * (ge.K*ge.Y') * (M')^jj
+            XFUN(jj) = ((I-ge.ss.K*ge.ss.Y')*ge.A)^jj * (ge.ss.K*ge.ss.Y') * (M')^jj
             X = DRIPs.infinitesum(XFUN; maxit=L, start = 0);  #E[x⃗]=X×x⃗
 
             XpFUN(jj) = α^jj * X^(jj)
@@ -195,7 +195,7 @@ nothing #hide
 ```
 
 ```
-  0.430235 seconds (125.65 k allocations: 311.946 MiB, 9.60% gc time)
+  0.457431 seconds (126.73 k allocations: 310.217 MiB, 10.85% gc time)
 
 ```
 
@@ -203,7 +203,7 @@ nothing #hide
 Get IRFs:
 
 ```julia
-geirfs = dripirfs(ge,T = L);
+geirfs = irfs(ge,T = L)
 
 M  = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)]; # shift matrix
 dq = diagm(Hq)*geirfs.x[1,1,:];                        # change in nominal demand
@@ -227,7 +227,7 @@ plot(p1,p2,
     size       = (900,370),
     framestyle = :box)
 ```
-![](4203306054.png)
+![](966213277.png)
 
 ## [Measure Performance](@id ex2_performance)
 
@@ -240,15 +240,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  285.60 MiB
-  allocs estimate:  34248
+  memory estimate:  272.37 MiB
+  allocs estimate:  33079
   --------------
-  minimum time:     303.752 ms (10.12% GC)
-  median time:      321.614 ms (10.93% GC)
-  mean time:        319.948 ms (11.25% GC)
-  maximum time:     335.572 ms (11.65% GC)
+  minimum time:     331.229 ms (9.66% GC)
+  median time:      354.425 ms (11.66% GC)
+  mean time:        359.638 ms (12.07% GC)
+  maximum time:     454.956 ms (11.23% GC)
   --------------
-  samples:          16
+  samples:          14
   evals/sample:     1
 ```
 
