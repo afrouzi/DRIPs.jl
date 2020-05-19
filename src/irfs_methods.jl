@@ -29,10 +29,10 @@ end
 
 
 """
-             irfs(P::Drip;  # Steady state of the DRIP
-                  T = 40    # Optional: length of impulse response functions
-                  ) -> Dripirfs
-Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
+              irfs(p :: Drip;        # Steady state of the DRIP
+                   T :: Int64 = 40   # Optional: length of impulse response functions
+                   ) -> Path
+Returns a [`Path`](@ref) structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`) to all the structural shocks
     **under the steady state information strucutre**. In particular, if `n` is the
     dimension of `x`, `m` is the dimension of `a` and `k` is the number of
@@ -46,10 +46,11 @@ Returns a `Dripirfs` structure with the impulse response functions of the fundam
 * `a` has dimension `m*k*T` where `a(i,j,:)` is the impulse response function
     of the `i`'th action to the `j`'th structural shock.
 """
-function irfs(P::Drip;
-                  T = 40)
-    (n,m) = size(P.H)
-    (_,k) = size(P.Q)
+function irfs(p :: Drip;        # Steady state of the DRIP
+              T :: Int64 = 40   # Optional: length of impulse response functions
+              )
+    (n,m) = size(p.H)
+    (_,k) = size(p.Q)
     x     = zeros(n,k,T);
     x_hat = zeros(n,k,T);
     a     = zeros(m,k,T);
@@ -57,13 +58,13 @@ function irfs(P::Drip;
         e_k = zeros(k,1); e_k[kk] = 1;
         for ii in 1:T
             if ii==1
-                x[:,kk,ii]     = P.Q*e_k;
-                x_hat[:,kk,ii] = (P.ss.K*P.ss.Y')*(x[:,kk,ii]);
+                x[:,kk,ii]     = p.Q*e_k;
+                x_hat[:,kk,ii] = (p.ss.K*p.ss.Y')*(x[:,kk,ii]);
             else
-                x[:,kk,ii]     =P.A*x[:,kk,ii-1];
-                x_hat[:,kk,ii] =P.A*x_hat[:,kk,ii-1]+(P.ss.K*P.ss.Y')*(x[:,kk,ii]-P.A*x_hat[:,kk,ii-1]);
+                x[:,kk,ii]     =p.A*x[:,kk,ii-1];
+                x_hat[:,kk,ii] =p.A*x_hat[:,kk,ii-1]+(p.ss.K*p.ss.Y')*(x[:,kk,ii]-p.A*x_hat[:,kk,ii-1]);
             end
-            a[:,kk,ii]  .= P.H'*x_hat[:,kk,ii];
+            a[:,kk,ii]  .= p.H'*x_hat[:,kk,ii];
         end
     end
     return(Path(T,x,x_hat,a))
@@ -71,10 +72,10 @@ end
 
 ## get irfs with optimal signals acquired under pt::Trip
 """
-         irfs(P::Trip;  # Transition dynamics of the DRIP
-                  T = 40    # Optional: length of impulse response functions
-                  ) -> Dripirfs
-Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
+          irfs(pt :: Trip;       # Transition dynamics of the DRIP
+               T  :: Int64 = 40  # Optional: length of impulse response functions
+               ) -> Path
+Returns a [`Path`](@ref) structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`) to all the structural shocks
     **under the information structure implied by** `P`. In particular, if `n` is the
     dimension of `x`, `m` is the dimension of `a` and `k` is the number of
@@ -88,7 +89,9 @@ Returns a `Dripirfs` structure with the impulse response functions of the fundam
 * `a` has dimension `m*k*T` where `a(i,j,:)` is the impulse response function
     of the `i`'th action to the `j`'th structural shock.
 """
-function irfs(pt::Trip; T = 40)
+function irfs(pt :: Trip;       # Transition dynamics of the DRIP
+              T  :: Int64 = 40  # Optional: length of impulse response functions
+              )
     p     = pt.p; # steady state Drip
     (n,m) = size(p.H)
     (_,k) = size(p.Q)
@@ -119,13 +122,13 @@ end
 
 ## get irfs with information treatment S at time zero.
 """
-         dripirfs(p::Drip,          # Steady state of the DRIP (when treatment happens)
-                  S::Signal;         # Signal for treatment at time 0
-                  T = 40,            # optional: length of irfs
-                  reoptimize = true, # optional: if true gives the irfs with reoptimized signals, if false with steady state signals
-                  trip       = false # optional: if false solves for the optimal trip, if = P::trip then takes P as the transition dynamics after treatment
-                  ) -> Dripirfs
-Returns a `Dripirfs` structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
+         irfs(p          :: Drip,                          # Steady state of the DRIP (when treatment happens)
+              S          :: Signal;                        # Signal for treatment
+              T          :: Int64 = 40,                    # optional: length of irfs
+              reoptimize :: Bool = true,                   # if true gives the irfs with reoptimized signals, if false with steady state signals
+              trip       :: Union{Trip, Nothing} = nothing # if false solves the trip, if = P::trip then takes P as the trip
+              )
+Returns a [`Path`](@ref) structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`) to all the structural shocks
     **under the information structure implied by a one time information treatment
     with** `S` **in the steady state of the DRIP** `P`. In particular, if `n` is the
@@ -140,11 +143,11 @@ Returns a `Dripirfs` structure with the impulse response functions of the fundam
 * `a` has dimension `m*k*T` where `a(i,j,:)` is the impulse response function
     of the `i`'th action to the `j`'th structural shock.
 """
-function irfs(p::Drip,          # Steady state of the DRIP (when treatment happens)
-              S::Signal;         # Signal for treatment
-              T = 40,            # optional: length of irfs
-              reoptimize = true, # if true gives the irfs with reoptimized signals, if false with steady state signals
-              trip       = false # if false solves the trip, if = P::trip then takes P as the trip
+function irfs(p          :: Drip,                          # Steady state of the DRIP (when treatment happens)
+              S          :: Signal;                        # Signal for treatment
+              T          :: Int64 = 40,                    # optional: length of irfs
+              reoptimize :: Bool = true,                   # if true gives the irfs with reoptimized signals, if false with steady state signals
+              trip       :: Union{Trip, Nothing} = nothing # if false solves the trip, if = P::trip then takes P as the trip
               )
 
     (n,m) = size(p.H)
@@ -152,7 +155,7 @@ function irfs(p::Drip,          # Steady state of the DRIP (when treatment happe
     eye   = Matrix(I,n,n);
 
     if reoptimize == true
-        if trip == false
+        if trip == nothing
             trip = Trip(p,S;T = T);
         end
         L     = size(trip.Ds,1) # length of Trips
