@@ -65,12 +65,12 @@ julia> Σ0 = 0.1*p.Σ_1;
 julia> Pt = solve_trip(p,Σ0);
 ```
 """
-function Trip(p::Drip,Σ0;kwargs...)
+function Trip(p::Drip,Σ0;
+              T     = 100,  # optional: time until convergence to steady state
+              tol   = 1e-4, # optional: tolerance for convergence
+              maxit = 1000, # optional: max iterations
+              )
     Σ0 = collect(Σ0)[:,:]
-
-    T     = get(kwargs, :T, 100)      # optional: time until convergence to steady state
-    tol   = get(kwargs, :tol, 1e-4)   # optional: tolerance for convergence
-    maxit = get(kwargs, :maxit, 1000) # optional: max iterations
 
     ## Initialize
     Ωs  = repeat(p.ss.Ω, inner = [1,1,T]);

@@ -87,15 +87,16 @@ The function returns a `Drip` structure with the primitives and the solution obj
 julia> P = Drip(ω,β,A,Q,H)
 ```
 """
-function Drip(ω,β,A,Q,H; kwargs...)   # primitives of the D.R.I.P.
-    A, Q, H = collect(A)[:,:], collect(Q)[:, :], collect(H)[:, :];
+function Drip(ω,β,A,Q,H;         # primitives of the D.R.I.P.
+              fcap  = false,     # optional: if true then solves the problem with fixed capacity κ = ω.
+              Ω0    = H*H',      # optional: initial guess for steady state information matrix
+              Σ0    = A*A'+Q*Q', # optional: initial guess for steady state prior
+              w     = 1,         # optional: updating weight in iteration
+              tol   = 1e-4,      # optional: tolerance level for convergence
+              maxit = 10000      # optional: maximum number of iterations
+              )
 
-    fcap  = get(kwargs, :fcap, false)   # optional: if true then solves the problem with fixed capacity κ = ω.
-    Ω0    = get(kwargs, :Ω0, H*H')      # optional: initial guess for steady state information matrix
-    Σ0    = get(kwargs, :Σ0, A*A'+Q*Q') # optional: initial guess for steady state prior
-    w     = get(kwargs, :w, 1)          # optional: updating weight in iteration
-    tol   = get(kwargs, :tol, 1e-4)     # optional: tolerance level for convergence
-    maxit = get(kwargs, :maxit, 10000)  # optional: maximum number of iterations
+    A, Q, H = collect(A)[:,:], collect(Q)[:, :], collect(H)[:, :];
 
     ## initialize
     (n,m) = size(H)
