@@ -21,7 +21,7 @@ structural shocks, then
     the `i`'th action to the `j`'th structural shock.
 """
 struct Path
-    T     :: Int            # length of IRFs
+    T     :: Integer        # length of IRFs
     x     :: Array{Float64} # IRFs of the fundamental shocks
     x_hat :: Array{Float64} # IRFs of beliefs
     a     :: Array{Float64} # IRFs of actions
@@ -30,7 +30,7 @@ end
 
 """
               irfs(p :: Drip;        # Steady state of the DRIP
-                   T :: Int64 = 40   # Optional: length of impulse response functions
+                   T :: Integer = 40   # Optional: length of impulse response functions
                    ) -> Path
 Returns a [`Path`](@ref) structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`) to all the structural shocks
@@ -47,7 +47,7 @@ Returns a [`Path`](@ref) structure with the impulse response functions of the fu
     of the `i`'th action to the `j`'th structural shock.
 """
 function irfs(p :: Drip;        # Steady state of the DRIP
-              T :: Int64 = 40   # Optional: length of impulse response functions
+              T :: Integer = 40   # Optional: length of impulse response functions
               )
     (n,m) = size(p.H)
     (_,k) = size(p.Q)
@@ -73,7 +73,7 @@ end
 ## get irfs with optimal signals acquired under pt::Trip
 """
           irfs(pt :: Trip;       # Transition dynamics of the DRIP
-               T  :: Int64 = 40  # Optional: length of impulse response functions
+               T  :: Integer = 40  # Optional: length of impulse response functions
                ) -> Path
 Returns a [`Path`](@ref) structure with the impulse response functions of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`) to all the structural shocks
@@ -90,7 +90,7 @@ Returns a [`Path`](@ref) structure with the impulse response functions of the fu
     of the `i`'th action to the `j`'th structural shock.
 """
 function irfs(pt :: Trip;       # Transition dynamics of the DRIP
-              T  :: Int64 = 40  # Optional: length of impulse response functions
+              T  :: Integer = 40  # Optional: length of impulse response functions
               )
     p     = pt.p; # steady state Drip
     (n,m) = size(p.H)
@@ -124,7 +124,7 @@ end
 """
          irfs(p          :: Drip,                          # Steady state of the DRIP (when treatment happens)
               S          :: Signal;                        # Signal for treatment
-              T          :: Int64 = 40,                    # optional: length of irfs
+              T          :: Integer = 40,                    # optional: length of irfs
               reoptimize :: Bool = true,                   # if true gives the irfs with reoptimized signals, if false with steady state signals
               trip       :: Union{Trip, Nothing} = nothing # if false solves the trip, if = P::trip then takes P as the trip
               )
@@ -145,7 +145,7 @@ Returns a [`Path`](@ref) structure with the impulse response functions of the fu
 """
 function irfs(p          :: Drip,                          # Steady state of the DRIP (when treatment happens)
               S          :: Signal;                        # Signal for treatment
-              T          :: Int64 = 40,                    # optional: length of irfs
+              T          :: Integer = 40,                    # optional: length of irfs
               reoptimize :: Bool = true,                   # if true gives the irfs with reoptimized signals, if false with steady state signals
               trip       :: Union{Trip, Nothing} = nothing # if false solves the trip, if = P::trip then takes P as the trip
               )

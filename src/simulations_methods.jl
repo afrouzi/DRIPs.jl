@@ -1,9 +1,9 @@
 """
          simulate(p    :: Drip;
-                  T    :: Int64 = 500,                    # Optional: length of simulation
-                  burn :: Int64 = 100,                    # Optional: length of initial burn (in addition to T)
-                  N    :: Union{Int4,Nothing} = nothing,  # Optional: number of simulated agents (returns the average beliefs of a large set of agents by default)
-                  seed :: Union{Int64,Nothing} = nothing  # Optional: seed number for fundamental shocks
+                  T    :: Integer = 500,                    # Optional: length of simulation
+                  burn :: Integer = 100,                    # Optional: length of initial burn (in addition to T)
+                  N    :: Union{Int4,Nothing} = nothing,    # Optional: number of simulated agents (returns the average beliefs of a large set of agents by default)
+                  seed :: Union{Integer,Nothing} = nothing  # Optional: seed number for fundamental shocks
                   ) -> Path
 Returns a `Path` structure with a simulated path of the fundamental (`x`), beliefs (`x_hat`)
     and actions (`a`)
@@ -15,10 +15,10 @@ Returns a `Path` structure with a simulated path of the fundamental (`x`), belie
 * `a` has dimension `m*T*N` where `a(:,i,t)` is the the simulated value of `x_hat` of agent `i` at time `t`.
 """
 function simulate(p    :: Drip;
-                  T    :: Int64 = 500,                    # Optional: length of simulation
-                  burn :: Int64 = 100,                    # Optional: length of initial burn (in addition to T)
-                  N    :: Union{Int64,Nothing} = nothing, # Optional: number of simulated agents (returns the average beliefs of a large set of agents by default)
-                  seed :: Union{Int64,Nothing} = nothing  # Optional: seed number for fundamental shocks
+                  T    :: Integer = 500,                    # Optional: length of simulation
+                  burn :: Integer = 100,                    # Optional: length of initial burn (in addition to T)
+                  N    :: Union{Integer,Nothing} = nothing, # Optional: number of simulated agents (returns the average beliefs of a large set of agents by default)
+                  seed :: Union{Integer,Nothing} = nothing  # Optional: seed number for fundamental shocks
                   )
     # create flag for if N is nothing and change N to 1
     average_belief = (N == nothing)
