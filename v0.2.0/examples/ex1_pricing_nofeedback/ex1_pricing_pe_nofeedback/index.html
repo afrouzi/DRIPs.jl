@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Pricing under RI w/o Endogenous Feedback · DRIPs.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">DRIPs.jl</span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../../overview/">Overview</a></li><li><a class="tocitem" href="../../../syntax/">Syntax</a></li><li><span class="tocitem">Examples and Replications</span><ul><li class="is-active"><a class="tocitem" href>Pricing under RI w/o Endogenous Feedback</a><ul class="internal"><li><a class="tocitem" href="#Contents-1"><span>Contents</span></a></li><li><a class="tocitem" href="#ex1a_1shock-1"><span>Ex. 1A: One Shock Case</span></a></li><li><a class="tocitem" href="#ex1b_twoshocks-1"><span>Ex. 1B: Two Shocks Case</span></a></li></ul></li><li><a class="tocitem" href="../../ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback/">Pricing under RI with Endogenous Feedback</a></li><li><a class="tocitem" href="../../ex3_mw2009/ex3_Mackowiak_Wiederholt_2009/">Replication of Mackowiak and Wiederholt (2009)</a></li><li><a class="tocitem" href="../../ex4_sims2011/ex4_Sims_2011/">Replication of Sims (2011)</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Replications</a></li><li class="is-active"><a href>Pricing under RI w/o Endogenous Feedback</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Pricing under RI w/o Endogenous Feedback</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Pricing-under-RI-w/o-Endogenous-Feedback-1"><a class="docs-heading-anchor" href="#Pricing-under-RI-w/o-Endogenous-Feedback-1">Pricing under RI w/o Endogenous Feedback</a><a class="docs-heading-anchor-permalink" href="#Pricing-under-RI-w/o-Endogenous-Feedback-1" title="Permalink"></a></h1><p>This document goes through a couple of examples for solving pricing under rational inattention without endogenous feedback using the <a href="https://github.com/afrouzi/DRIPs">DRIPs</a> package.</p><p><a href="https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples"><img src="https://mybinder.org/badge_logo.svg" alt="Binder"/></a> to run and modify the following code (no software is needed on the local machine).</p><p>See <a href="http://www.afrouzi.com/dynamic_inattention.pdf">Afrouzi and Yang (2019)</a> for background on the theory.</p><h2 id="Contents-1"><a class="docs-heading-anchor" href="#Contents-1">Contents</a><a class="docs-heading-anchor-permalink" href="#Contents-1" title="Permalink"></a></h2><ul><li><a href="#ex1a_1shock-1">Ex. 1A: One Shock Case</a><ul><li><a href="#ex1a_initialize-1">Initialization</a></li><li><a href="#ex1a_solution-1">Solution</a></li><li><a href="#ex1a_performance-1">Measure Performance</a></li><li><a href="#ex1a_irfs-1">IRFs</a></li></ul></li><li><a href="#ex1b_twoshocks-1">Ex. 1B: Two Shocks Case</a><ul><li><a href="#ex1b_initialize-1">Initialization</a></li><li><a href="#ex1b_solution-1">Solution</a></li><li><a href="#ex1b_performance-1">Measure Performance</a></li><li><a href="#ex1b_irfs-1">IRFs</a></li></ul></li></ul><h2 id="ex1a_1shock-1"><a class="docs-heading-anchor" href="#ex1a_1shock-1">Ex. 1A: One Shock Case</a><a class="docs-heading-anchor-permalink" href="#ex1a_1shock-1" title="Permalink"></a></h2><p>There is a measure of firms indexed by <span>$i\in[0,1]$</span>. Firm <span>$i$</span> chooses its price <span>$p_{i,t}$</span> at time <span>$t$</span> to track its ideal price <span>$p_{i,t}^*$</span>. Formally, her flow profit is     <span>$-(p_{i,t}-p_{i,t}^*)^2$</span></p><p>We start by assuming that <span>$p_{i,t}^*=q_t$</span> where</p><div>\[\begin{aligned}
+    \Delta q_t&amp;=\rho \Delta q_{t-1}+u_t,\quad u_t\sim \mathcal{N}(0,\sigma_u^2)
+\end{aligned}\]</div><p>Here <span>$q_t$</span> can be interpreted as money growth or the nominal aggregate demand. Therefore, the state-space representation of the problem is</p><div>\[\begin{aligned}
+   \vec{x}_{t}&amp;=\left[\begin{array}{c}
+    q_{t}\\
+    \Delta q_{t}
+    \end{array}\right]
+    = \underset{\mathbf{A}}{\underbrace{\left[\begin{array}{cc}
+    1 &amp; \rho \\
+    0 &amp; \rho \\
+    \end{array}\right]}}\, \vec{x}_{t-1}
+    + \underset{\mathbf{Q}}{\underbrace{\left[\begin{array}{c}
+    \sigma_u  \\
+    \sigma_u \\
+    \end{array}\right]}}\, u_t, \\
+    p_{i,t}^*&amp;=\underset{\mathbf{H}}{\underbrace{\left[\begin{array}{c}
+    1 \\
+    0 \\
+    \end{array}\right]}}&#39;\vec{x}_t
+\end{aligned}\]</div><h3 id="ex1a_initialize-1"><a class="docs-heading-anchor" href="#ex1a_initialize-1">Initialization</a><a class="docs-heading-anchor-permalink" href="#ex1a_initialize-1" title="Permalink"></a></h3><p>Include the package:</p><pre><code class="language-julia">using DRIPs;
+nothing #hide</code></pre><p>Assign value to deep parameters and define the structure of the problem</p><pre><code class="language-julia">ρ   = 0.6;        #persistence of money growth
+σ_u = 1;          #std. deviation of shocks to money growth
+nothing #hide</code></pre><p>Primitives of the DRIP:</p><pre><code class="language-julia">ω   = 100;
+β   = 0.96^0.25;
+A   = [1 ρ; 0 ρ];
+Q   = σ_u*[1; 1];
+H   = [1; 0];
+nothing #hide</code></pre><h3 id="ex1a_solution-1"><a class="docs-heading-anchor" href="#ex1a_solution-1">Solution</a><a class="docs-heading-anchor-permalink" href="#ex1a_solution-1" title="Permalink"></a></h3><pre><code class="language-julia">ex1 = Drip(ω,β,A,Q,H);
+nothing #hide</code></pre><h3 id="ex1a_performance-1"><a class="docs-heading-anchor" href="#ex1a_performance-1">Measure Performance</a><a class="docs-heading-anchor-permalink" href="#ex1a_performance-1" title="Permalink"></a></h3><pre><code class="language-julia">using BenchmarkTools;
+@benchmark Drip(ω,β,A,Q,H) setup = (ω = 100*rand()) # solves and times the function for a random set of ω&#39;s</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  36.69 KiB
+  allocs estimate:  365
+  --------------
+  minimum time:     26.399 μs (0.00% GC)
+  median time:      119.222 μs (0.00% GC)
+  mean time:        136.644 μs (13.52% GC)
+  maximum time:     6.109 ms (96.46% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1</code></pre><h3 id="ex1a_irfs-1"><a class="docs-heading-anchor" href="#ex1a_irfs-1">IRFs</a><a class="docs-heading-anchor-permalink" href="#ex1a_irfs-1" title="Permalink"></a></h3><pre><code class="language-julia">ex1irfs = irfs(ex1, T = 20);
+nothing #hide</code></pre><p>Let&#39;s plot how the average price <span>$p=\int_0^1 p_{i,t}di$</span> responds to a shock to money growth:</p><pre><code class="language-julia">using Plots, LaTeXStrings; pyplot();
+plot(1:ex1irfs.T,[ex1irfs.x[1,1,:],ex1irfs.a[1,1,:]],
+    xlabel     = &quot;Time&quot;,
+    label      = [L&quot;Nominal Agg. Demand ($q$)&quot; L&quot;Price ($p$)&quot;],
+    title      = &quot;IRFs to 1 Std. Dev. Expansionary Shock&quot;,
+    xlim       = (1,ex1irfs.T),
+    lw         = 3,
+    legend     = :bottomright,
+    legendfont = font(12),
+    tickfont   = font(12),
+    framestyle = :box)</code></pre><p><img src="../3058211794.png" alt/></p><p>We can also plot the IRFs of inflation <span>$\pi_t\equiv p_t-p_{t-1}$</span> and output <span>$y_t\equiv q_t-p_t$</span> to 1 percent expansionary shock to <span>$q$</span>:</p><pre><code class="language-julia">p1 = plot(1:ex1irfs.T,ex1irfs.x[1,1,:]-ex1irfs.a[1,1,:],
+    title  = L&quot;Output ($y_t$)&quot;)
+
+p2 = plot(1:ex1irfs.T,[ex1irfs.a[1,1,1];ex1irfs.a[1,1,2:end]-ex1irfs.a[1,1,1:end-1]],
+    title  = L&quot;Inflation ($\pi_t$)&quot;)
+
+plot(p1,p2,
+    layout     = (1,2),
+    xlim       = (1,ex1irfs.T),
+    lw         = 3,
+    legend     = false,
+    tickfont   = font(12),
+    framestyle = :box)</code></pre><p><img src="../3447318803.png" alt/></p><h2 id="ex1b_twoshocks-1"><a class="docs-heading-anchor" href="#ex1b_twoshocks-1">Ex. 1B: Two Shocks Case</a><a class="docs-heading-anchor-permalink" href="#ex1b_twoshocks-1" title="Permalink"></a></h2><p>Suppose now that <span>$p_{i,t}^*=q_t-z_{t}$</span> where</p><div>\[\begin{aligned}
+    \Delta q_t&amp;=\rho \Delta q_{t-1}+u_t,\quad u_t\sim \mathcal{N}(0,\sigma_u^2) \\
+    z_{t}&amp;\sim \mathcal{N}(0,\sigma_z^2)
+\end{aligned}\]</div><p>Here <span>$q_t$</span> can be interpreted as money growth and <span>$z_{i,t}$</span> as an idiosyncratic TFP shock. Therefore,</p><div>\[\begin{aligned}
+   \vec{x}_{t}&amp;=\left[\begin{array}{c}
+    q_{t}\\
+    \Delta q_{t} \\
+    z_{t}
+    \end{array}\right]
+    = \underset{\mathbf{A}}{\underbrace{\left[\begin{array}{ccc}
+    1 &amp; \rho &amp; 0\\
+    0 &amp; \rho &amp; 0\\
+    0 &amp; 0 &amp; 0 \\
+    \end{array}\right]}}\, \vec{x}_{t-1}
+    + \underset{\mathbf{Q}}{\underbrace{\left[\begin{array}{cc}
+    \sigma_u &amp; 0 \\
+    \sigma_u &amp; 0 \\
+    0 &amp; \sigma_z   \\
+    \end{array}\right]}}\, \left[\begin{array}{c}
+    u_t  \\
+    z_{t}   \\
+    \end{array}\right], \\
+    p_{i,t}^*&amp;=\underset{\mathbf{H}}{\underbrace{\left[\begin{array}{c}
+    1     \\
+    0 \\
+    -1 \\
+    \end{array}\right]}}&#39;\vec{x}_{t}
+\end{aligned}\]</div><h3 id="ex1b_initialize-1"><a class="docs-heading-anchor" href="#ex1b_initialize-1">Initialization</a><a class="docs-heading-anchor-permalink" href="#ex1b_initialize-1" title="Permalink"></a></h3><p>Assign values:</p><pre><code class="language-julia">ρ   = 0.6;        #persistence of money growth
+σ_u = 1;          #std. deviation of shocks to money growth
+σ_z = √10;      #std. deviation of idiosyncratic shock
+nothing #hide</code></pre><p>Specifying the primitives of the drip</p><pre><code class="language-julia">ω   = 100;
+β   = 0.96^0.25;
+A   = [1 ρ 0; 0 ρ 0; 0 0 0];
+Q   = [σ_u 0; σ_u 0; 0 σ_z];
+H   = [1; 0; -1];
+nothing #hide</code></pre><h3 id="ex1b_solution-1"><a class="docs-heading-anchor" href="#ex1b_solution-1">Solution</a><a class="docs-heading-anchor-permalink" href="#ex1b_solution-1" title="Permalink"></a></h3><pre><code class="language-julia">ex2  = Drip(ω,β,A,Q,H);
+nothing #hide</code></pre><h3 id="ex1b_performance-1"><a class="docs-heading-anchor" href="#ex1b_performance-1">Measure Performance</a><a class="docs-heading-anchor-permalink" href="#ex1b_performance-1" title="Permalink"></a></h3><pre><code class="language-julia">@benchmark Drip(ω,β,A,Q,H) setup = (ω = 100*rand()) # solves and times the function for a random set of ω&#39;s</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  110.61 KiB
+  allocs estimate:  786
+  --------------
+  minimum time:     89.306 μs (0.00% GC)
+  median time:      229.727 μs (0.00% GC)
+  mean time:        244.366 μs (7.19% GC)
+  maximum time:     5.326 ms (92.13% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1</code></pre><h3 id="ex1b_irfs-1"><a class="docs-heading-anchor" href="#ex1b_irfs-1">IRFs</a><a class="docs-heading-anchor-permalink" href="#ex1b_irfs-1" title="Permalink"></a></h3><pre><code class="language-julia">ex2irfs = irfs(ex2, T = 20);
+nothing #hide</code></pre><p>To get the IRFs simply use the law of motion for actions:</p><pre><code class="language-julia">p1 = plot(1:ex2irfs.T,[ex2irfs.x[1,1,:],ex2irfs.a[1,1,:]],
+    title  = L&quot;IRFs to $q$ shock&quot;);
+p2 = plot(1:ex1irfs.T,[ex2irfs.x[1,2,:],ex2irfs.a[1,2,:]],
+    title  = L&quot;IRFs to $z$ shock&quot;);
+
+plot(p1,p2, layout = (1,2),
+    xlabel     = &quot;Time&quot;,
+    label      = [L&quot;Agg. Demand ($q$)&quot; L&quot;Price ($p$)&quot;],
+    xlim       = (1,ex2irfs.T),
+    lw         = 3,
+    legend     = :bottomright,
+    legendfont = font(12),
+    tickfont   = font(12),
+    framestyle = :box)</code></pre><p><img src="../1307267617.png" alt/></p><p>More IRFs:</p><pre><code class="language-julia">p1 = plot(1:ex2irfs.T,ex2irfs.x[1,1,:]-ex2irfs.a[1,1,:],
+    title  = L&quot;Output ($q_0\to y_t$)&quot;);
+
+p2 = plot(1:ex2irfs.T,[ex2irfs.a[1,1,1];ex2irfs.a[1,1,2:end]-ex2irfs.a[1,1,1:end-1]],
+    title  = L&quot;Inflation ($q_0\to \pi_t$)&quot;)
+
+p3 = plot(1:ex2irfs.T,ex2irfs.x[1,2,:]-ex2irfs.a[1,2,:],
+    title  = L&quot;Output ($z_0\to y_t$)&quot;);
+
+p4 = plot(1:ex2irfs.T,[ex2irfs.a[1,2,1];ex2irfs.a[1,2,2:end]-ex2irfs.a[1,2,1:end-1]],
+    title  = L&quot;Inflation ($z_0\to \pi_t$)&quot;)
+
+plot(p1,p2,p3,p4, layout = (2,2),
+    xlim       = (1,ex2irfs.T),
+    lw         = 3,
+    legend     = false,
+    tickfont   = font(12),
+    framestyle = :box)</code></pre><p><img src="../1084474117.png" alt/></p><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../../syntax/">« Syntax</a><a class="docs-footer-nextpage" href="../../ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback/">Pricing under RI with Endogenous Feedback »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 8 June 2020 00:32">Monday 8 June 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
