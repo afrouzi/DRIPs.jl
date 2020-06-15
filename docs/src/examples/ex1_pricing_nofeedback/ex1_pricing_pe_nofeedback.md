@@ -98,13 +98,13 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  36.69 KiB
-  allocs estimate:  365
+  memory estimate:  45.36 KiB
+  allocs estimate:  446
   --------------
-  minimum time:     26.399 μs (0.00% GC)
-  median time:      119.222 μs (0.00% GC)
-  mean time:        136.644 μs (13.52% GC)
-  maximum time:     6.109 ms (96.46% GC)
+  minimum time:     29.225 μs (0.00% GC)
+  median time:      102.102 μs (0.00% GC)
+  mean time:        116.995 μs (13.85% GC)
+  maximum time:     4.342 ms (95.94% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -226,13 +226,13 @@ nothing #hide
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  110.61 KiB
-  allocs estimate:  786
+  memory estimate:  110.42 KiB
+  allocs estimate:  784
   --------------
-  minimum time:     89.306 μs (0.00% GC)
-  median time:      229.727 μs (0.00% GC)
-  mean time:        244.366 μs (7.19% GC)
-  maximum time:     5.326 ms (92.13% GC)
+  minimum time:     103.195 μs (0.00% GC)
+  median time:      245.442 μs (0.00% GC)
+  mean time:        257.566 μs (6.57% GC)
+  maximum time:     4.542 ms (93.05% GC)
   --------------
   samples:          10000
   evals/sample:     1

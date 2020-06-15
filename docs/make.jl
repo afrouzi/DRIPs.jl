@@ -19,7 +19,10 @@ makedocs(
             ]
          ]
     )
-#makedocs()
+
+
+const devurl = "dev"
+
 deploydocs(
     target = "build",
     repo   = "github.com/afrouzi/DRIPs.jl.git",
@@ -27,7 +30,7 @@ deploydocs(
     deps   = nothing,
     make   = nothing,
     devbranch = "master",
-    devurl = "dev",
-    versions = ["stable" => "v^", "v#.#"],
+    devurl = devurl,
+    versions = ["v#.#", devurl => devurl],
     push_preview = false
 )

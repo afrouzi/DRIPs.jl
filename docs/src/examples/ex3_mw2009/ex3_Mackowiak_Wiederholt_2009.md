@@ -182,9 +182,11 @@ nothing #hide
 
 ```
 ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.09 
-ω = 2.16σq² for κ = 3.03 
-ω = 2.23σq² for κ = 3.00 
+ω = 2.00σq² for κ = 3.10 
+ω = 2.18σq² for κ = 3.01 
+ω = 2.20σq² for κ = 3.01 
+ω = 2.41σq² for κ = 2.94 
+ω = 2.24σq² for κ = 3.00 
 Agg. Capacity = 0.12 bits, Idio. Capacity = 2.90 bits
 ```
 
@@ -245,10 +247,10 @@ nothing #hide
 ```
 ω = 1.00σq² for κ = 3.83 
 ω = 2.00σq² for κ = 3.19 
-ω = 2.31σq² for κ = 3.07 
-ω = 2.46σq² for κ = 3.00 
-ω = 2.47σq² for κ = 3.00 
-Agg. Capacity = 0.17 bits, Idio. Capacity = 2.82 bits
+ω = 2.31σq² for κ = 3.06 
+ω = 2.46σq² for κ = 3.01 
+ω = 2.48σq² for κ = 3.00 
+Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits
 ```
 
 For $\alpha = 0$:
@@ -316,10 +318,10 @@ nothing #hide
 
 ```
 ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.07 
-ω = 0.45σq² for κ = 4.44 
-ω = 0.95σq² for κ = 3.72 
-ω = 0.75σq² for κ = 3.94 
+ω = 2.00σq² for κ = 3.06 
+ω = 0.46σq² for κ = 4.42 
+ω = 0.93σq² for κ = 3.73 
+ω = 0.75σq² for κ = 3.95 
 ω = 0.70σq² for κ = 4.01 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits
@@ -386,15 +388,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  169.30 MiB
-  allocs estimate:  69031
+  memory estimate:  114.42 MiB
+  allocs estimate:  46531
   --------------
-  minimum time:     210.873 ms (11.62% GC)
-  median time:      770.895 ms (6.86% GC)
-  mean time:        693.629 ms (7.49% GC)
-  maximum time:     791.482 ms (8.33% GC)
+  minimum time:     111.194 ms (7.79% GC)
+  median time:      524.312 ms (6.58% GC)
+  mean time:        389.854 ms (6.87% GC)
+  maximum time:     575.063 ms (6.77% GC)
   --------------
-  samples:          8
+  samples:          13
   evals/sample:     1
 ```
 
@@ -406,15 +408,15 @@ For $\alpha=0.7$ and random values of $\omega$:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  65.19 MiB
-  allocs estimate:  28101
+  memory estimate:  59.14 MiB
+  allocs estimate:  25584
   --------------
-  minimum time:     84.362 ms (6.06% GC)
-  median time:      116.963 ms (9.95% GC)
-  mean time:        122.500 ms (8.77% GC)
-  maximum time:     192.497 ms (9.47% GC)
+  minimum time:     61.970 ms (6.95% GC)
+  median time:      89.525 ms (6.46% GC)
+  mean time:        92.209 ms (7.61% GC)
+  maximum time:     145.573 ms (2.95% GC)
   --------------
-  samples:          42
+  samples:          55
   evals/sample:     1
 ```
 
@@ -427,14 +429,14 @@ BenchmarkTools.Trial:
 ```
 BenchmarkTools.Trial: 
   memory estimate:  12.68 MiB
-  allocs estimate:  6193
+  allocs estimate:  6192
   --------------
-  minimum time:     24.057 ms (0.00% GC)
-  median time:      27.138 ms (0.00% GC)
-  mean time:        28.382 ms (5.87% GC)
-  maximum time:     41.719 ms (17.82% GC)
+  minimum time:     17.565 ms (0.00% GC)
+  median time:      18.212 ms (0.00% GC)
+  mean time:        19.303 ms (5.25% GC)
+  maximum time:     24.840 ms (18.38% GC)
   --------------
-  samples:          177
+  samples:          260
   evals/sample:     1
 ```
 
