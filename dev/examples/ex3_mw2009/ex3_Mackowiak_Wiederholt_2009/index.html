@@ -98,9 +98,11 @@ idi       = Drip(ω,1,A,Qz,H,w = 0.9);
 
 @printf(&quot;Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits&quot;,DRIPs.capacity(agg),DRIPs.capacity(idi));
 nothing #hide</code></pre><pre><code class="language-none">ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.09 
-ω = 2.16σq² for κ = 3.03 
-ω = 2.23σq² for κ = 3.00 
+ω = 2.00σq² for κ = 3.10 
+ω = 2.18σq² for κ = 3.01 
+ω = 2.20σq² for κ = 3.01 
+ω = 2.41σq² for κ = 2.94 
+ω = 2.24σq² for κ = 3.00 
 Agg. Capacity = 0.12 bits, Idio. Capacity = 2.90 bits</code></pre><p>Plot IRFs</p><pre><code class="language-julia">iirfs  = irfs(idi, T = L)
 airfs  = irfs(agg, T = L)
 
@@ -142,10 +144,10 @@ idi_α7      = Drip(ω_α7,1,A,Qz,H,w = 0.9);
         DRIPs.capacity(agg_α7),DRIPs.capacity(idi_α7));
 nothing #hide</code></pre><pre><code class="language-none">ω = 1.00σq² for κ = 3.83 
 ω = 2.00σq² for κ = 3.19 
-ω = 2.31σq² for κ = 3.07 
-ω = 2.46σq² for κ = 3.00 
-ω = 2.47σq² for κ = 3.00 
-Agg. Capacity = 0.17 bits, Idio. Capacity = 2.82 bits</code></pre><p>For <span>$\alpha = 0$</span>:</p><pre><code class="language-julia">ω_α0 = MW(3,0,A,Qq,Qz,H,H);
+ω = 2.31σq² for κ = 3.06 
+ω = 2.46σq² for κ = 3.01 
+ω = 2.48σq² for κ = 3.00 
+Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits</code></pre><p>For <span>$\alpha = 0$</span>:</p><pre><code class="language-julia">ω_α0 = MW(3,0,A,Qq,Qz,H,H);
 
 agg_α0, err = agg_drip(ω_α0,A,Qq,0,H; H0 = rand(L), maxit = 100, w = 0.95);
 idi_α0      = Drip(ω_α0,1,A,Qz,H,w = 0.9);
@@ -185,10 +187,10 @@ idi_κ4      = Drip(ω_κ4,1,A,Qz,H,w = 0.9)
 @printf(&quot;Agg. Capacity = %.2f bits, Idio. Capacity = %.2f bits&quot;,
         DRIPs.capacity(agg_κ4),DRIPs.capacity(idi_κ4));
 nothing #hide</code></pre><pre><code class="language-none">ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.07 
-ω = 0.45σq² for κ = 4.44 
-ω = 0.95σq² for κ = 3.72 
-ω = 0.75σq² for κ = 3.94 
+ω = 2.00σq² for κ = 3.06 
+ω = 0.46σq² for κ = 4.42 
+ω = 0.93σq² for κ = 3.73 
+ω = 0.75σq² for κ = 3.95 
 ω = 0.70σq² for κ = 4.01 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits</code></pre><p>For <span>$\kappa=5$</span>:</p><pre><code class="language-julia">ω_κ5 = MW(5,α,A,Qq,Qz,H,H; ω = 0.1*σq^2);
@@ -225,33 +227,33 @@ plot(1:L,0.75*[σq*H,airfs.a[1,1,:],airfs_κ4.a[1,1,:],airfs_κ5.a[1,1,:]],
     xlabel            = &quot;Periods&quot;,
     ylabel            = &quot;Impulse responses to shocks \n of one standard deviation&quot;)</code></pre><p><img src="../2582291013.png" alt/></p><h2 id="mw2009_performance-1"><a class="docs-heading-anchor" href="#mw2009_performance-1">Measure Performance/Speed</a><a class="docs-heading-anchor-permalink" href="#mw2009_performance-1" title="Permalink"></a></h2><h3 id="Performance-of-the-code-for-aggregate-problem-with-feedback-1"><a class="docs-heading-anchor" href="#Performance-of-the-code-for-aggregate-problem-with-feedback-1">Performance of the code for aggregate problem with feedback</a><a class="docs-heading-anchor-permalink" href="#Performance-of-the-code-for-aggregate-problem-with-feedback-1" title="Permalink"></a></h3><p>For random values of <span>$\omega$</span> and benchmark values of other parameters:</p><pre><code class="language-julia">using BenchmarkTools;
 @benchmark agg_drip(ω,A,Qq,α,H; H0 = rand(L), maxit = 100, w = 0.95) setup = (ω = σq^2*5*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
-  memory estimate:  169.30 MiB
-  allocs estimate:  69031
+  memory estimate:  114.42 MiB
+  allocs estimate:  46531
   --------------
-  minimum time:     210.873 ms (11.62% GC)
-  median time:      770.895 ms (6.86% GC)
-  mean time:        693.629 ms (7.49% GC)
-  maximum time:     791.482 ms (8.33% GC)
+  minimum time:     111.194 ms (7.79% GC)
+  median time:      524.312 ms (6.58% GC)
+  mean time:        389.854 ms (6.87% GC)
+  maximum time:     575.063 ms (6.77% GC)
   --------------
-  samples:          8
+  samples:          13
   evals/sample:     1</code></pre><p>For <span>$\alpha=0.7$</span> and random values of <span>$\omega$</span>:</p><pre><code class="language-julia">@benchmark agg_drip(ω_α7,A,Qq,0.7,H; H0 = rand(L), maxit = 100, w = 0.95) setup = (ω = σq^2*5*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
-  memory estimate:  65.19 MiB
-  allocs estimate:  28101
+  memory estimate:  59.14 MiB
+  allocs estimate:  25584
   --------------
-  minimum time:     84.362 ms (6.06% GC)
-  median time:      116.963 ms (9.95% GC)
-  mean time:        122.500 ms (8.77% GC)
-  maximum time:     192.497 ms (9.47% GC)
+  minimum time:     61.970 ms (6.95% GC)
+  median time:      89.525 ms (6.46% GC)
+  mean time:        92.209 ms (7.61% GC)
+  maximum time:     145.573 ms (2.95% GC)
   --------------
-  samples:          42
+  samples:          55
   evals/sample:     1</code></pre><h3 id="Performance-of-the-code-for-idiosyncratic-problem-1"><a class="docs-heading-anchor" href="#Performance-of-the-code-for-idiosyncratic-problem-1">Performance of the code for idiosyncratic problem</a><a class="docs-heading-anchor-permalink" href="#Performance-of-the-code-for-idiosyncratic-problem-1" title="Permalink"></a></h3><pre><code class="language-julia">@benchmark Drip(ω,1,A,Qz,H,w = 0.9) setup = (ω = σq^2*5*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
   memory estimate:  12.68 MiB
-  allocs estimate:  6193
+  allocs estimate:  6192
   --------------
-  minimum time:     24.057 ms (0.00% GC)
-  median time:      27.138 ms (0.00% GC)
-  mean time:        28.382 ms (5.87% GC)
-  maximum time:     41.719 ms (17.82% GC)
+  minimum time:     17.565 ms (0.00% GC)
+  median time:      18.212 ms (0.00% GC)
+  mean time:        19.303 ms (5.25% GC)
+  maximum time:     24.840 ms (18.38% GC)
   --------------
-  samples:          177
-  evals/sample:     1</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback/">« Pricing under RI with Endogenous Feedback</a><a class="docs-footer-nextpage" href="../../ex4_sims2011/ex4_Sims_2011/">Replication of Sims (2011) »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 8 June 2020 04:44">Monday 8 June 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  samples:          260
+  evals/sample:     1</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback/">« Pricing under RI with Endogenous Feedback</a><a class="docs-footer-nextpage" href="../../ex4_sims2011/ex4_Sims_2011/">Replication of Sims (2011) »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 15 June 2020 17:19">Monday 15 June 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
