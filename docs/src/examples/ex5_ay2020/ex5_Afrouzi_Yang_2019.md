@@ -179,7 +179,7 @@ Now, note that
 
 
 
-Let $x_t = \mathbf{H}_{x}'\vec{x}_{t} $, $i_t = \mathbf{H}_{i}'\vec{x}_{t} $, and $\pi_t = \mathbf{H}_{\pi}'\vec{x}_{t} = \mathbf{H}_{p}'(\mathbf{I} - \mathbf{\Lambda} \mathbf{M}')^{-1} (\mathbf{I} - \mathbf{M}') \vec{x}_t $. Then from the households Euler equation, we have:
+Let $x_t = \mathbf{H}_{x}'\vec{x}_{t}$, $i_t = \mathbf{H}_{i}'\vec{x}_{t}$, and $\pi_t = \mathbf{H}_{\pi}'\vec{x}_{t} = \mathbf{H}_{p}'(\mathbf{I} - \mathbf{\Lambda} \mathbf{M}')^{-1} (\mathbf{I} - \mathbf{M}') \vec{x}_t $. Then from the households Euler equation, we have:
 ```math
 \begin{aligned}
     & x_{t} =\mathbb{E}_{t}^{f}\left[x_{t+1}-\frac{1}{\sigma}\left(i_{t}-\pi_{t+1}\right)\right]+\mathbb{E}_{t}^{f}[y_{t+1}^n] - y_t^n \\
@@ -688,4 +688,3 @@ Plots.plot(title1,p1,p2,p3,p4,title2,p5,p6,p7,p8,
 ---
 
 *This page was generated using [Literate.jl](https://github.com/fredrikekre/Literate.jl).*
-
