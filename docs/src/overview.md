@@ -23,7 +23,7 @@ The LQG-DRI problem is characterized by the following parameters:
 ### The Solution
 The solution to the dynamic rational inattention problem is a joint stochastic process between the actions and the states: ``\{(\vec{a}_t,\vec{x}_t):t\geq 0\}``. Moreover, in some economic applications, we are also interested in the law of motion for the agent's belief about $\vec{x}_t$ under the optimal information structure ``\hat{x}_t=\mathbb{E}_t[\vec{x}_t]`` where the expectation is taken conditional on the agent's time $t$ information.
 
-Theorem 2 and Proposition 3 in [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) characterize this joint distribution as a function of a tuple ``(\mathbf{K_t},\mathbf{Y_t},\mathbf{\Sigma}_{z,t})`` where
+Theorem 2 and Proposition 3 in [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) characterize this joint distribution as a function of a tuple ``(\mathbf{K_t},\mathbf{Y_t},\mathbf{\Sigma}_{z,t})`` where
 ```math
 \begin{aligned}
     \vec{a}_t &= \mathbf{H}'\hat{x}_t = \mathbf{H}'\mathbf{A}\hat{x}_{t-1}+\mathbf{Y_t}'(\vec{x}_t-\mathbf{A}\hat{x}_{t-1})+\vec{z}_t \\
@@ -42,7 +42,7 @@ In addition to these, we might also be interested in the agent's prior and poste
 * ``\mathbf{\Sigma}_{-1,t}=\mathbb{V}ar(\vec{x}_t|\vec{a}^{t-1})\in\mathbb{R}^{n\times n}``,
 * ``\bar{\Omega}_t\in\mathbb{R}^{n\times n}``.
 
-where the matrix $\bar{\Omega}_t$ captures the value of information (see [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for details)
+where the matrix $\bar{\Omega}_t$ captures the value of information (see [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for details)
 
 ## Steady State of DRIPs
 
@@ -52,7 +52,7 @@ See the [syntax section for Drip methods](@ref DRIP_methods) for the definition,
 
 ## Transition Dynamics of DRIPs
 
-The Euler equation derived in [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for the  also allows us to characterize the transition path of the information structure over time for an arbitrary initial prior.
+The Euler equation derived in [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for the  also allows us to characterize the transition path of the information structure over time for an arbitrary initial prior.
 
 The function `Trip(P::Drip,s0)` takes a `Drip` type structure along with an initial condition `s0` as an input and returns a `Trip` structure that summarizes the transition path of the optimal information structure. The initial condition `s0` can be given either as an initial prior covariance matrix or alternatively as a one time signal about the state that perturbs the steady state prior.
 

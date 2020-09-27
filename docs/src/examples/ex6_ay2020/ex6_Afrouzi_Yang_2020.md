@@ -1,5 +1,5 @@
 ```@meta
-EditURL = "<unknown>/examples/src/ex5_Afrouzi_Yang_2019.jl"
+EditURL = "<unknown>/examples/src/ex6_Afrouzi_Yang_2020.jl"
 ```
 
 # Replication of the Quantitative Analysis in Afrouzi and Yang (2020)
@@ -55,7 +55,7 @@ where $L_{i,t}$ is firm $i$'s demand for labor. I assume that shocks to $A_{t}$ 
 ```
 Then, firm $i$'s nominal profit from sales of all goods at prices $\{P_{i,j,t}\}_{j=1}^N$ is given by
 ```math
-\begin{aligned} \label{profit_function}
+\begin{aligned}
 \Pi_{i,t} (P_{i,t},A_{t},W_{i,t},P_t,Y_t) =\left(P_{i,t}-W_{i,t}A_{t}\right) \left(\frac{P_{i,t}}{P_{t}}\right)^{-\theta}Y_{t},
 \end{aligned}
 ```
@@ -65,9 +65,9 @@ At each period, firms optimally decide their prices and signals subject to costs
 
 The firm $i$ chooses a set of signals to observe over time $(s_{i,t} \in  \mathcal{S}_{i,t})_{t=0}^\infty$ and a pricing strategy that maps the set of its prices at $t-1$ and its information set at $t$ to its optimal price at any given period, $P_{i,t}:(S_i^t)\rightarrow \mathbb{R}$ where $S_i^t=S_i^{t-1}\cup s_{i,t} = S_i^{-1} \cup \{s_{i,\tau}\}_{\tau=0}^t$ is the firm's information set at time $t$.  Then, the firm $i$'s problem is to maximize the net present value of its life time profits given an initial information set:
 ```math
-\begin{aligned}  \label{firm_problem}
-\max_{\{s_{i,t}\in \mathcal{S}_{i,t},P_{i,t} (S_i^t) \}_{t\geq0}} &  \ \mathbb{E}\Bigg[\sum_{t=0}^{\infty}\beta^t \Lambda_t \Bigg\{ \Pi_{i,t} (P_{i,t},A_{t},W_{i,t},P_t,Y_t)  - \omega \mathbb{I} ( S_{i}^t ;  (A_{\tau},W_{i,\tau},P_\tau,Y_\tau)_{\tau \leq t} | S_i^{t-1} ) \Bigg\} \Bigg| S_{i}^{-1}\Bigg]  \nonumber \\
-\text{s.t.} \qquad & \ \   \   {S}_{i}^{t}={S}_{i}^{t-1}\cup s_{i,t}, \nonumber
+\begin{aligned}
+\max_{\{s_{i,t}\in \mathcal{S}_{i,t},P_{i,t} (S_i^t) \}_{t\geq0}} &  \mathbb{E}\left[\sum_{t=0}^{\infty}\beta^t \Lambda_t \left\{ \Pi_{i,t} (P_{i,t},A_{t},W_{i,t},P_t,Y_t)  - \omega \mathbb{I} ( S_{i}^t ;  (A_{\tau},W_{i,\tau},P_\tau,Y_\tau)_{\tau \leq t} | S_i^{t-1} ) \right\} \Bigg| S_{i}^{-1}\right]  \\
+\text{s.t.} \quad & {S}_{i}^{t}={S}_{i}^{t-1}\cup s_{i,t}
 \end{aligned}
 ```
 where $\Lambda_t$ is the stochastic discount factor and $\mathbb{I} ( S_{i}^t ;  (A_{\tau},W_{i,\tau},P_\tau,Y_\tau)_{\tau \leq t} | S_i^{t-1} )$ is the Shannon's mutual information function.
@@ -179,7 +179,7 @@ Now, note that
 
 
 
-Let $x_t = \mathbf{H}_{x}'\vec{x}_{t}$, $i_t = \mathbf{H}_{i}'\vec{x}_{t}$, and $\pi_t = \mathbf{H}_{\pi}'\vec{x}_{t} = \mathbf{H}_{p}'(\mathbf{I} - \mathbf{\Lambda} \mathbf{M}')^{-1} (\mathbf{I} - \mathbf{M}') \vec{x}_t $. Then from the households Euler equation, we have:
+Let $x_t = \mathbf{H}_{x}'\vec{x}_{t} $, $i_t = \mathbf{H}_{i}'\vec{x}_{t} $, and $\pi_t = \mathbf{H}_{\pi}'\vec{x}_{t} = \mathbf{H}_{p}'(\mathbf{I} - \mathbf{\Lambda} \mathbf{M}')^{-1} (\mathbf{I} - \mathbf{M}') \vec{x}_t $. Then from the households Euler equation, we have:
 ```math
 \begin{aligned}
     & x_{t} =\mathbb{E}_{t}^{f}\left[x_{t+1}-\frac{1}{\sigma}\left(i_{t}-\pi_{t+1}\right)\right]+\mathbb{E}_{t}^{f}[y_{t+1}^n] - y_t^n \\
@@ -395,7 +395,7 @@ nothing #hide
 ```
 
 Get initial guess for post-Volcker solutions
- 53.303741 seconds (1.51 M allocations: 110.753 GiB, 1.71% gc time)
+ 60.798645 seconds (3.90 M allocations: 110.866 GiB, 7.55% gc time)
 
 ```
 
@@ -430,7 +430,7 @@ Solve for the post-Volcker model:
   Iteration 450. Error: 0.00011038503577128138. Capacity: 1.1838080473974388.
   Iteration 500. Error: 0.00011286983266623046. Capacity: 1.1835142347515875.
   Iteration 550. Error: 0.00011083164494455719. Capacity: 1.1835967086043597.
-113.828645 seconds (2.82 M allocations: 224.653 GiB, 1.71% gc time)
+123.430879 seconds (2.84 M allocations: 224.654 GiB, 6.81% gc time)
 
 ```
 
@@ -467,7 +467,7 @@ nothing #hide
 ```
 
 Get initial guess for pre-Volcker solutions
- 54.759279 seconds (1.38 M allocations: 110.745 GiB, 1.79% gc time)
+ 59.055488 seconds (1.38 M allocations: 110.745 GiB, 7.18% gc time)
 
 ```
 
@@ -494,7 +494,7 @@ nothing #hide
 Solve for the pre-Volcker model:
   Iteration 50. Error: 0.0001485454079821963. Capacity: 1.6642946059660233.
   Iteration 100. Error: 0.00011573353266253216. Capacity: 1.664275383320826.
- 26.440182 seconds (651.97 k allocations: 52.173 GiB, 1.62% gc time)
+ 29.126474 seconds (651.97 k allocations: 52.173 GiB, 7.29% gc time)
 
 ```
 
@@ -529,7 +529,7 @@ end
 
 Simulate the models:
 ==> Post-Volcker: std(π)=0.015, std(y)=0.018, corr(π,y)=0.209
-  2.672695 seconds (1.06 M allocations: 10.858 GiB, 4.74% gc time)
+  4.838214 seconds (3.10 M allocations: 10.956 GiB, 9.36% gc time)
 
 ```
 
@@ -559,7 +559,7 @@ end
 
 ```
 ==> Pre-Volcker : std(π)=0.025, std(y)=0.020, corr(π,y)=0.245
-  3.185264 seconds (1.06 M allocations: 10.858 GiB, 11.97% gc time)
+  3.328587 seconds (1.06 M allocations: 10.858 GiB, 14.24% gc time)
 
 ```
 
@@ -688,3 +688,4 @@ Plots.plot(title1,p1,p2,p3,p4,title2,p5,p6,p7,p8,
 ---
 
 *This page was generated using [Literate.jl](https://github.com/fredrikekre/Literate.jl).*
+

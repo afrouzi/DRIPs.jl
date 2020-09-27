@@ -1,14 +1,14 @@
 ```@meta
-EditURL = "<unknown>/examples/src/ex4_Sims_2011.jl"
+EditURL = "<unknown>/examples/src/ex4_Sims_2010.jl"
 ```
 
-# Replication of Sims (2011)
+# Replication of Sims (2010)
 
-This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
+This example replicates [Sims (2010)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf) from the Handbook of Monetary Economics using the [DRIPs](https://github.com/afrouzi/DRIPs.jl) package.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
-See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
+See [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 ## Contents
 * [Setup](@ref sims2010_setup)
@@ -102,10 +102,10 @@ BenchmarkTools.Trial:
   memory estimate:  162.38 KiB
   allocs estimate:  1551
   --------------
-  minimum time:     82.977 μs (0.00% GC)
-  median time:      95.200 μs (0.00% GC)
-  mean time:        129.325 μs (19.38% GC)
-  maximum time:     12.425 ms (97.53% GC)
+  minimum time:     80.321 μs (0.00% GC)
+  median time:      88.286 μs (0.00% GC)
+  mean time:        108.515 μs (17.15% GC)
+  maximum time:     6.428 ms (97.12% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -122,10 +122,10 @@ BenchmarkTools.Trial:
   memory estimate:  162.38 KiB
   allocs estimate:  1551
   --------------
-  minimum time:     82.355 μs (0.00% GC)
-  median time:      99.819 μs (0.00% GC)
-  mean time:        121.838 μs (17.80% GC)
-  maximum time:     7.221 ms (98.18% GC)
+  minimum time:     80.000 μs (0.00% GC)
+  median time:      97.624 μs (0.00% GC)
+  mean time:        118.448 μs (17.32% GC)
+  maximum time:     6.445 ms (97.04% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -340,15 +340,15 @@ Performance for solving the transition dynamics for a random signal:
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  502.69 KiB
-  allocs estimate:  6201
+  memory estimate:  501.02 KiB
+  allocs estimate:  6200
   --------------
-  minimum time:     501.836 μs (0.00% GC)
-  median time:      532.584 μs (0.00% GC)
-  mean time:        602.011 μs (10.55% GC)
-  maximum time:     8.669 ms (89.45% GC)
+  minimum time:     487.478 μs (0.00% GC)
+  median time:      519.538 μs (0.00% GC)
+  mean time:        589.391 μs (10.83% GC)
+  maximum time:     7.933 ms (87.83% GC)
   --------------
-  samples:          8269
+  samples:          8470
   evals/sample:     1
 ```
 

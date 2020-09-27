@@ -62,9 +62,9 @@
 # The firm $i$ chooses a set of signals to observe over time $(s_{i,t} \in  \mathcal{S}_{i,t})_{t=0}^\infty$ and a pricing strategy that maps the set of its prices at $t-1$ and its information set at $t$ to its optimal price at any given period, $P_{i,t}:(S_i^t)\rightarrow \mathbb{R}$ where $S_i^t=S_i^{t-1}\cup s_{i,t} = S_i^{-1} \cup \{s_{i,\tau}\}_{\tau=0}^t$ is the firm's information set at time $t$.  Then, the firm $i$'s problem is to maximize the net present value of its life time profits given an initial information set:
 # ```math
 # \begin{aligned}
-# \max_{\{s_{i,t}\in \mathcal{S}_{i,t},P_{i,t} (S_i^t) \}_{t\geq0}} &  \ \mathbb{E}\Bigg[\sum_{t=0}^{\infty}\beta^t \Lambda_t \Bigg\{ \Pi_{i,t} (P_{i,t},A_{t},W_{i,t},P_t,Y_t)  - \omega \mathbb{I} ( S_{i}^t ;  (A_{\tau},W_{i,\tau},P_\tau,Y_\tau)_{\tau \leq t} | S_i^{t-1} ) \Bigg\} \Bigg| S_{i}^{-1}\Bigg]  \nonumber \\
-# \text{s.t.} \qquad & \ \   \   {S}_{i}^{t}={S}_{i}^{t-1}\cup s_{i,t}, \nonumber
-# \end{aligned}
+# \max_{\{s_{i,t}\in \mathcal{S}_{i,t},P_{i,t} (S_i^t) \}_{t\geq0}} &  \mathbb{E}\left[\sum_{t=0}^{\infty}\beta^t \Lambda_t \left\{ \Pi_{i,t} (P_{i,t},A_{t},W_{i,t},P_t,Y_t)  - \omega \mathbb{I} ( S_{i}^t ;  (A_{\tau},W_{i,\tau},P_\tau,Y_\tau)_{\tau \leq t} | S_i^{t-1} ) \right\} \Bigg| S_{i}^{-1}\right]  \\
+# \text{s.t.} \quad & {S}_{i}^{t}={S}_{i}^{t-1}\cup s_{i,t}
+# \end{aligned} 
 # ```
 # where $\Lambda_t$ is the stochastic discount factor and $\mathbb{I} ( S_{i}^t ;  (A_{\tau},W_{i,\tau},P_\tau,Y_\tau)_{\tau \leq t} | S_i^{t-1} )$ is the Shannon's mutual information function.
 #

@@ -4,11 +4,11 @@ EditURL = "<unknown>/examples/src/ex2_pricing_pe_with_feedback.jl"
 
 # Pricing under RI with Endogenous Feedback
 
-This example solves a pricing problem under rational inattention **with** endogenous feedback using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
+This example solves a pricing problem under rational inattention **with** endogenous feedback using the [DRIPs](https://github.com/afrouzi/DRIPs.jl) package.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
-See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
+See [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 Include the solver and import packages for plots and performance:
 
 ## Contents
@@ -37,7 +37,7 @@ Note that now the state space representation for $p_{i,t}^*$ is no longer exogen
     p_{i,t}^*=\Phi(L)u_t
 \end{aligned}
 ```
-where $\Phi(.)$ is a lag polynomial and $u_t$ is the shock to nominal demand. Here, we have basically guessed that the process for $p_{i,t}^*$ is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See [Afrouzi (2020)](http://www.afrouzi.com/strategic_inattetion.pdf)). Our objective is to find $\Phi(.)$.
+where $\Phi(.)$ is a lag polynomial and $u_t$ is the shock to nominal demand. Here, we have basically guessed that the process for $p_{i,t}^*$ is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See [Afrouzi, 2020](http://www.afrouzi.com/strategic_inattetion.pdf)). Our objective is to find $\Phi(.)$.
 
 Since we cannot put $MA(\infty)$ processes in the computer, we approximate them with truncation. In particular, we know for stationary processes, we can arbitrarily get close to the true process by truncating $MA(\infty)$ processes to $MA(T)$ processes. Our problem here is that $p_{i,t}^*$ has a unit root and is not stationary. We can bypass this issue by re-writing the state space in the following way:
 ```math
@@ -88,7 +88,11 @@ q_{t} & j=0\\
 ```
 
 where $q_t^{(j)}$ is the $j$'th order belief of firms, on average, of $q_t$. Now, we need to write these higher order beliefs in terms of the state vector. Suppose, for a given $j$, there exists $\mathbf{X}_j\in \mathbb{R}^{L\times L}$ such that
-$$ q_t^{(j)} = \mathbf{H}_q'\mathbf{X}_j \vec{x}_t $$
+```math
+\begin{aligned}
+q_t^{(j)} = \mathbf{H}_q'\mathbf{X}_j \vec{x}_t
+\end{aligned}
+```
 This clearly holds for $j=0$ with $\mathbf{X}_0=\mathbf{I}$.
 
 Now, note that
@@ -101,7 +105,11 @@ Now, note that
 \end{aligned}
 ```
 where the $(n)$ subscripts refer to the solution of the RI problem in the $(n)$'th iteration. Note that this implies
-$$\mathbf{X}_{j}=\mathbf{X}_{(n)}^j,\forall j\geq 0 \Rightarrow q_t^{(j)}=\mathbf{X}_{(n)}^{j}\vec{x}_t $$
+```math
+\begin{aligned}
+\mathbf{X}_{j}=\mathbf{X}_{(n)}^j,\forall j\geq 0 \Rightarrow q_t^{(j)}=\mathbf{X}_{(n)}^{j}\vec{x}_t
+\end{aligned}
+```
 
 This gives us an updated guess for $\mathbf{H}$:
 ```math
@@ -195,7 +203,7 @@ nothing #hide
 ```
 
 ```
-  1.956416 seconds (4.83 M allocations: 544.294 MiB, 3.98% gc time)
+  1.864820 seconds (4.87 M allocations: 546.022 MiB, 4.74% gc time)
 
 ```
 
@@ -240,15 +248,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  282.72 MiB
-  allocs estimate:  34129
+  memory estimate:  283.86 MiB
+  allocs estimate:  34301
   --------------
-  minimum time:     205.330 ms (7.93% GC)
-  median time:      245.701 ms (9.30% GC)
-  mean time:        268.361 ms (8.80% GC)
-  maximum time:     335.964 ms (9.82% GC)
+  minimum time:     200.036 ms (7.31% GC)
+  median time:      207.181 ms (8.45% GC)
+  mean time:        207.728 ms (7.95% GC)
+  maximum time:     216.638 ms (8.07% GC)
   --------------
-  samples:          19
+  samples:          25
   evals/sample:     1
 ```
 

@@ -4,11 +4,11 @@ EditURL = "<unknown>/examples/src/ex3_Mackowiak_Wiederholt_2009.jl"
 
 # Replication of Mackowiak and Wiederholt (2009)
 
-This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
+This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs.jl) package.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
-See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
+See [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 ## Contents
 * [Setup](@ref mw2009_setup)
@@ -45,9 +45,9 @@ where
 
 ## [Mapping the Problem to a DRIP](@id mw2009_map_drip)
 
-There are a few ways of translating the problem above to a D.R.I.P. structure; however, the most efficient way, due to the independence assumption, is to write it as the sum of two D.R.I.P.'s: one that solves the attention problem for the idiosyncratic shock, and one that solves the attention problem for the aggregate shock which also has endogenous feedback.
+There are a few ways of translating the problem above to a `Drip` structure; however, the most efficient way, due to the independence assumption, is to write it as the sum of two DRIPs: one that solves the attention problem for the idiosyncratic shock, and one that solves the attention problem for the aggregate shock which also has endogenous feedback.
 
-Moreover, since the problem above has a fixed capacity, instead of a fixed cost of attention ($\omega$) as in D.R.I.P. pacakge, we need to iterate over $\omega$'s to find the one that corresponds with $\kappa$.
+Moreover, since the problem above has a fixed capacity, instead of a fixed cost of attention ($\omega$) as in DRIPs pacakge, we need to iterate over $\omega$'s to find the one that corresponds with $\kappa$.
 
 ## [Initialization](@id mw2009_param)
 Include the package::
@@ -183,10 +183,9 @@ nothing #hide
 ```
 ω = 1.00σq² for κ = 3.67 
 ω = 2.00σq² for κ = 3.10 
-ω = 2.18σq² for κ = 3.01 
-ω = 2.20σq² for κ = 3.01 
-ω = 2.41σq² for κ = 2.94 
-ω = 2.24σq² for κ = 3.00 
+ω = 2.17σq² for κ = 3.03 
+ω = 2.27σq² for κ = 2.98 
+ω = 2.23σq² for κ = 3.00 
 Agg. Capacity = 0.12 bits, Idio. Capacity = 2.90 bits
 ```
 
@@ -247,9 +246,9 @@ nothing #hide
 ```
 ω = 1.00σq² for κ = 3.83 
 ω = 2.00σq² for κ = 3.19 
-ω = 2.31σq² for κ = 3.06 
+ω = 2.30σq² for κ = 3.06 
 ω = 2.46σq² for κ = 3.01 
-ω = 2.48σq² for κ = 3.00 
+ω = 2.47σq² for κ = 3.00 
 Agg. Capacity = 0.17 bits, Idio. Capacity = 2.83 bits
 ```
 
@@ -317,11 +316,11 @@ nothing #hide
 ```
 
 ```
-ω = 1.00σq² for κ = 3.67 
-ω = 2.00σq² for κ = 3.06 
-ω = 0.46σq² for κ = 4.42 
-ω = 0.93σq² for κ = 3.73 
-ω = 0.75σq² for κ = 3.95 
+ω = 1.00σq² for κ = 3.66 
+ω = 2.00σq² for κ = 3.09 
+ω = 0.41σq² for κ = 4.52 
+ω = 0.99σq² for κ = 3.68 
+ω = 0.77σq² for κ = 3.92 
 ω = 0.70σq² for κ = 4.01 
 ω = 0.71σq² for κ = 4.00 
 Agg. Capacity = 0.34 bits, Idio. Capacity = 3.66 bits
@@ -343,8 +342,8 @@ nothing #hide
 ```
 ω = 0.10σq² for κ = 6.14 
 ω = 0.20σq² for κ = 5.29 
-ω = 0.23σq² for κ = 5.11 
-ω = 0.26σq² for κ = 5.02 
+ω = 0.23σq² for κ = 5.12 
+ω = 0.26σq² for κ = 5.01 
 ω = 0.26σq² for κ = 5.00 
 Agg. Capacity = 0.70 bits, Idio. Capacity = 4.30 bits
 ```
@@ -388,15 +387,15 @@ using BenchmarkTools;
 
 ```
 BenchmarkTools.Trial: 
-  memory estimate:  114.42 MiB
-  allocs estimate:  46531
+  memory estimate:  431.88 MiB
+  allocs estimate:  197363
   --------------
-  minimum time:     111.194 ms (7.79% GC)
-  median time:      524.312 ms (6.58% GC)
-  mean time:        389.854 ms (6.87% GC)
-  maximum time:     575.063 ms (6.77% GC)
+  minimum time:     532.473 ms (6.11% GC)
+  median time:      561.720 ms (6.51% GC)
+  mean time:        561.793 ms (6.35% GC)
+  maximum time:     596.280 ms (6.15% GC)
   --------------
-  samples:          13
+  samples:          9
   evals/sample:     1
 ```
 
@@ -411,12 +410,12 @@ BenchmarkTools.Trial:
   memory estimate:  59.14 MiB
   allocs estimate:  25584
   --------------
-  minimum time:     61.970 ms (6.95% GC)
-  median time:      89.525 ms (6.46% GC)
-  mean time:        92.209 ms (7.61% GC)
-  maximum time:     145.573 ms (2.95% GC)
+  minimum time:     61.127 ms (6.65% GC)
+  median time:      88.009 ms (9.27% GC)
+  mean time:        84.948 ms (7.36% GC)
+  maximum time:     108.039 ms (7.57% GC)
   --------------
-  samples:          55
+  samples:          59
   evals/sample:     1
 ```
 
@@ -431,12 +430,12 @@ BenchmarkTools.Trial:
   memory estimate:  12.68 MiB
   allocs estimate:  6192
   --------------
-  minimum time:     17.565 ms (0.00% GC)
-  median time:      18.212 ms (0.00% GC)
-  mean time:        19.303 ms (5.25% GC)
-  maximum time:     24.840 ms (18.38% GC)
+  minimum time:     17.451 ms (0.00% GC)
+  median time:      18.556 ms (0.00% GC)
+  mean time:        19.451 ms (4.91% GC)
+  maximum time:     23.638 ms (17.43% GC)
   --------------
-  samples:          260
+  samples:          257
   evals/sample:     1
 ```
 
