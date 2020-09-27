@@ -1,10 +1,10 @@
 # # Pricing under RI with Endogenous Feedback
 
-# This example solves a pricing problem under rational inattention **with** endogenous feedback using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
+# This example solves a pricing problem under rational inattention **with** endogenous feedback using the [DRIPs](https://github.com/afrouzi/DRIPs.jl) package.
 
 # [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
-# See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
+# See [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 # Include the solver and import packages for plots and performance:
 
 # ## Contents
@@ -33,7 +33,7 @@
 #     p_{i,t}^*=\Phi(L)u_t
 # \end{aligned}
 # ```
-# where $\Phi(.)$ is a lag polynomial and $u_t$ is the shock to nominal demand. Here, we have basically guessed that the process for $p_{i,t}^*$ is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See [Afrouzi (2020)](http://www.afrouzi.com/strategic_inattetion.pdf)). Our objective is to find $\Phi(.)$.
+# where $\Phi(.)$ is a lag polynomial and $u_t$ is the shock to nominal demand. Here, we have basically guessed that the process for $p_{i,t}^*$ is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See [Afrouzi, 2020](http://www.afrouzi.com/strategic_inattetion.pdf)). Our objective is to find $\Phi(.)$.
 
 # Since we cannot put $MA(\infty)$ processes in the computer, we approximate them with truncation. In particular, we know for stationary processes, we can arbitrarily get close to the true process by truncating $MA(\infty)$ processes to $MA(T)$ processes. Our problem here is that $p_{i,t}^*$ has a unit root and is not stationary. We can bypass this issue by re-writing the state space in the following way:
 # ```math
@@ -84,7 +84,11 @@
 # ```
 
 # where $q_t^{(j)}$ is the $j$'th order belief of firms, on average, of $q_t$. Now, we need to write these higher order beliefs in terms of the state vector. Suppose, for a given $j$, there exists $\mathbf{X}_j\in \mathbb{R}^{L\times L}$ such that
-# $$ q_t^{(j)} = \mathbf{H}_q'\mathbf{X}_j \vec{x}_t $$
+# ```math
+# \begin{aligned}
+# q_t^{(j)} = \mathbf{H}_q'\mathbf{X}_j \vec{x}_t
+# \end{aligned}
+# ```
 # This clearly holds for $j=0$ with $\mathbf{X}_0=\mathbf{I}$.
 
 # Now, note that
@@ -97,7 +101,11 @@
 # \end{aligned}
 # ```
 # where the $(n)$ subscripts refer to the solution of the RI problem in the $(n)$'th iteration. Note that this implies
-# $$\mathbf{X}_{j}=\mathbf{X}_{(n)}^j,\forall j\geq 0 \Rightarrow q_t^{(j)}=\mathbf{X}_{(n)}^{j}\vec{x}_t $$
+# ```math
+# \begin{aligned}
+# \mathbf{X}_{j}=\mathbf{X}_{(n)}^j,\forall j\geq 0 \Rightarrow q_t^{(j)}=\mathbf{X}_{(n)}^{j}\vec{x}_t
+# \end{aligned}
+# ```
 
 # This gives us an updated guess for $\mathbf{H}$:
 # ```math

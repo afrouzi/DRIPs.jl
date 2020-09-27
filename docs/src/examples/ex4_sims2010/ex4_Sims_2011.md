@@ -11,21 +11,21 @@ This example replicates [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbo
 See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 ## Contents
-* [Setup](@ref sims2011_setup)
-* [Initialization](@ref sims2011_param)
-* [Solution](@ref sims2011_solution)
-    * [Benchmark Parameterization](@ref sims2011_benchmark)
-    * [Lower Cost of Attention: $\omega = 0.1$](@ref sims2011_lowomega)
-    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref sims2011_betas)
-* [Impulse Response Functions](@ref sims2011_figures)
-    * [Benchmark Parameterization](@ref sims2011_fig_benchmark)
-    * [Lower Cost of Attention: $\omega = 0.1$](@ref sims2011_fig_lowomega)
-    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref sims2011_fig_betas)
-* [Extensions](@ref sims2011_extensions)
-    * [Transition Dynamics of Attention](@ref sims2011_trip)
-    * [Impulse Response Functions with Information Treatment](@ref sims2011_trip_irfs)
+* [Setup](@ref sims2010_setup)
+* [Initialization](@ref sims2010_param)
+* [Solution](@ref sims2010_solution)
+    * [Benchmark Parameterization](@ref sims2010_benchmark)
+    * [Lower Cost of Attention: $\omega = 0.1$](@ref sims2010_lowomega)
+    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref sims2010_betas)
+* [Impulse Response Functions](@ref sims2010_figures)
+    * [Benchmark Parameterization](@ref sims2010_fig_benchmark)
+    * [Lower Cost of Attention: $\omega = 0.1$](@ref sims2010_fig_lowomega)
+    * [Other Discount Factors: $\beta \in \{0,1\}$](@ref sims2010_fig_betas)
+* [Extensions](@ref sims2010_extensions)
+    * [Transition Dynamics of Attention](@ref sims2010_trip)
+    * [Impulse Response Functions with Information Treatment](@ref sims2010_trip_irfs)
 
-## [Setup](@id sims2011_setup)
+## [Setup](@id sims2010_setup)
 
 The problem in [Sims (2011)](http://sims.princeton.edu/yftp/RIMP/handbookChapterRI2.pdf), as it appears on page 21, with slight change of notation,
 ```math
@@ -56,7 +56,7 @@ where
 ```
 We have renamed the parameters so that the problem directly maps to a D.R.I.P. Otherwise, the problem is the same.
 
-## [Initialization](@id sims2011_param)
+## [Initialization](@id sims2010_param)
 Include the package:
 
 ```julia
@@ -75,8 +75,8 @@ H = [1.0; 1.0];
 nothing #hide
 ```
 
-## [Solution and Performance](@id sims2011_solution)
-### [Benchmark Parameterization](@id sims2011_benchmark)
+## [Solution and Performance](@id sims2010_solution)
+### [Benchmark Parameterization](@id sims2010_benchmark)
 Solve and display the optimal posterior covariance matrix:
 
 ```julia
@@ -131,7 +131,7 @@ BenchmarkTools.Trial:
   evals/sample:     1
 ```
 
-### [Lower Cost of Attention: $\omega = 0.1$](@id sims2011_lowomega)
+### [Lower Cost of Attention: $\omega = 0.1$](@id sims2010_lowomega)
 Solve and display the optimal posterior covariance matrix:
 
 ```julia
@@ -145,7 +145,7 @@ sol_lω.ss.Σ_p
  -0.304142   0.386163
 ```
 
-### [Different Discount Factors: $\beta \in \{0,1\}$](@id sims2011_betas)
+### [Different Discount Factors: $\beta \in \{0,1\}$](@id sims2010_betas)
 Solve the model for $\beta=0$ and $\beta=1$ to compare with the benchmark value of $\beta=0.9$:
 
 ``\beta = 0``
@@ -174,8 +174,8 @@ sol_hβ.ss.Σ_p
  -0.178019   0.799701
 ```
 
-## [Impulse Response Functions](@id sims2011_figures)
-### [Benchmark Parameterization](@id sims2011_fig_benchmark)
+## [Impulse Response Functions](@id sims2010_figures)
+### [Benchmark Parameterization](@id sims2010_fig_benchmark)
 Get the IRFs:
 
 ```julia
@@ -219,7 +219,7 @@ p = plot(p1,p2,
 ```
 ![](3227358035.png)
 
-### [Lower Cost of Attention: $\omega=0.1$](@id sims2011_fig_lowomega)
+### [Lower Cost of Attention: $\omega=0.1$](@id sims2010_fig_lowomega)
 Get the IRFs:
 
 ```julia
@@ -262,7 +262,7 @@ p = plot(p1,p2,
 ```
 ![](238384670.png)
 
-### [Other Discount Factors: $\beta\in\{0,1\}$](@id sims2011_fig_betas)
+### [Other Discount Factors: $\beta\in\{0,1\}$](@id sims2010_fig_betas)
 Get the IRFs:
 
 ```julia
@@ -306,9 +306,9 @@ p = plot(p1,p2,
 ```
 ![](3696022472.png)
 
-## [Extensions](@id sims2011_extensions)
+## [Extensions](@id sims2010_extensions)
 
-### [Transition Dynamics of Attention](@id sims2011_trip)
+### [Transition Dynamics of Attention](@id sims2010_trip)
 
 In this section, we solve for the transition dynamics of the optimal posterior covariance matrix starting from an initial prior that is different from the steady state prior.
 
@@ -376,7 +376,7 @@ p = plot(0:Tss-1,[bp_trip.Ds[1,1:Tss],bp_trip.Ds[2,1:Tss],bp_trip.p.ω*ones(Tss,
 ```
 ![](3751619983.png)
 
-### [Impulse Response Functions with Information Treatment](@id sims2011_trip_irfs)
+### [Impulse Response Functions with Information Treatment](@id sims2010_trip_irfs)
 Get the IRFs in the transition path after treatment:
 
 ```julia

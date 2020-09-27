@@ -1,10 +1,10 @@
 # # Replication of Mackowiak and Wiederholt (2009)
 
-# This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs) package.
+# This example replicates [Mackowiak and Wiederholt (2009)](https://www.aeaweb.org/articles?id=10.1257/aer.99.3.769) (henceforth MW) using the [DRIPs](https://github.com/afrouzi/DRIPs.jl) package.
 
 # [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples) to run and modify the following code (no software is needed on the local machine).
 
-# See [Afrouzi and Yang (2019)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
+# See [Afrouzi and Yang (2020)](http://www.afrouzi.com/dynamic_inattention.pdf) for background on the theory.
 
 # ## Contents
 # * [Setup](@ref mw2009_setup)
@@ -41,9 +41,9 @@
 
 # ## [Mapping the Problem to a DRIP](@id mw2009_map_drip)
 
-# There are a few ways of translating the problem above to a D.R.I.P. structure; however, the most efficient way, due to the independence assumption, is to write it as the sum of two D.R.I.P.'s: one that solves the attention problem for the idiosyncratic shock, and one that solves the attention problem for the aggregate shock which also has endogenous feedback.
+# There are a few ways of translating the problem above to a `Drip` structure; however, the most efficient way, due to the independence assumption, is to write it as the sum of two DRIPs: one that solves the attention problem for the idiosyncratic shock, and one that solves the attention problem for the aggregate shock which also has endogenous feedback.
 
-# Moreover, since the problem above has a fixed capacity, instead of a fixed cost of attention ($\omega$) as in D.R.I.P. pacakge, we need to iterate over $\omega$'s to find the one that corresponds with $\kappa$.
+# Moreover, since the problem above has a fixed capacity, instead of a fixed cost of attention ($\omega$) as in DRIPs pacakge, we need to iterate over $\omega$'s to find the one that corresponds with $\kappa$.
 
 # ## [Initialization](@id mw2009_param)
 # Include the package::
