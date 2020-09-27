@@ -1,7 +1,7 @@
 using DRIPs
 using Test
 
-@testset "sims2010.jl" begin
+@testset "Sims2010.jl" begin
     # Write your own tests here.
     println("Running tests ...")
 	    β = 0.9;
