@@ -95,7 +95,7 @@ function irfs(pt :: Trip;       # Transition dynamics of the DRIP
     p     = pt.p; # steady state Drip
     (n,m) = size(p.H)
     (_,k) = size(p.Q)
-    L     = size(pt.Ds,1) # length of Trip
+    L     = size(pt.Ds,2) # length of Trip
 
     eye   = Matrix(I,n,n);
     x     = zeros(n,k,T); # initialize IRFs of state
@@ -158,7 +158,7 @@ function irfs(p          :: Drip,                          # Steady state of the
         if trip == nothing
             trip = Trip(p,S;T = T);
         end
-        L     = size(trip.Ds,1) # length of Trips
+        L     = size(trip.Ds,2) # length of Trips
     end
 
     x     = zeros(n,k,T); # initialize IRFs of state
