@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Replication of Mackowiak, Matejka and Wiederholt (2018) · DRIPs.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">DRIPs.jl</span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../../overview/">Overview</a></li><li><a class="tocitem" href="../../../syntax/">Syntax</a></li><li><span class="tocitem">Examples and Replications</span><ul><li><a class="tocitem" href="../../ex1_pricing_nofeedback/ex1_pricing_pe_nofeedback/">Pricing under RI w/o Endogenous Feedback</a></li><li><a class="tocitem" href="../../ex2_pricing_wfeedback/ex2_pricing_pe_with_feedback/">Pricing under RI with Endogenous Feedback</a></li><li><a class="tocitem" href="../../ex3_mw2009/ex3_Mackowiak_Wiederholt_2009/">Replication of Mackowiak and Wiederholt (2009)</a></li><li><a class="tocitem" href="../../ex4_sims2010/ex4_Sims_2010/">Replication of Sims (2010)</a></li><li class="is-active"><a class="tocitem" href>Replication of Mackowiak, Matejka and Wiederholt (2018)</a><ul class="internal"><li><a class="tocitem" href="#Contents-1"><span>Contents</span></a></li><li><a class="tocitem" href="#ex1-1"><span>Ex. 1: AR(2) Process</span></a></li><li><a class="tocitem" href="#ex2-1"><span>Ex. 2: AR(3) and ARMA(2,1) Processes</span></a></li><li><a class="tocitem" href="#ex3-1"><span>Ex. 3: Price-setting with Rational Inattention</span></a></li><li><a class="tocitem" href="#ex4-1"><span>Ex. 4: Business Cycle Model with News Shocks</span></a></li></ul></li><li><a class="tocitem" href="../../ex6_ay2020/ex6_Afrouzi_Yang_2020/">Replication of the Quantitative Analysis in Afrouzi and Yang (2020)</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Replications</a></li><li class="is-active"><a href>Replication of Mackowiak, Matejka and Wiederholt (2018)</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Replication of Mackowiak, Matejka and Wiederholt (2018)</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Replication-of-Mackowiak,-Matejka-and-Wiederholt-(2018)-1"><a class="docs-heading-anchor" href="#Replication-of-Mackowiak,-Matejka-and-Wiederholt-(2018)-1">Replication of Mackowiak, Matejka and Wiederholt (2018)</a><a class="docs-heading-anchor-permalink" href="#Replication-of-Mackowiak,-Matejka-and-Wiederholt-(2018)-1" title="Permalink"></a></h1><p>This example replicates <a href="https://www.sciencedirect.com/science/article/abs/pii/S002205311830139X">Mackowiak, Matejka and Wiederholt (2018)</a> using the <a href="https://github.com/afrouzi/DRIPs.jl">DRIPs</a> package.</p><p><a href="https://mybinder.org/v2/gh/afrouzi/DRIPs.jl/binder?filepath=examples"><img src="https://mybinder.org/badge_logo.svg" alt="Binder"/></a> to run and modify the following code (no software is needed on the local machine).</p><p>See <a href="http://www.afrouzi.com/dynamic_inattention.pdf">Afrouzi and Yang (2020)</a> for background on the theory.</p><h2 id="Contents-1"><a class="docs-heading-anchor" href="#Contents-1">Contents</a><a class="docs-heading-anchor-permalink" href="#Contents-1" title="Permalink"></a></h2><ul><li><a href="#ex1-1">Ex. 1: AR(2) Process</a><ul><li><a href="#ex1_initialize-1">Initialization</a></li><li><a href="#ex1_solution-1">Replication of Figures (2) and (3)</a></li><li><a href="#ex1_performance-1">Measure Performance</a></li></ul></li><li><a href="#ex2-1">Ex. 2: AR(3) and ARMA(2,1) Processes</a><ul><li><a href="#ex2_solve-1">Solve and Measure Performance</a></li><li><a href="#ex2_fig5-1">Replication of Figure (5)</a></li></ul></li><li><a href="#ex3-1">Ex. 3: Price-setting with Rational Inattention</a><ul><li><a href="examples/ex5_mmw2018/@id ex3_no_strcomp">The Case with No Strategic Complementarity</a></li><li><a href="examples/ex5_mmw2018/@id ex3_strcomp">The Case with Strategic Complementarity</a></li><li><a href="#ex3_fig6-1">Replication of Figure (6)</a></li></ul></li><li><a href="examples/ex5_mmw2018/@id ex4">Ex. 4: Business Cycle Model with News Shocks</a><ul><li><a href="#ex4_setup-1">Setup</a></li><li><a href="#ex4_initialize-1">Initialization</a></li><li><a href="#ex4_solve-1">Solve and Measure Performance</a></li><li><a href="#ex4_fig7-1">Replication of Figure (7)</a></li></ul></li></ul><h2 id="ex1-1"><a class="docs-heading-anchor" href="#ex1-1">Ex. 1: AR(2) Process</a><a class="docs-heading-anchor-permalink" href="#ex1-1" title="Permalink"></a></h2><p>In this example, authors assume that the optimal action follows an AR(2) process,</p><div>\[\begin{aligned}
+    x_t = \phi_1 x_{t-1} + \phi_2 x_{t-2} + \theta_0 \varepsilon_t
+\end{aligned}\]</div><p>Then, we can write a state-space form as:</p><div>\[\begin{aligned}
+        \left[\begin{array}{c} x_t \\ x_{t-1} \end{array}\right]
+        &amp; =
+       \underset{\mathbf{A}}{\underbrace{\left[\begin{array}{cc}
+            \phi_1 &amp; \phi_2 \\
+            1 &amp; 0\end{array}\right]}}\,
+            \left[\begin{array}{c} x_{t-1} \\ x_{t-2} \end{array}\right]
+        + \underset{\mathbf{Q}}{\underbrace{\left[\begin{array}{c}
+            \theta_0 \\
+            0\end{array}\right]}}\, \varepsilon_t
+\end{aligned}\]</div><p>We now characterize the optimal signal, <span>$S_{t} = h_1 X_t + h_2 X_{t-1} + \psi_t$</span>, as a function of <span>$\phi_2$</span> and the capacity for information processing (<span>$\kappa$</span>).</p><h3 id="ex1_initialize-1"><a class="docs-heading-anchor" href="#ex1_initialize-1">Initialization</a><a class="docs-heading-anchor-permalink" href="#ex1_initialize-1" title="Permalink"></a></h3><p>Include the package:</p><pre><code class="language-julia">using DRIPs, LinearAlgebra;
+nothing #hide</code></pre><p>Assign value to deep parameters and define the structure of the problem</p><pre><code class="language-julia">β   = 1.0   ; # Time preference
+θ0  = 1.0   ;
+
+ϕ2_seq  = 0:0.02:0.9        ;      # sequence of values for the AR(2) parameter
+n_ϕ     = length(ϕ2_seq)    ;
+
+κ_seq   = 0.008:0.01:3.5    ;      # sequence of values for the information processing capacity
+n_κ     = length(κ_seq)     ;
+
+H   = [1; 0]    ;
+Q   = [θ0 ; 0]    ;
+nothing #hide</code></pre><h3 id="ex1_solution-1"><a class="docs-heading-anchor" href="#ex1_solution-1">Replication of Figures (2) and (3)</a><a class="docs-heading-anchor-permalink" href="#ex1_solution-1" title="Permalink"></a></h3><p>Solve for different values of <span>$\phi_2$</span>:</p><pre><code class="language-julia">κ   = 0.2   ; # fix κ for this exercise so we can vary ϕ2
+
+h1  = zeros(n_ϕ,1)    ;
+h2  = zeros(n_ϕ,1)    ;
+h2norm = zeros(n_ϕ,1) ;
+
+for i in 1:n_ϕ
+    ϕ2  = ϕ2_seq[i] ;
+    ϕ1  = 0.9 - ϕ2 ;
+    A   = [ϕ1 ϕ2 ; 1.0 0.0] ;
+
+    ex1a = Drip(κ,β,A,Q,H,fcap=true);
+
+    h1[i] = ex1a.ss.Y[1]
+    h2[i] = ex1a.ss.Y[2]
+    h2norm[i] = ex1a.ss.Y[2]/ex1a.ss.Y[1] # normalize the first signal weight h1 to one
+end</code></pre><p>Here is the replication of Figure (2):</p><pre><code class="language-julia">using Printf, LaTeXStrings, Plots; pyplot();
+plot(ϕ2_seq,h2norm[:,1],
+    title       = L&quot;Optimal Signal, AR(2) processes with $\phi_1 + \phi_2 = 0.9$, $\kappa$ constant.&quot;,
+    xlabel      = L&quot;$\phi_2$&quot;,
+    ylabel      = L&quot;$h_2$(with $h_1$ normalized to 1)&quot;,
+    label       = L&quot;Signal Weight on $X_{t-1}$, $h_2$ (with $h_1$ normalized to 1)&quot;,
+    legend      = :topleft,
+    lw          = 2,
+    color       = :black,
+    xlim        = (0,0.9),
+    xticks      = (0:0.1:0.9),
+    titlefont   = font(10), legendfont = font(7), tickfont = font(7),
+    size        = (650,300),
+    grid        = :off, framestyle = :box)</code></pre><p><img src="../3764270015.png" alt/></p><p>Now, we solve for the signal weight and standard deviation of noise, for different values of <span>$\kappa$</span></p><pre><code class="language-julia">ϕ2   = 0.4           ;  # fix ϕ2 in this exercise so we can vary κ
+ϕ1   = 0.99 - ϕ2     ;
+
+A    = [ϕ1 ϕ2 ; 1.0 0.0] ;
+
+ω_sol   = zeros(n_κ,1) ;
+σz_sol  = zeros(n_κ,1) ;
+
+for i in 1:n_κ
+    κ = κ_seq[i] ;
+
+    ex1b = Drip(κ,β,A,Q,H,fcap=true);
+
+    h1temp = ex1b.ss.Y[1]
+    h2temp = ex1b.ss.Y[2]
+
+    ω_sol[i]  = 1.0 - (h2temp/h1temp)/(ϕ2 + (1.0-ϕ1)*(h2temp/h1temp)) ;
+    ρ = (ω_sol[i] + (1.0-ω_sol[i])*ϕ1)/h1temp
+    σz_sol[i] = ρ*ex1b.ss.Σ_z[1,1] ;
+end</code></pre><p>Below is the replication of Figure (3):</p><pre><code class="language-julia">a = fill(NaN, n_κ, 1)
+
+plot(κ_seq,[ω_sol[:,1] a],
+    xlabel      = L&quot;$\kappa$&quot;,
+    label       = [L&quot;Signal weight on $X_{t}$, $\omega$ (left axis)&quot; L&quot;St. dev. of noise  $\sigma_{\psi}$ (right axis)&quot;],
+    title       = L&quot;Optimal signal as function of $\kappa$, AR(2) example.&quot;,
+    linestyle   = [:solid :dash], color = [:black :gray40],
+    xticks      = (0:1:3),
+    xlim        = (-0.02,3.02),
+    yticks      = (0:0.5:1),
+    ylim        = (-0.01,1.01),
+    lw          = 2, grid = :off, legend = :right,
+    titlefont   = font(10), legendfont = font(8), tickfont = font(8),
+    framestyle  = :box)
+plot!(twinx(),κ_seq,σz_sol[:,1],
+    linestyle   = :dash, color = :gray40,
+    label       = &quot;&quot;,
+    xlim        = (-0.02,3.02),
+    xticks      = false,
+    yticks      = (0:6:12),
+    ylim        = (-0.12,12.12),
+    lw          = 2, tickfont = font(7),
+    size        = (650,300),
+    grid        = :off, framestyle  = :box)</code></pre><p><img src="../3734461314.png" alt/></p><h3 id="ex1_performance-1"><a class="docs-heading-anchor" href="#ex1_performance-1">Measure Performance</a><a class="docs-heading-anchor-permalink" href="#ex1_performance-1" title="Permalink"></a></h3><p>Benchmark the solution for random values of <span>$\phi_2$</span>:</p><pre><code class="language-julia">using BenchmarkTools;
+@benchmark Drip(κ,β,[0.9-ϕ2 ϕ2; 1.0 0.0],Q,H,fcap = true) setup = (ϕ2 = 0.9*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  431.52 KiB
+  allocs estimate:  4150
+  --------------
+  minimum time:     208.853 μs (0.00% GC)
+  median time:      248.778 μs (0.00% GC)
+  mean time:        305.579 μs (18.04% GC)
+  maximum time:     6.972 ms (95.35% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1</code></pre><p>Benchmark the solution for random values of <span>$κ$</span>:</p><pre><code class="language-julia">@benchmark Drip(κ,β,[0.5 0.4; 1.0 0.0],Q,H,fcap = true) setup = (κ = rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  74.66 KiB
+  allocs estimate:  729
+  --------------
+  minimum time:     40.597 μs (0.00% GC)
+  median time:      121.589 μs (0.00% GC)
+  mean time:        215.463 μs (18.02% GC)
+  maximum time:     7.279 ms (91.38% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1</code></pre><h2 id="ex2-1"><a class="docs-heading-anchor" href="#ex2-1">Ex. 2: AR(3) and ARMA(2,1) Processes</a><a class="docs-heading-anchor-permalink" href="#ex2-1" title="Permalink"></a></h2><p>Here, we replicate the AR(3) and ARMA(2,1) examples in Mackowiak, Matejka and Wiederholt (2018). Using a similar method to the AR(2) case, we can write the law of motion of optimal actions as a state-space form.</p><h3 id="ex2_solve-1"><a class="docs-heading-anchor" href="#ex2_solve-1">Solve and Meausre Performance</a><a class="docs-heading-anchor-permalink" href="#ex2_solve-1" title="Permalink"></a></h3><h4 id="The-AR(3)-Example-1"><a class="docs-heading-anchor" href="#The-AR(3)-Example-1">The AR(3) Example</a><a class="docs-heading-anchor-permalink" href="#The-AR(3)-Example-1" title="Permalink"></a></h4><p>Initialize:</p><pre><code class="language-julia">β       = 1.0           ;
+θ0      = 1.0           ;
+κ       = 10.8          ;
+
+ϕ1      = 1.5           ;
+ϕ2      = -0.9          ;
+ϕ3      = 0.1           ;
+
+A   = [ϕ1 ϕ2 ϕ3 ; 1 0 0 ; 0 1 0] ;
+Q   = [θ0 ; 0; 0]   ;
+H   = [1  ; 0; 0]   ;
+nothing #hide</code></pre><p>Solve:</p><pre><code class="language-julia">ex2a  = Drip(κ,β,A,Q,H;tol=1e-8);
+nothing #hide</code></pre><p>Measure performance for different values of <span>$\kappa$</span>:</p><pre><code class="language-julia">@benchmark Drip(κ,β,A,Q,H;tol=1e-8) setup = (κ = 10*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  147.59 KiB
+  allocs estimate:  1044
+  --------------
+  minimum time:     150.313 μs (0.00% GC)
+  median time:      554.403 μs (0.00% GC)
+  mean time:        578.350 μs (7.45% GC)
+  maximum time:     5.389 ms (83.21% GC)
+  --------------
+  samples:          8625
+  evals/sample:     1</code></pre><p>To be consistent with MMW(2018), scale the signal vector so that the weight on the first element is one (<span>$h_1 = 1$</span>):</p><pre><code class="language-julia">h1 = 1;
+h2 = ex2a.ss.Y[2]/ex2a.ss.Y[1]
+h3 = ex2a.ss.Y[3]/ex2a.ss.Y[1]</code></pre><pre><code class="language-none">0.05349220551890679</code></pre><p>Print the weights:</p><pre><code class="language-julia">s = @sprintf(&quot;  h1 = %5.3f, h2 = %5.3f, h3 = %5.3f&quot;, h1, h2, h3)  ;
+println(s) ;
+nothing #hide</code></pre><pre><code class="language-none">  h1 = 1.000, h2 = -0.475, h3 = 0.053
+</code></pre><p>Since we scaled the signal vector, we also need to adjust the noise in the signal accordingly:</p><pre><code class="language-julia">AdjNoise   = 3.879
+AdjPara_ex2a= AdjNoise*ex2a.ss.Y[1]</code></pre><pre><code class="language-none">0.7839654755293674</code></pre><p>Calculate IRFs:</p><pre><code class="language-julia">irf_ex2a = irfs(ex2a; T=30) ;
+xirf_ex2a   = irf_ex2a.x[1,1,:]
+xhatirf_ex2a= irf_ex2a.x_hat[1,1,:]
+
+x     = zeros(3,30);
+xhat_noise_ex2a = zeros(3,30);
+
+for ii in 1:30
+    if ii==1
+        xhat_noise_ex2a[:,ii] = ex2a.ss.K;
+    else
+        xhat_noise_ex2a[:,ii] = A*xhat_noise_ex2a[:,ii-1]+(ex2a.ss.K*ex2a.ss.Y&#39;)*(x[:,ii]-A*xhat_noise_ex2a[:,ii-1]);
+    end
+end
+xhat_noise_ex2a = xhat_noise_ex2a[1,:]*AdjPara_ex2a ;
+nothing #hide</code></pre><h4 id="The-ARMA(2,1)-Example:-1"><a class="docs-heading-anchor" href="#The-ARMA(2,1)-Example:-1">The ARMA(2,1) Example:</a><a class="docs-heading-anchor-permalink" href="#The-ARMA(2,1)-Example:-1" title="Permalink"></a></h4><p>Initialize:</p><pre><code class="language-julia">β       = 1.0           ;
+θ0      = 0.5           ;
+θ1      = -0.1          ;
+κ       = 1.79          ;
+
+ϕ1      = 1.3           ;
+ϕ2      = -0.4          ;
+
+A   = [ϕ1 ϕ2 θ1 ; 1.0 0.0 0.0 ; 0.0 0.0 0.0] ;
+Q   = [θ0 ; 0.0; 1.0]   ;
+H   = [1.0; 0.0; 0.0]   ;
+nothing #hide</code></pre><p>Solve:</p><pre><code class="language-julia">ex2b = Drip(κ,β,A,Q,H,tol=1e-8);
+nothing #hide</code></pre><p>Measure performance for different values of <span>$\kappa$</span>:</p><pre><code class="language-julia">@benchmark Drip(κ,β,A,Q,H;tol=1e-8) setup = (κ = 2*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  109.88 KiB
+  allocs estimate:  777
+  --------------
+  minimum time:     116.629 μs (0.00% GC)
+  median time:      400.173 μs (0.00% GC)
+  mean time:        418.805 μs (6.45% GC)
+  maximum time:     5.120 ms (87.81% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1</code></pre><p>To be consistent with MMW(2018), scale the signal vector so that the weight on the first element is one (<span>$h_1 = 1$</span>):</p><pre><code class="language-julia">h1 = 1;
+h2 = ex2b.ss.Y[2]/ex2b.ss.Y[1]
+h3 = ex2b.ss.Y[3]/ex2b.ss.Y[1]</code></pre><pre><code class="language-none">-0.0687478067895003</code></pre><p>Print the weights:</p><pre><code class="language-julia">s = @sprintf(&quot;  h1 = %5.3f, h2 = %5.3f, h3 = %5.3f&quot;, h1, h2, h3)  ;
+println(s) ;
+nothing #hide</code></pre><pre><code class="language-none">  h1 = 1.000, h2 = -0.275, h3 = -0.069
+</code></pre><p>Since we scaled the signal vector, we also need to adjust the noise in the signal accordingly:</p><pre><code class="language-julia">AdjNoise    = 1.349
+AdjPara_ex2b= AdjNoise*ex2b.ss.Y[1]</code></pre><pre><code class="language-none">0.3828466148956306</code></pre><p>Calculate the IRFs</p><pre><code class="language-julia">irf_ex2b     = irfs(ex2b; T=30) ;
+xirf_ex2b    = irf_ex2b.x[1,1,:]
+xhatirf_ex2b = irf_ex2b.x_hat[1,1,:]
+
+x     = zeros(3,30);
+xhat_noise_ex2b = zeros(3,30);
+
+for ii in 1:30
+    if ii==1
+        xhat_noise_ex2b[:,ii] = ex2b.ss.K;
+    else
+        xhat_noise_ex2b[:,ii] = A*xhat_noise_ex2b[:,ii-1]+(ex2b.ss.K*ex2b.ss.Y&#39;)*(x[:,ii]-A*xhat_noise_ex2b[:,ii-1]);
+    end
+end
+xhat_noise_ex2b = xhat_noise_ex2b[1,:]*AdjPara_ex2b ;
+nothing #hide</code></pre><h3 id="ex2_fig5-1"><a class="docs-heading-anchor" href="#ex2_fig5-1">Replication of Figure (5)</a><a class="docs-heading-anchor-permalink" href="#ex2_fig5-1" title="Permalink"></a></h3><pre><code class="language-julia">p1 = plot(1:30,[xirf_ex2a xhatirf_ex2a xhat_noise_ex2a],
+    title       = &quot;AR(3) example, optimal signal with i.i.d. noise&quot;,
+    color             = [:black :gray20 :gray40], markerstrokecolor = [:black :gray20 :gray40],
+    yticks      = (-0.8:0.4:1.6),
+    ylim        = (-0.82,1.62))
+p2 = plot(1:30,[xirf_ex2b xhatirf_ex2b xhat_noise_ex2b],
+    title       = &quot;ARMA(2,1) example, optimal signal with i.i.d. noise&quot;,
+    color       = [:black :gray20 :gray40], markerstrokecolor = [:black :gray20 :gray40],
+    yticks      = (0:0.1:0.6),
+    ylim        = (-0.05,0.65))
+Plots.plot(p1,p2,
+    layout      = (1,2),
+    label       = [L&quot;$X_{t}$ to $\varepsilon_t$&quot; L&quot;$Y_t=E[X_t|I_t]$ to $\varepsilon_t$&quot; L&quot;$Y_t=E[X_t|I_t]$ to $\psi_t$&quot;],
+    marker      = [:circle :circle :star8], markercolor = [:black :false :gray40], markersize  = [3 5 5],
+    legend      = :topright,
+    xticks      = (0:2:30),
+    xlim        = (0,30),
+    lw          = 1.5,
+    legendfont  = font(8), guidefont=font(9), titlefont=font(9), tickfont=font(8),
+    size        = (700,300),
+    grid        = :off, framestyle = :box)</code></pre><p><img src="../752849401.png" alt/></p><h2 id="ex3-1"><a class="docs-heading-anchor" href="#ex3-1">Ex. 3: Price-setting with Rational Inattention</a><a class="docs-heading-anchor-permalink" href="#ex3-1" title="Permalink"></a></h2><p>We now replicate the price-setting exercise in MMW (2018) and its comparison with the Woodford (2002) example. This corresponds to Figure (6) in their paper. The model structure is identifcal to our <a href="https://github.com/afrouzi/DRIPs.jl/blob/master/examples/notebooks/ex1_pricing_pe_nofeedback.ipynb">Example 1</a> (without strategic complementarity) and <a href="https://github.com/afrouzi/DRIPs.jl/blob/master/examples/notebooks/ex2_pricing_pe_with_feedback.ipynb">Example 2</a> (with strategic complementarity).</p><h3 id="ex3_no_strcomp-1"><a class="docs-heading-anchor" href="#ex3_no_strcomp-1">The Case with No Strategic Complementarity</a><a class="docs-heading-anchor-permalink" href="#ex3_no_strcomp-1" title="Permalink"></a></h3><p>Initialize:</p><pre><code class="language-julia">ρ   = 0.9;        #persistence of money growth
+σ_u = 0.1;          #std. deviation of shocks to money growth
+nothing #hide</code></pre><p>Primitives of the DRIP:</p><pre><code class="language-julia">κ   = 0.62;
+β   = 1.0;
+A   = [1 ρ; 0 ρ];
+Q   = σ_u*[1; 1];
+H   = [1; 0];
+ω   = 0.1</code></pre><pre><code class="language-none">0.1</code></pre><p>Solve:</p><pre><code class="language-julia">ex_opt   = Drip(κ,β,A,Q,H,fcap=true);
+capa_opt = DRIPs.capacity(ex_opt) #returns capacity utilized in bits</code></pre><pre><code class="language-none">0.6196339094366835</code></pre><p>Measure performance for different values of <span>$\kappa$</span>:</p><pre><code class="language-julia">@benchmark Drip(κ,β,A,Q,H,fcap=true) setup = (κ = 2*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  206.02 KiB
+  allocs estimate:  1988
+  --------------
+  minimum time:     104.888 μs (0.00% GC)
+  median time:      209.835 μs (0.00% GC)
+  mean time:        427.268 μs (18.40% GC)
+  maximum time:     31.527 ms (21.48% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1</code></pre><p>Calculate IRFs:</p><pre><code class="language-julia">irfs_ex_opt = irfs(ex_opt, T = 12);
+output_opt  = (irfs_ex_opt.x[1,1,:] - irfs_ex_opt.a[1,1,:]) ;
+output_opt  = [0;output_opt] ;
+nothing #hide</code></pre><p>Now, to compare with Woodford (2002), assume that firms observe a noisy signal, <span>$S_t = q_t + \zeta_t$</span> where <span>$\zeta_t$</span> is an idiosyncratic noise. We first define a function to solve the corresponding Kalman filtering problem.</p><pre><code class="language-julia">function K_filtering(A,Q,Ysignal,Σz,Σ0 ; maxit=10000,tol=1e-10,w=1)
+    err = 1
+    iter = 0
+    while (err &gt; tol) &amp; (iter &lt; maxit)
+        global Knew = Σ0*Ysignal*inv(Ysignal&#39;*Σ0*Ysignal .+ Σz)
+        global Σp_temp = Σ0 - Knew*Ysignal&#39;*Σ0
+        global Σ1 = A*Σp_temp*A&#39; + Q*Q&#39;
+
+        err     = norm(Σ1 - Σ0,2)/norm(Σ0,2)
+        Σ0 = w*Σ1 + (1-w)*Σ0
+
+        #println(&quot;Iteration $iter. Difference: $err&quot;)
+        iter += 1
+    end
+
+    return(Knew,Σ0,Σp_temp)
+end;
+nothing #hide</code></pre><p>Now find the capacity utilized under Woodford’s formulation such that it yields the same information flow as the optimal signal under ratinoal inattention.</p><pre><code class="language-julia">Ywoodford = [1;0]
+Σ1_init = ex_opt.ss.Σ_1
+
+Σz_new_b  = 0.01
+Σz_new_u  = 0.1
+Σz_new    = (Σz_new_b+Σz_new_u)/2
+for i in 1:10000
+    (Knew,Σ1_new,Σp_temp) = K_filtering(A,Q,Ywoodford,Σz_new,Σ1_init;w=0.5)
+    capa_woodford = 0.5*log(det(Σ1_new)/det(Σp_temp))/log(2)
+
+    if capa_woodford &gt; capa_opt
+        global Σz_new_b  = Σz_new
+    else
+        global Σz_new_u  = Σz_new
+    end
+    global Σz_new    = (Σz_new_b+Σz_new_u)/2
+    err = abs(capa_woodford - capa_opt)
+    if err &lt; 1e-5
+        break
+    end
+end</code></pre><p>Calculate impulse responses under Woodford&#39;s formulation</p><pre><code class="language-julia">e_k = 1;
+x   = zeros(2,12);
+xhat= zeros(2,12);
+a   = zeros(2,12);
+
+for ii in 1:12
+    if ii==1
+        x[:,ii]     = Q*e_k;
+        xhat[:,ii]  = (Knew*Ywoodford&#39;)*(x[:,ii]);
+    else
+        x[:,ii]     = A*x[:,ii-1];
+        xhat[:,ii]  = A*xhat[:,ii-1]+(Knew*Ywoodford&#39;)*(x[:,ii]-A*xhat[:,ii-1]);
+    end
+    a[:,ii]  .= H&#39;*xhat[:,ii];
+end
+
+output_woodford  = (x[1,:] - a[1,:]) ;
+output_woodford  = [0;output_woodford] ;
+nothing #hide</code></pre><p>Before plotting the IRFs, we also solve the case with strategic complementarity.</p><h3 id="ex3_strcomp-1"><a class="docs-heading-anchor" href="#ex3_strcomp-1">The Case with Strategic Complementarity</a><a class="docs-heading-anchor-permalink" href="#ex3_strcomp-1" title="Permalink"></a></h3><p>We now turn to the example with strategic complementarity. As in our <a href="https://github.com/afrouzi/DRIPs.jl/blob/master/examples/notebooks/ex2_pricing_pe_with_feedback.ipynb">Example 2</a>, we first define a function to solve the fixed point with endogenous feedback.</p><pre><code class="language-julia">function ge_drip(ω,β,A,Q,          #primitives of drip except for H because H is endogenous
+                 α,                #strategic complementarity
+                 Hq,               #state space rep. of Δq
+                 L;                #length of truncation
+                 H0       = Hq,    #optional: initial guess for H (Hq is the true solution when α=0)
+                 maxit    = 200,   #optional: max number of iterations for GE code
+                 tol      = 1e-4)  #optional: tolerance for iterations
+    err   = 1;
+    iter  = 0;
+    M     = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)];
+    while (err &gt; tol) &amp; (iter &lt; maxit)
+        if iter == 0
+            global ge  = Drip(ω,β,A,Q,H0; w=0.9);
+        else
+            global ge  = Drip(ω,β,A,Q,H0; Ω0=ge.ss.Ω, Σ0=ge.ss.Σ_1, maxit=100);
+        end
+
+        XFUN(jj) = ((I-ge.ss.K*ge.ss.Y&#39;)*ge.A)^jj * (ge.ss.K*ge.ss.Y&#39;) * (M&#39;)^jj
+        X = DRIPs.infinitesum(XFUN; maxit=L, start = 0);  #E[x⃗]=X×x⃗
+
+        XpFUN(jj) = α^jj * X^(jj)
+        Xp = DRIPs.infinitesum(XpFUN; maxit=L, start = 0);
+
+        H1 = (1-α)*Xp&#39;*Hq;
+        err= 0.5*norm(H1-H0,2)/norm(H0)+0.5*err;
+        H0 = H1;
+
+        iter += 1;
+        if iter == maxit
+            print(&quot;GE loop hit maxit\n&quot;)
+        elseif mod(iter,10) == 0
+            println(&quot;Iteration $iter. Difference: $err&quot;)
+        end
+
+    end
+    print(&quot; Iteration Done.\n&quot;)
+    return(ge)
+end;
+nothing #hide</code></pre><p>Now, we solve for the optimal signal structure under rational inattention.</p><p>Initialize:</p><pre><code class="language-julia">ρ   = 0.9;        #persistence of money growth
+σ_u = 0.1;        #std. deviation of shocks to money growth
+α   = 0.85;        #degree of strategic complementarity
+L   = 40;         #length of truncation
+Hq  = ρ.^(0:L-1); #state-space rep. of Δq
+
+ω   = 0.08;
+β   = 1 ;
+A   = [1 zeros(1,L-2) 0; Matrix(I,L-1,L-1) zeros(L-1,1)];
+M   = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)]; # shift matrix
+Q   = [σ_u; zeros(L-1,1)];
+nothing #hide</code></pre><p>Solve:</p><pre><code class="language-julia">ex_ge   = ge_drip(ω,β,A,Q,α,Hq,L) ;
+nothing #hide</code></pre><pre><code class="language-none">Iteration 10. Difference: 0.0019552334926346503
+ Iteration Done.
+</code></pre><p>Print capacity utilized in with strategic complementarity:</p><pre><code class="language-julia">capa_ge = DRIPs.capacity(ge)</code></pre><pre><code class="language-none">0.5830085573346633</code></pre><p>Measure performance for random values of ω</p><pre><code class="language-julia">using Suppressor
+@suppress @benchmark ge_drip(ω,β,A,Q,α,Hq,L) setup = (ω = 0.1*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  348.71 MiB
+  allocs estimate:  43486
+  --------------
+  minimum time:     283.261 ms (7.39% GC)
+  median time:      290.786 ms (7.18% GC)
+  mean time:        294.165 ms (7.51% GC)
+  maximum time:     317.900 ms (7.65% GC)
+  --------------
+  samples:          17
+  evals/sample:     1</code></pre><p>Calculate IRFs</p><pre><code class="language-julia">geirfs  = irfs(ex_ge,T = L) ;
+
+dq = diagm(Hq)*geirfs.x[1,1,:];
+q  = inv(I-M)*dq ;
+output_ge_opt  = q - geirfs.a[1,1,:] ;
+output_ge_opt  = [0;output_ge_opt] ;
+nothing #hide</code></pre><p>Finally, to compare with the IRFs under Woodford (2002)’s specification, we find signal noise such that it yields the same information flow as the optimal signal structure.</p><pre><code class="language-julia">Ywoodford_ge = Hq
+Σ1_init  = ex_ge.ss.Σ_1
+
+Σz_new_b = 0.05
+Σz_new_u = 0.12
+Σz_new   = (Σz_new_b+Σz_new_u)/2
+
+for i in 1:10000
+    (Knew,Σ1_new,Σp_temp) = K_filtering(A,Q,Ywoodford_ge,Σz_new,Σ1_init;w=0.5)
+    capa_woodford = 0.5*log(det(Σ1_new)/det(Σp_temp))/log(2)
+
+    if capa_woodford &gt; capa_ge
+        global Σz_new_b  = Σz_new
+    else
+        global Σz_new_u  = Σz_new
+    end
+    global Σz_new    = (Σz_new_b+Σz_new_u)/2
+    err = abs(capa_woodford - capa_ge)
+    if err &lt; 1e-5
+        break
+    end
+end
+
+XFUN(jj) = ((I-Knew*Ywoodford_ge&#39;)*A)^jj * (Knew*Ywoodford_ge&#39;) * (M&#39;)^jj
+X = DRIPs.infinitesum(XFUN; maxit=L, start = 0);  #E[x⃗]=X×x⃗
+
+XpFUN(jj) = α^jj * X^(jj)
+Xp = DRIPs.infinitesum(XpFUN; maxit=L, start = 0);
+
+H1 = (1-α)*Xp&#39;*Hq;
+nothing #hide</code></pre><p>Calculate impurse responses under Woodford&#39;s signal</p><pre><code class="language-julia">e_k = 1;
+x   = zeros(40,40);
+xhat= zeros(40,40);
+a   = zeros(1,40);
+
+for ii in 1:40
+    if ii==1
+        x[:,ii]     = Q*e_k;
+        xhat[:,ii]  = (Knew*Ywoodford_ge&#39;)*(x[:,ii]);
+    else
+        x[:,ii]     = A*x[:,ii-1];
+        xhat[:,ii]  = A*xhat[:,ii-1]+(Knew*Ywoodford_ge&#39;)*(x[:,ii]-A*xhat[:,ii-1]);
+    end
+    a[:,ii]  .= H1&#39;*xhat[:,ii];
+end
+dq = diagm(Hq)*x[1,:];
+q  = inv(I-M)*dq ;
+output_ge_woodford  = q - a[1,:] ;
+output_ge_woodford = [0;output_ge_woodford] ;
+nothing #hide</code></pre><p>We now have all the IRFs to replicate Figure (6)</p><h3 id="ex3_fig6-1"><a class="docs-heading-anchor" href="#ex3_fig6-1">Replication of Figure (6)</a><a class="docs-heading-anchor-permalink" href="#ex3_fig6-1" title="Permalink"></a></h3><pre><code class="language-julia">p1 = plot(0:12,[output_woodford output_opt],
+    title       = L&quot;The case of $\xi=1$&quot;,
+    color       = [:black :gray40], markerstrokecolor = [:black :gray40],
+    ylim        = (-0.003,0.053),
+    ytick       = (0:0.01:0.05))
+p2 = plot(0:12,[output_ge_woodford[1:13] output_ge_opt[1:13]],
+    title       = L&quot;The case of $\xi=0.15$&quot;,
+    color       = [:black :gray40], markerstrokecolor = [:black :gray40],
+    ylim        = (-0.005,0.105),
+    ytick       = (0:0.02:0.1))
+Plots.plot(p1,p2,
+    layout      = (2,1),
+    label       = [&quot;Woodford Model&quot; &quot;Model with optimal signals&quot;],
+    legend      = :topright,
+    marker      = [:circle :star8], markersize = [5 5], markercolor = [:false :gray40],
+    xlim        = (0,12),
+    xtick       = (0:1:12),
+    xlabel      = &quot;Time&quot;,
+    lw          = 1.5,
+    legendfont  = font(8), titlefont = font(10), guidefont = font(9), tickfont = font(8),
+    size        = (700,400),
+    grid        = :off, framestyle = :box)</code></pre><p><img src="../3001605953.png" alt/></p><h2 id="ex4-1"><a class="docs-heading-anchor" href="#ex4-1">Ex. 4: Business Cycle Model with News Shocks</a><a class="docs-heading-anchor-permalink" href="#ex4-1" title="Permalink"></a></h2><p>In this section, we replicate the business cycle model with news shocks in Section 7 in Mackowiak, Matejka and Wiederholt (2018).</p><h3 id="ex4_setup-1"><a class="docs-heading-anchor" href="#ex4_setup-1">Setup</a><a class="docs-heading-anchor-permalink" href="#ex4_setup-1" title="Permalink"></a></h3><h4 id="Full-Information-1"><a class="docs-heading-anchor" href="#Full-Information-1">Full-Information</a><a class="docs-heading-anchor-permalink" href="#Full-Information-1" title="Permalink"></a></h4><p>The techonology shock follows AR(1) process:</p><div>\[\begin{aligned}
+z_{t} = \rho z_{t-1} + \sigma \varepsilon_{t-k}
+\end{aligned}\]</div><p>and the total labor input is:</p><div>\[\begin{aligned}
+n_{t} = \int_0^1 n_{i,t} di .
+\end{aligned}\]</div><p>Under perfect information, the households chooses the utility-maximizing labor supply, all firms choose the profit-maximizing labor input, and the labor market clearing condition is:</p><div>\[\begin{aligned}
+\frac{1-\gamma}{\psi + \gamma}w_{t} = \frac{1}{\alpha}(z_t - w_t).
+\end{aligned}\]</div><p>Then, the market clearing wages and the equilibrium labor input are:</p><div>\[\begin{aligned}
+    w_{t} &amp; = \frac{\frac{1}{\alpha}}{\frac{1-\gamma}{\psi+\gamma} + \frac{1}{\alpha}} z_t \equiv \xi z_t \\
+    n_t &amp; = \frac{1}{\alpha}(1-\xi) z_t.
+\end{aligned}\]</div><h4 id="Rational-Inattention-1"><a class="docs-heading-anchor" href="#Rational-Inattention-1">Rational Inattention</a><a class="docs-heading-anchor-permalink" href="#Rational-Inattention-1" title="Permalink"></a></h4><p>Firms wants to keep track of their ideal price,</p><div>\[\begin{aligned}
+    n_{t}^* = \frac{1}{\alpha} z_t - \frac{1}{\alpha} \frac{\psi + \gamma}{1 - \gamma} n_t
+\end{aligned}\]</div><p>where <span>$n_{t} = \int_0^1 n_{i,t} di$</span>. Then, firm <span>$i$</span>&#39;s choice depends on its information set at time <span>$t$</span>:</p><div>\[\begin{aligned}
+    n_{i,t} = E_{i,t} [n_{t}^*].
+\end{aligned}\]</div><p>Note that now the state space representation for <span>$n_{t}^*$</span> is determined in the equilibrium. However, we know that this is a Guassian process and by Wold&#39;s theorem we can decompose it to its <span>$MA(\infty)$</span> representation:</p><div>\[\begin{aligned}
+    n_{t}^*=\Phi(L)\varepsilon_t
+\end{aligned}\]</div><p>where <span>$\Phi(.)$</span> is a lag polynomial and <span>$\varepsilon_t$</span> is the shock to technology. Here, we have basically guessed that the process for <span>$p_{i,t}^*$</span> is determined uniquely by the history of monetary shocks which requires that rational inattention errors of firms are orthogonal (See <a href="http://www.afrouzi.com/strategic_inattetion.pdf">Afrouzi (2020)</a>). Our objective is to find <span>$\Phi(.)$</span>.</p><p>Now, as in our <a href="https://github.com/afrouzi/DRIPs.jl/blob/master/examples/notebooks/ex2_pricing_pe_with_feedback.ipynb">Example 2</a>, we can represent the problem in a matrix notation.</p><h3 id="ex4_initialize-1"><a class="docs-heading-anchor" href="#ex4_initialize-1">Initialization</a><a class="docs-heading-anchor-permalink" href="#ex4_initialize-1" title="Permalink"></a></h3><pre><code class="language-julia">β   = 1     ;   # Time preference
+γ   = 1/3   ;   # Inverse of intertemporal elasticity of substitution
+ψ   = 0     ;   # Inverse of Frisch elasticity
+α   = 3/4   ;   # Labor share in production function
+θ   = -1/α*(ψ+γ)/(1-γ)  ;
+ξ   = θ/(θ-1)   ;
+
+ρ   = 0.9   ;   #persistence of technology shocks
+σ   = 1     ;   #std. deviation of technology shocks
+ω   = 6.5   ;   # Information cost
+
+L   = 40    ;   #length of truncation
+k   = 8     ;   #news horizon
+
+M   = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)]; # shift matrix
+Hz  = ρ.^(0:L-1)
+Hz = (M^k)*Hz
+
+A   = M     ;
+Q   = [σ; zeros(L-1,1)] ;
+nothing #hide</code></pre><p>Also, define a function that solves the GE problem and returns the solution in a <code>Drip</code> structure:</p><pre><code class="language-julia">function ge_drip(ω,β,A,Q,          #primitives of drip except for H because H is endogenous
+                 α,                #strategic complementarity
+                 θ,
+                 Hz,               #state space rep. of z
+                 L;                #length of truncation
+                 w_out    = 0.5,    #optional: initial guess for H (Hq is the true solution when α=0)
+                 H0       = Hz,    #optional: initial guess for H (Hq is the true solution when α=0)
+                 maxit    = 200,   #optional: max number of iterations for GE code
+                 tol      = 1e-6)  #optional: tolerance for iterations
+    err   = 1;
+    iter  = 0;
+    M     = [zeros(1,L-1) 0; Matrix(I,L-1,L-1) zeros(L-1,1)];
+    eye   = Matrix(I,L,L)
+    while (err &gt; tol) &amp; (iter &lt; maxit)
+        if iter == 0
+            global ge  = Drip(ω,β,A,Q,H0;w=0.5, tol=1e-8);
+        else
+            global ge  = Drip(ω,β,A,Q,H0;w=0.9, tol=1e-8, Ω0=ge.ss.Ω, Σ0=ge.ss.Σ_1, maxit=1000);
+        end
+
+        XFUN(jj) = ((eye-ge.ss.K*ge.ss.Y&#39;)*ge.A)^jj * (ge.ss.K*ge.ss.Y&#39;) * (M&#39;)^jj
+        X = DRIPs.infinitesum(XFUN; maxit=L, start = 0);  #E[x⃗]=X×x⃗
+
+        H1 = (1/α)*Hz + θ*X&#39;*H0 ;
+
+        err= 0.5*norm(H1-H0,2)/norm(H0)+0.5*err;
+
+        H0 = w_out*H1 + (1.0-w_out)*H0 ;
+
+        iter += 1;
+        if iter == maxit
+            print(&quot;GE loop hit maxit\n&quot;)
+        elseif mod(iter,10) == 0
+            println(&quot;Iteration $iter. Difference: $err&quot;)
+        end
+
+    end
+    print(&quot; Iteration Done.\n&quot;)
+    return(ge)
+end;
+nothing #hide</code></pre><h3 id="ex4_solve-1"><a class="docs-heading-anchor" href="#ex4_solve-1">Solve and Measure Performance</a><a class="docs-heading-anchor-permalink" href="#ex4_solve-1" title="Permalink"></a></h3><p>Solve:</p><pre><code class="language-julia">ge      = ge_drip(ω,β,A,Q,α,θ,Hz,L)  ;
+nothing #hide</code></pre><pre><code class="language-none">Iteration 10. Difference: 0.008423206111917462
+Iteration 20. Difference: 1.1340049707814608e-5
+ Iteration Done.
+</code></pre><p>Measure performance by solving the model for different values of ω:</p><pre><code class="language-julia">@suppress @benchmark ge_drip(ω,β,A,Q,α,θ,Hz,L) setup = (ω = 6.5*rand())</code></pre><pre><code class="language-none">BenchmarkTools.Trial: 
+  memory estimate:  597.88 MiB
+  allocs estimate:  82340
+  --------------
+  minimum time:     596.296 ms (6.48% GC)
+  median time:      672.290 ms (6.01% GC)
+  mean time:        677.960 ms (5.97% GC)
+  maximum time:     775.863 ms (5.46% GC)
+  --------------
+  samples:          8
+  evals/sample:     1</code></pre><p>Calculate IRFs and profit loss:</p><pre><code class="language-julia">geirfs  = irfs(ge,T = L)         ;
+profit_loss = sum((geirfs.x[1,1,:]/100 - geirfs.x_hat[1,1,:]/100).^2) ;
+
+s = @sprintf(&quot;==: Profit loss from rational inattention = %6.5f&quot;, profit_loss)  ;
+println(s) ;
+nothing #hide</code></pre><pre><code class="language-none">==: Profit loss from rational inattention = 0.00010
+</code></pre><h3 id="ex4_fig7-1"><a class="docs-heading-anchor" href="#ex4_fig7-1">Replication of Figure (7)</a><a class="docs-heading-anchor-permalink" href="#ex4_fig7-1" title="Permalink"></a></h3><pre><code class="language-julia">n_opt   = geirfs.a[1,1,:]   ; # Optimal labor input under rational inattention
+n_fullinfo = σ*1/α*(1-ξ)*Hz ; # Optimal labor input under full information
+
+
+plot(1:30,[n_fullinfo[1:30] n_opt[1:30]],
+    title       = &quot;The impulse response of labor input to a productivity shock.&quot;,
+    ylabel      = &quot;Percent&quot;,
+    label       = [&quot;Equilibrium under perfect information&quot; &quot;Equilibirum when firms are subject to rational inattention&quot;],
+    legend      = :topright,
+    color       = [:black :gray40], markerstrokecolor = [:black :gray40],
+    marker      = [:circle :star8], markercolor = [:false :gray40], markersize = [5 5],
+    ylim        = (-0.05,0.85),
+    ytick       = (0:0.1:0.8),
+    xlim        = (0,30),
+    xtick       = (0:2:30),
+    lw          = 1.5,
+    legendfont  = font(8), titlefont = font(10), tickfont = font(8), guidefont = font(9),
+    size        = (650,400),
+    grid        = :off, framestyle = :box)</code></pre><p><img src="../2181670217.png" alt/></p><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../ex4_sims2010/ex4_Sims_2010/">« Replication of Sims (2010)</a><a class="docs-footer-nextpage" href="../../ex6_ay2020/ex6_Afrouzi_Yang_2020/">Replication of the Quantitative Analysis in Afrouzi and Yang (2020) »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 28 November 2020 00:56">Saturday 28 November 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
