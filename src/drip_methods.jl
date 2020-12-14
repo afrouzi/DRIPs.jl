@@ -106,6 +106,7 @@ function Drip(ω,β,A,Q,H;         # primitives of the D.R.I.P.
     iter  = 0
     SqRΣ  = sqrt(Σ0);
     Σ1    = Matrix{Float64}(I,n,n)
+    Ω1    = Matrix{Float64}(I,n,n)
     Σp    = Matrix{Float64}(I,n,n)
     κ     = ω
     Ω_c   = H*H';
@@ -121,16 +122,15 @@ function Drip(ω,β,A,Q,H;         # primitives of the D.R.I.P.
         end
         Σp      = Symmetric(ω*SqRΣ*U/(max.(D,ω*eye))*U'*SqRΣ);
 
-        Σ1      = Symmetric(A*Σp*A' + Σq);
-        err     = norm(Σ1 - Σ0,2)/norm(Σ0,2);
-
-        Σ0      = w*Σ1 + (1-w)*Σ0
-
         SqRΣ    = real.(sqrt(Σ0));
         invSqRΣ = real.(inv(SqRΣ));
 
-        Ω0      = w*(Ω_c .+ β*A'*invSqRΣ*U*(min.(D,ω*eye))*U'*invSqRΣ*A)
-                +(1-w)*Ω0;
+        Σ1      = Symmetric(A*Σp*A' + Σq);
+        Ω1      = Ω_c .+ β*A'*invSqRΣ*U*(min.(D,ω*eye))*U'*invSqRΣ*A
+        err     = norm(Σ1 - Σ0,1)/norm(Σ0,1) + norm(Ω1 - Ω0,1)/norm(Ω0,1);
+
+        Σ0      = w*Σ1 + (1-w)*Σ0;
+        Ω0      = w*Ω1 + (1-w)*Ω0;
         Ω0      = (abs.(Ω0).>1e-10).*Ω0;
 
         iter   += 1
@@ -145,7 +145,7 @@ function Drip(ω,β,A,Q,H;         # primitives of the D.R.I.P.
     Y    = collect((eye - Σ_p*inv_Σ1)'*H)[:,:];
     Σ_z  = collect(H'*(Σ_p - Σ_p*inv_Σ1*Σ_p)*H)[:,:];
     K    = collect(Σ1*Y*inv(Y'*Σ1*Y .+ Σ_z))[:,:];
-    Ω    = collect(Ω0)[:,:];
+    Ω    = collect(Ω1)[:,:];
     err  = err;
     return(Drip(ω,β,A,Q,H,SteadyState(K,Y,Σ_z,Σ_p,Σ_1,Ω,err)))
 end

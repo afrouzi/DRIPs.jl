@@ -12,17 +12,18 @@
 """
 struct Trip
 # Drip
-    p    :: Drip
+    p       :: Drip
 # length of T.R.I.P.
-    T    :: Int32
+    T       :: Int32
 # priors, posteriors and benefit matrices
-    Σ_1s :: Array{Float64,3}
-    Σ_ps :: Array{Float64,3}
-    Ωs   :: Array{Float64,3}
+    Σ_1s    :: Array{Float64,3}
+    Σ_ps    :: Array{Float64,3}
+    Ωs      :: Array{Float64,3}
 # eigenvalues of Σ_t^(0.5)Ω_tΣ_t^(0.5)
-    Ds   :: Array{Float64,2}
+    Ds      :: Array{Float64,2}
 # convergence err
-    err  :: Float64
+    err     :: Float64
+    con_err :: Float64
 end
 
 """
@@ -84,8 +85,9 @@ function Trip(p::Drip,Σ0;
     Σ_ps= repeat(p.ss.Σ_p, inner = [1,1,T]); # initialize posteriors
     Ds  = zeros(n,T);                     # initialize eigenvalues
 
-    iter = 0;
-    err  = 1;
+    iter    = 0;
+    err     = 1;
+    con_err = 1;
     eye  = Matrix(I,n,n);
     while (err > tol) & (iter <= maxit)
         ## Given Ωs, find Sigmas using the law of motion for priors
@@ -116,15 +118,15 @@ function Trip(p::Drip,Σ0;
     end
     # Throw error if T was too short for convergence to steady state
     con_err = norm(p.Q*p.Q'.+p.A*Σ_ps[:,:,end-1]*p.A'.-p.ss.Σ_1)/norm(p.ss.Σ_1);
-    if (con_err  > tol)
-        error("T was too short for convergence of Trip. Try larger T.");
-    end
+    # if (con_err  > tol)
+    #     error("T was too short for convergence of Trip. Try larger T.");
+    # end
     # Finally, store the eigenvalues of steady state
     SqSigma      = real.(sqrt(Σ_1s[:,:,end]));
     D, U         = eigen!(Symmetric(SqSigma*Ωs[:,:,end]*SqSigma));
     Ds[:,end]    = real.(D);
     # return the Trip structure
-    return(Trip(p,T,Σ_1s,Σ_ps,Ωs,Ds,err))
+    return(Trip(p,T,Σ_1s,Σ_ps,Ωs,Ds,err,con_err))
 end
 
 ## solve_Trip: this function solves for the transition dynamics given an initial signal for information treatment
