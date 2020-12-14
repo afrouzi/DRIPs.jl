@@ -3,12 +3,13 @@
   A Structure for the Transition dynamics of Rational Inattention Problems (TRIPs)
 
 # Fields
-    T    : length of TRIP
-    Σ_1s : sequence of prior covariance matrices
-    Σ_ps : sequence of posterior covariance matrices
-    Ωs   : sequence of information benefit matrices
-    Ds   : eigenvalues of Σ_t^(0.5)Ω_tΣ_t^(0.5) over time (marginal values of information)
-    err  : convergence err
+    T       : length of TRIP
+    Σ_1s    : sequence of prior covariance matrices
+    Σ_ps    : sequence of posterior covariance matrices
+    Ωs      : sequence of information benefit matrices
+    Ds      : eigenvalues of Σ_t^(0.5)Ω_tΣ_t^(0.5) over time (marginal values of information)
+    err     : convergence error for shooting algorithm
+    con_err : convergence error for the steady state prior 
 """
 struct Trip
 # Drip
