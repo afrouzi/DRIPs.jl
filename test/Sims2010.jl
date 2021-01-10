@@ -20,8 +20,9 @@ using Test
 	    @test pf.ss.Σ_p ≈ p.ss.Σ_p atol = 1e-3
     println("Solving transition dynamics for Sims (2011) ...")
 	    S   = DRIPs.Signal([1 0; 0 1],[0 0; 0 0])
-	    pt  = Trip(p,S;T=30)
+	    pt  = Trip(p,S;T=4000)
 	    @test pt.err < 1e-4;
+		@test pt.con_err < 1e-3;
     println("Checking IRFs ...")
 		pirfs     = irfs(p,T = 15)
 		psims1    = simulate(p,T = 500, burn = 100, seed = 0)
