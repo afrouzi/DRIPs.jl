@@ -4,6 +4,7 @@
     A type srtucture for storing the steady state solution of a Drip.
 
 # Fields
+    D      : Marginal values of information
     K      : Kalman gain matrix
     Y      : Weight vector for evolution of actions
     Σ_z    : Covariance matrix of the rational inattention error
@@ -13,6 +14,7 @@
     err    : Convergence error for the solution
 """
 struct SteadyState
+    D   :: Array{Float64,1}
     K   :: Array{Float64,2}
     Y   :: Array{Float64,2}
     Σ_z :: Array{Float64,2}
@@ -144,8 +146,9 @@ function Drip(ω,β,A,Q,H;         # primitives of the D.R.I.P.
     Σ_p  = collect(Σp)[:,:];
     Y    = collect((eye - Σ_p*inv_Σ1)'*H)[:,:];
     Σ_z  = collect(H'*(Σ_p - Σ_p*inv_Σ1*Σ_p)*H)[:,:];
+    D    = collect(diag(D));
     K    = collect(Σ1*Y*inv(Y'*Σ1*Y .+ Σ_z))[:,:];
     Ω    = collect(Ω1)[:,:];
     err  = err;
-    return(Drip(ω,β,A,Q,H,SteadyState(K,Y,Σ_z,Σ_p,Σ_1,Ω,err)))
+    return(Drip(ω,β,A,Q,H,SteadyState(D,K,Y,Σ_z,Σ_p,Σ_1,Ω,err)))
 end
